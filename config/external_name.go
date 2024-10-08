@@ -9,8 +9,11 @@ import "github.com/crossplane/upjet/pkg/config"
 // ExternalNameConfigs contains all external name configurations for this
 // provider.
 var ExternalNameConfigs = map[string]config.ExternalName{
-	// Import requires using a randomly generated ID from provider: nl-2e21sda
-	"null_resource": config.IdentifierFromProvider,
+
+	"azapi_data_plane_resource": config.IdentifierFromProvider,
+	"azapi_resource":            config.IdentifierFromProvider,
+	"azapi_resource_action":     config.IdentifierFromProvider,
+	"azapi_update_resource":     config.IdentifierFromProvider,
 }
 
 // ExternalNameConfigurations applies all external name configs listed in the
