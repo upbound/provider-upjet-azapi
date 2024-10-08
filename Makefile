@@ -12,7 +12,7 @@ TERRAFORM_VERSION_VALID := $(shell [ "$(TERRAFORM_VERSION)" = "`printf "$(TERRAF
 
 export TERRAFORM_PROVIDER_SOURCE ?= Azure/azapi
 export TERRAFORM_PROVIDER_REPO ?= https://github.com/Azure/terraform-provider-azapi
-export TERRAFORM_PROVIDER_VERSION ?= v2.0.0-beta
+export TERRAFORM_PROVIDER_VERSION ?= 2.0.0-beta
 export TERRAFORM_PROVIDER_DOWNLOAD_NAME ?= terraform-provider-azapi
 export TERRAFORM_PROVIDER_DOWNLOAD_URL_PREFIX ?= https://github.com/Azure/$(TERRAFORM_PROVIDER_DOWNLOAD_NAME)/releases/download/$(TERRAFORM_PROVIDER_VERSION)
 export TERRAFORM_NATIVE_PROVIDER_BINARY ?= terraform-provider-azapi_v2.0.0-beta
