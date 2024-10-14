@@ -1,0 +1,32 @@
+apiVersion: resource.upbound.io/v1alpha1
+kind: Resource
+metadata:
+  annotations:
+    meta.upbound.io/example-id: resource/v1alpha1/resource
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    body: |-
+      ${jsonencode({
+          sku = {
+            name = "Standard"
+          }
+          properties = {
+            adminUserEnabled = true
+          }
+        })}
+    identity:
+    - identityIds:
+      - ${azurerm_user_assigned_identity.example.id}
+      type: SystemAssigned, UserAssigned
+    location: ${azurerm_resource_group.example.location}
+    name: registry1
+    parentId: ${azurerm_resource_group.example.id}
+    responseExportValues:
+    - properties.loginServer
+    - properties.policies.quarantinePolicy.status
+    tags:
+      Key: Value
+    type: Microsoft.ContainerRegistry/registries@2020-11-01-preview
