@@ -9,11 +9,11 @@ import (
 
 	"github.com/crossplane/upjet/pkg/controller"
 
-	providerconfig "github.com/upbound/provider-upjet-azapi/internal/controller/providerconfig"
-	dataplaneresource "github.com/upbound/provider-upjet-azapi/internal/controller/resource/dataplaneresource"
-	resource "github.com/upbound/provider-upjet-azapi/internal/controller/resource/resource"
-	resourceaction "github.com/upbound/provider-upjet-azapi/internal/controller/resource/resourceaction"
-	updateresource "github.com/upbound/provider-upjet-azapi/internal/controller/resource/updateresource"
+	providerconfig "github.com/upbound/provider-azapi/internal/controller/providerconfig"
+	dataplaneresource "github.com/upbound/provider-azapi/internal/controller/resource/dataplaneresource"
+	resource "github.com/upbound/provider-azapi/internal/controller/resource/resource"
+	resourceaction "github.com/upbound/provider-azapi/internal/controller/resource/resourceaction"
+	updateresource "github.com/upbound/provider-azapi/internal/controller/resource/updateresource"
 )
 
 // Setup creates all controllers with the supplied logger and adds them to

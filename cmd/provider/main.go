@@ -34,13 +34,13 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/metrics"
 	"sigs.k8s.io/controller-runtime/pkg/webhook"
 
-	"github.com/upbound/provider-upjet-azapi/apis"
-	"github.com/upbound/provider-upjet-azapi/apis/v1alpha1"
-	"github.com/upbound/provider-upjet-azapi/config"
-	resolverapis "github.com/upbound/provider-upjet-azapi/internal/apis"
-	"github.com/upbound/provider-upjet-azapi/internal/clients"
-	"github.com/upbound/provider-upjet-azapi/internal/controller"
-	"github.com/upbound/provider-upjet-azapi/internal/features"
+	"github.com/upbound/provider-azapi/apis"
+	"github.com/upbound/provider-azapi/apis/v1alpha1"
+	"github.com/upbound/provider-azapi/config"
+	resolverapis "github.com/upbound/provider-azapi/internal/apis"
+	"github.com/upbound/provider-azapi/internal/clients"
+	"github.com/upbound/provider-azapi/internal/controller"
+	"github.com/upbound/provider-azapi/internal/features"
 )
 
 const (
@@ -92,7 +92,7 @@ func main() {
 	ctrl.SetLogger(zap.New(zap.WriteTo(io.Discard)))
 
 	zl := zap.New(zap.UseDevMode(*debug))
-	logr := logging.NewLogrLogger(zl.WithName("provider-upjet-azapi"))
+	logr := logging.NewLogrLogger(zl.WithName("provider-azapi"))
 	if *debug {
 		// The controller-runtime runs with a no-op logger by default. It is
 		// *very* verbose even at info level, so we only provide it a real
@@ -132,7 +132,7 @@ func main() {
 
 	mgr, err := ctrl.NewManager(cfg, ctrl.Options{
 		LeaderElection:   *leaderElection,
-		LeaderElectionID: "crossplane-leader-election-provider-upjet-azapi",
+		LeaderElectionID: "crossplane-leader-election-provider-azapi",
 		Cache: cache.Options{
 			SyncPeriod: syncPeriod,
 		},

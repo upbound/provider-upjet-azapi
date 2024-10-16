@@ -4,18 +4,18 @@ kind: CustomResourceDefinition
 metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.14.0
-  name: updateresources.resource.upbound.io
+  name: resourceactions.resource.azapi.upbound.io
 spec:
-  group: resource.upbound.io
+  group: resource.azapi.upbound.io
   names:
     categories:
     - crossplane
     - managed
-    - upjet-azapi
-    kind: UpdateResource
-    listKind: UpdateResourceList
-    plural: updateresources
-    singular: updateresource
+    - azapi
+    kind: ResourceAction
+    listKind: ResourceActionList
+    plural: resourceactions
+    singular: resourceaction
   scope: Cluster
   versions:
   - additionalPrinterColumns:
@@ -34,8 +34,8 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: UpdateResource is the Schema for the UpdateResources API. Manages
-          a subset of an existing azure resource's properties
+        description: ResourceAction is the Schema for the ResourceActions API. Perform
+          resource action which changes an existing resource's state
         properties:
           apiVersion:
             description: |-
@@ -55,7 +55,7 @@ spec:
           metadata:
             type: object
           spec:
-            description: UpdateResourceSpec defines the desired state of UpdateResource
+            description: ResourceActionSpec defines the desired state of ResourceAction
             properties:
               deletionPolicy:
                 default: Delete
@@ -73,49 +73,33 @@ spec:
                 type: string
               forProvider:
                 properties:
-                  body:
-                    description: A JSON object that contains the request body used
-                      to add on an existing azure resource.
+                  action:
+                    description: The name of the resource action. It's also possible
+                      to make Http requests towards the resource ID if leave this
+                      field empty.
                     type: string
-                  ignoreBodyChanges:
-                    description: A list of properties that should be ignored when
-                      comparing the body with its current state.
-                    items:
-                      type: string
-                    type: array
-                  ignoreCasing:
-                    description: Whether ignore incorrect casing returned in body
-                      to suppress plan-diff. Defaults to false.
-                    type: boolean
-                  ignoreMissingProperty:
-                    description: Whether ignore not returned properties like credentials
-                      in body to suppress plan-diff. Defaults to true.
-                    type: boolean
+                  body:
+                    description: A JSON object that contains the request body.
+                    type: string
                   locks:
                     description: A list of ARM resource IDs which are used to avoid
-                      create/modify/delete azapi resources at the same time.
+                      modify azapi resources at the same time.
                     items:
                       type: string
                     type: array
-                  name:
-                    description: Specifies the name of the azure resource. Changing
-                      this forces a new resource to be created.
-                    type: string
-                  parentId:
-                    description: 'The ID of the azure resource in which this resource
-                      is created. Changing this forces a new resource to be created.
-                      It supports different kinds of deployment scope for top level
-                      resources:'
+                  method:
+                    description: Specifies the Http method of the azure resource action.
+                      Allowed values are POST, PATCH, PUT and DELETE. Defaults to
+                      POST.
                     type: string
                   resourceId:
-                    description: The ID of an existing azure source. Changing this
-                      forces a new azure resource to be created.
+                    description: The ID of an existing azure source.
                     type: string
                   responseExportValues:
                     description: |-
                       A list of path that needs to be exported from response body.
                       Setting it to ["*"] will export the full response body.
-                      Here's an example. If it sets to ["properties.loginServer", "properties.policies.quarantinePolicy.status"], it will set the following json to computed property output.
+                      Here's an example. If it sets to ["keys"], it will set the following json to computed property output.
                     items:
                       type: string
                     type: array
@@ -123,6 +107,11 @@ spec:
                     description: |-
                       It is in a format like <resource-type>@<api-version>. <resource-type> is the Azure resource type, for example, Microsoft.Storage/storageAccounts.
                       <api-version> is version of the API used to manage this azure resource.
+                    type: string
+                  when:
+                    description: |-
+                      When to perform the action, value must be one of: apply, destroy. Default is apply.
+                      When to perform the action, value must be one of: 'apply', 'destroy'. Default is 'apply'.
                     type: string
                 type: object
               initProvider:
@@ -138,49 +127,33 @@ spec:
                   for example because of an external controller is managing them, like an
                   autoscaler.
                 properties:
-                  body:
-                    description: A JSON object that contains the request body used
-                      to add on an existing azure resource.
+                  action:
+                    description: The name of the resource action. It's also possible
+                      to make Http requests towards the resource ID if leave this
+                      field empty.
                     type: string
-                  ignoreBodyChanges:
-                    description: A list of properties that should be ignored when
-                      comparing the body with its current state.
-                    items:
-                      type: string
-                    type: array
-                  ignoreCasing:
-                    description: Whether ignore incorrect casing returned in body
-                      to suppress plan-diff. Defaults to false.
-                    type: boolean
-                  ignoreMissingProperty:
-                    description: Whether ignore not returned properties like credentials
-                      in body to suppress plan-diff. Defaults to true.
-                    type: boolean
+                  body:
+                    description: A JSON object that contains the request body.
+                    type: string
                   locks:
                     description: A list of ARM resource IDs which are used to avoid
-                      create/modify/delete azapi resources at the same time.
+                      modify azapi resources at the same time.
                     items:
                       type: string
                     type: array
-                  name:
-                    description: Specifies the name of the azure resource. Changing
-                      this forces a new resource to be created.
-                    type: string
-                  parentId:
-                    description: 'The ID of the azure resource in which this resource
-                      is created. Changing this forces a new resource to be created.
-                      It supports different kinds of deployment scope for top level
-                      resources:'
+                  method:
+                    description: Specifies the Http method of the azure resource action.
+                      Allowed values are POST, PATCH, PUT and DELETE. Defaults to
+                      POST.
                     type: string
                   resourceId:
-                    description: The ID of an existing azure source. Changing this
-                      forces a new azure resource to be created.
+                    description: The ID of an existing azure source.
                     type: string
                   responseExportValues:
                     description: |-
                       A list of path that needs to be exported from response body.
                       Setting it to ["*"] will export the full response body.
-                      Here's an example. If it sets to ["properties.loginServer", "properties.policies.quarantinePolicy.status"], it will set the following json to computed property output.
+                      Here's an example. If it sets to ["keys"], it will set the following json to computed property output.
                     items:
                       type: string
                     type: array
@@ -188,6 +161,11 @@ spec:
                     description: |-
                       It is in a format like <resource-type>@<api-version>. <resource-type> is the Azure resource type, for example, Microsoft.Storage/storageAccounts.
                       <api-version> is version of the API used to manage this azure resource.
+                    type: string
+                  when:
+                    description: |-
+                      When to perform the action, value must be one of: apply, destroy. Default is apply.
+                      When to perform the action, value must be one of: 'apply', 'destroy'. Default is 'apply'.
                     type: string
                 type: object
               managementPolicies:
@@ -358,66 +336,54 @@ spec:
             - forProvider
             type: object
             x-kubernetes-validations:
+            - message: spec.forProvider.resourceId is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.resourceId)
+                || (has(self.initProvider) && has(self.initProvider.resourceId))'
             - message: spec.forProvider.type is a required parameter
               rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
                 || ''Update'' in self.managementPolicies) || has(self.forProvider.type)
                 || (has(self.initProvider) && has(self.initProvider.type))'
           status:
-            description: UpdateResourceStatus defines the observed state of UpdateResource.
+            description: ResourceActionStatus defines the observed state of ResourceAction.
             properties:
               atProvider:
                 properties:
+                  action:
+                    description: The name of the resource action. It's also possible
+                      to make Http requests towards the resource ID if leave this
+                      field empty.
+                    type: string
                   body:
-                    description: A JSON object that contains the request body used
-                      to add on an existing azure resource.
+                    description: A JSON object that contains the request body.
                     type: string
                   id:
-                    description: The ID of the azure resource.
+                    description: The ID of the azure resource action.
                     type: string
-                  ignoreBodyChanges:
-                    description: A list of properties that should be ignored when
-                      comparing the body with its current state.
-                    items:
-                      type: string
-                    type: array
-                  ignoreCasing:
-                    description: Whether ignore incorrect casing returned in body
-                      to suppress plan-diff. Defaults to false.
-                    type: boolean
-                  ignoreMissingProperty:
-                    description: Whether ignore not returned properties like credentials
-                      in body to suppress plan-diff. Defaults to true.
-                    type: boolean
                   locks:
                     description: A list of ARM resource IDs which are used to avoid
-                      create/modify/delete azapi resources at the same time.
+                      modify azapi resources at the same time.
                     items:
                       type: string
                     type: array
-                  name:
-                    description: Specifies the name of the azure resource. Changing
-                      this forces a new resource to be created.
+                  method:
+                    description: Specifies the Http method of the azure resource action.
+                      Allowed values are POST, PATCH, PUT and DELETE. Defaults to
+                      POST.
                     type: string
                   output:
                     description: The output json containing the properties specified
-                      in response_export_values. Here're some examples to decode json
-                      and extract the value.
-                    type: string
-                  parentId:
-                    description: 'The ID of the azure resource in which this resource
-                      is created. Changing this forces a new resource to be created.
-                      It supports different kinds of deployment scope for top level
-                      resources:'
+                      in response_export_values. Here are some examples to decode
+                      json and extract the value.
                     type: string
                   resourceId:
-                    description: The ID of an existing azure source. Changing this
-                      forces a new azure resource to be created.
+                    description: The ID of an existing azure source.
                     type: string
                   responseExportValues:
                     description: |-
                       A list of path that needs to be exported from response body.
                       Setting it to ["*"] will export the full response body.
-                      Here's an example. If it sets to ["properties.loginServer", "properties.policies.quarantinePolicy.status"], it will set the following json to computed property output.
+                      Here's an example. If it sets to ["keys"], it will set the following json to computed property output.
                     items:
                       type: string
                     type: array
@@ -425,6 +391,11 @@ spec:
                     description: |-
                       It is in a format like <resource-type>@<api-version>. <resource-type> is the Azure resource type, for example, Microsoft.Storage/storageAccounts.
                       <api-version> is version of the API used to manage this azure resource.
+                    type: string
+                  when:
+                    description: |-
+                      When to perform the action, value must be one of: apply, destroy. Default is apply.
+                      When to perform the action, value must be one of: 'apply', 'destroy'. Default is 'apply'.
                     type: string
                 type: object
               conditions:

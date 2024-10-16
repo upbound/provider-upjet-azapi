@@ -13,7 +13,7 @@ import (
 
 // Package type metadata.
 const (
-	Group   = "upjet-azapi.upbound.io"
+	Group   = "azapi.upbound.io"
 	Version = "v1beta1"
 )
 

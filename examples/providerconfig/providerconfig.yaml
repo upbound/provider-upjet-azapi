@@ -1,4 +1,4 @@
-apiVersion: upjet-azapi.upbound.io/v1beta1
+apiVersion: azapi.upbound.io/v1beta1
 kind: ProviderConfig
 metadata:
   name: default

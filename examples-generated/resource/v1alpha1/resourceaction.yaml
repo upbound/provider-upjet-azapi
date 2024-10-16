@@ -1,4 +1,4 @@
-apiVersion: resource.upbound.io/v1alpha1
+apiVersion: resource.azapi.upbound.io/v1alpha1
 kind: ResourceAction
 metadata:
   annotations:

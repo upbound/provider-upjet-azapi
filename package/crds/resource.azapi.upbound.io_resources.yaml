@@ -4,18 +4,18 @@ kind: CustomResourceDefinition
 metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.14.0
-  name: dataplaneresources.resource.upbound.io
+  name: resources.resource.azapi.upbound.io
 spec:
-  group: resource.upbound.io
+  group: resource.azapi.upbound.io
   names:
     categories:
     - crossplane
     - managed
-    - upjet-azapi
-    kind: DataPlaneResource
-    listKind: DataPlaneResourceList
-    plural: dataplaneresources
-    singular: dataplaneresource
+    - azapi
+    kind: Resource
+    listKind: ResourceList
+    plural: resources
+    singular: resource
   scope: Cluster
   versions:
   - additionalPrinterColumns:
@@ -34,8 +34,8 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: DataPlaneResource is the Schema for the DataPlaneResources API.
-          Manages a Azure data plane resource
+        description: Resource is the Schema for the Resources API. Manages a Azure
+          resource
         properties:
           apiVersion:
             description: |-
@@ -55,7 +55,7 @@ spec:
           metadata:
             type: object
           spec:
-            description: DataPlaneResourceSpec defines the desired state of DataPlaneResource
+            description: ResourceSpec defines the desired state of Resource
             properties:
               deletionPolicy:
                 default: Delete
@@ -75,8 +75,31 @@ spec:
                 properties:
                   body:
                     description: A JSON object that contains the request body used
-                      to create and update data plane resource.
+                      to create and update azure resource.
                     type: string
+                  identity:
+                    description: A identity block as defined below.
+                    items:
+                      properties:
+                        identityIds:
+                          description: A list of User Managed Identity ID's which
+                            should be assigned to the azure resource.
+                          items:
+                            type: string
+                          type: array
+                        type:
+                          description: The Type of Identity which should be used for
+                            this azure resource. Possible values are SystemAssigned,
+                            UserAssigned and SystemAssigned,UserAssigned.
+                          type: string
+                      type: object
+                    type: array
+                  ignoreBodyChanges:
+                    description: A list of properties that should be ignored when
+                      comparing the body with its current state.
+                    items:
+                      type: string
+                    type: array
                   ignoreCasing:
                     description: Whether ignore incorrect casing returned in body
                       to suppress plan-diff. Defaults to false.
@@ -85,6 +108,10 @@ spec:
                     description: Whether ignore not returned properties like credentials
                       in body to suppress plan-diff. Defaults to true.
                     type: boolean
+                  location:
+                    description: The Azure Region where the azure resource should
+                      exist.
+                    type: string
                   locks:
                     description: A list of ARM resource IDs which are used to avoid
                       create/modify/delete azapi resources at the same time.
@@ -96,9 +123,15 @@ spec:
                       this forces a new resource to be created.
                     type: string
                   parentId:
-                    description: The ID of the azure resource in which this resource
+                    description: 'The ID of the azure resource in which this resource
                       is created. Changing this forces a new resource to be created.
+                      It supports different kinds of deployment scope for top level
+                      resources:'
                     type: string
+                  removingSpecialChars:
+                    description: Whether to remove special characters in resource
+                      name. Defaults to false.
+                    type: boolean
                   responseExportValues:
                     description: |-
                       A list of path that needs to be exported from response body.
@@ -107,10 +140,21 @@ spec:
                     items:
                       type: string
                     type: array
+                  schemaValidationEnabled:
+                    description: Whether enabled the validation on type and body with
+                      embedded schema. Defaults to true.
+                    type: boolean
+                  tags:
+                    additionalProperties:
+                      type: string
+                    description: A mapping of tags which should be assigned to the
+                      azure resource.
+                    type: object
+                    x-kubernetes-map-type: granular
                   type:
-                    description: It is in a format like <resource-type>@<api-version>.
-                      <api-version> is version of the API used to manage this azure
-                      data plane resource.
+                    description: |-
+                      It is in a format like <resource-type>@<api-version>. <resource-type> is the Azure resource type, for example, Microsoft.Storage/storageAccounts.
+                      <api-version> is version of the API used to manage this azure resource.
                     type: string
                 type: object
               initProvider:
@@ -128,8 +172,31 @@ spec:
                 properties:
                   body:
                     description: A JSON object that contains the request body used
-                      to create and update data plane resource.
+                      to create and update azure resource.
                     type: string
+                  identity:
+                    description: A identity block as defined below.
+                    items:
+                      properties:
+                        identityIds:
+                          description: A list of User Managed Identity ID's which
+                            should be assigned to the azure resource.
+                          items:
+                            type: string
+                          type: array
+                        type:
+                          description: The Type of Identity which should be used for
+                            this azure resource. Possible values are SystemAssigned,
+                            UserAssigned and SystemAssigned,UserAssigned.
+                          type: string
+                      type: object
+                    type: array
+                  ignoreBodyChanges:
+                    description: A list of properties that should be ignored when
+                      comparing the body with its current state.
+                    items:
+                      type: string
+                    type: array
                   ignoreCasing:
                     description: Whether ignore incorrect casing returned in body
                       to suppress plan-diff. Defaults to false.
@@ -138,6 +205,10 @@ spec:
                     description: Whether ignore not returned properties like credentials
                       in body to suppress plan-diff. Defaults to true.
                     type: boolean
+                  location:
+                    description: The Azure Region where the azure resource should
+                      exist.
+                    type: string
                   locks:
                     description: A list of ARM resource IDs which are used to avoid
                       create/modify/delete azapi resources at the same time.
@@ -149,9 +220,15 @@ spec:
                       this forces a new resource to be created.
                     type: string
                   parentId:
-                    description: The ID of the azure resource in which this resource
+                    description: 'The ID of the azure resource in which this resource
                       is created. Changing this forces a new resource to be created.
+                      It supports different kinds of deployment scope for top level
+                      resources:'
                     type: string
+                  removingSpecialChars:
+                    description: Whether to remove special characters in resource
+                      name. Defaults to false.
+                    type: boolean
                   responseExportValues:
                     description: |-
                       A list of path that needs to be exported from response body.
@@ -160,10 +237,21 @@ spec:
                     items:
                       type: string
                     type: array
+                  schemaValidationEnabled:
+                    description: Whether enabled the validation on type and body with
+                      embedded schema. Defaults to true.
+                    type: boolean
+                  tags:
+                    additionalProperties:
+                      type: string
+                    description: A mapping of tags which should be assigned to the
+                      azure resource.
+                    type: object
+                    x-kubernetes-map-type: granular
                   type:
-                    description: It is in a format like <resource-type>@<api-version>.
-                      <api-version> is version of the API used to manage this azure
-                      data plane resource.
+                    description: |-
+                      It is in a format like <resource-type>@<api-version>. <resource-type> is the Azure resource type, for example, Microsoft.Storage/storageAccounts.
+                      <api-version> is version of the API used to manage this azure resource.
                     type: string
                 type: object
               managementPolicies:
@@ -334,30 +422,54 @@ spec:
             - forProvider
             type: object
             x-kubernetes-validations:
-            - message: spec.forProvider.name is a required parameter
-              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
-                || ''Update'' in self.managementPolicies) || has(self.forProvider.name)
-                || (has(self.initProvider) && has(self.initProvider.name))'
-            - message: spec.forProvider.parentId is a required parameter
-              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
-                || ''Update'' in self.managementPolicies) || has(self.forProvider.parentId)
-                || (has(self.initProvider) && has(self.initProvider.parentId))'
             - message: spec.forProvider.type is a required parameter
               rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
                 || ''Update'' in self.managementPolicies) || has(self.forProvider.type)
                 || (has(self.initProvider) && has(self.initProvider.type))'
           status:
-            description: DataPlaneResourceStatus defines the observed state of DataPlaneResource.
+            description: ResourceStatus defines the observed state of Resource.
             properties:
               atProvider:
                 properties:
                   body:
                     description: A JSON object that contains the request body used
-                      to create and update data plane resource.
+                      to create and update azure resource.
                     type: string
                   id:
                     description: The ID of the azure resource.
                     type: string
+                  identity:
+                    description: A identity block as defined below.
+                    items:
+                      properties:
+                        identityIds:
+                          description: A list of User Managed Identity ID's which
+                            should be assigned to the azure resource.
+                          items:
+                            type: string
+                          type: array
+                        principalId:
+                          description: The Principal ID for the Service Principal
+                            associated with the Managed Service Identity of this azure
+                            resource.
+                          type: string
+                        tenantId:
+                          description: The Tenant ID for the Service Principal associated
+                            with the Managed Service Identity of this azure resource.
+                          type: string
+                        type:
+                          description: The Type of Identity which should be used for
+                            this azure resource. Possible values are SystemAssigned,
+                            UserAssigned and SystemAssigned,UserAssigned.
+                          type: string
+                      type: object
+                    type: array
+                  ignoreBodyChanges:
+                    description: A list of properties that should be ignored when
+                      comparing the body with its current state.
+                    items:
+                      type: string
+                    type: array
                   ignoreCasing:
                     description: Whether ignore incorrect casing returned in body
                       to suppress plan-diff. Defaults to false.
@@ -366,6 +478,10 @@ spec:
                     description: Whether ignore not returned properties like credentials
                       in body to suppress plan-diff. Defaults to true.
                     type: boolean
+                  location:
+                    description: The Azure Region where the azure resource should
+                      exist.
+                    type: string
                   locks:
                     description: A list of ARM resource IDs which are used to avoid
                       create/modify/delete azapi resources at the same time.
@@ -382,9 +498,15 @@ spec:
                       and extract the value.
                     type: string
                   parentId:
-                    description: The ID of the azure resource in which this resource
+                    description: 'The ID of the azure resource in which this resource
                       is created. Changing this forces a new resource to be created.
+                      It supports different kinds of deployment scope for top level
+                      resources:'
                     type: string
+                  removingSpecialChars:
+                    description: Whether to remove special characters in resource
+                      name. Defaults to false.
+                    type: boolean
                   responseExportValues:
                     description: |-
                       A list of path that needs to be exported from response body.
@@ -393,10 +515,21 @@ spec:
                     items:
                       type: string
                     type: array
+                  schemaValidationEnabled:
+                    description: Whether enabled the validation on type and body with
+                      embedded schema. Defaults to true.
+                    type: boolean
+                  tags:
+                    additionalProperties:
+                      type: string
+                    description: A mapping of tags which should be assigned to the
+                      azure resource.
+                    type: object
+                    x-kubernetes-map-type: granular
                   type:
-                    description: It is in a format like <resource-type>@<api-version>.
-                      <api-version> is version of the API used to manage this azure
-                      data plane resource.
+                    description: |-
+                      It is in a format like <resource-type>@<api-version>. <resource-type> is the Azure resource type, for example, Microsoft.Storage/storageAccounts.
+                      <api-version> is version of the API used to manage this azure resource.
                     type: string
                 type: object
               conditions:

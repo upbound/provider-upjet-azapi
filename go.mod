@@ -1,4 +1,4 @@
-module github.com/upbound/provider-upjet-azapi
+module github.com/upbound/provider-azapi
 
 go 1.21
 

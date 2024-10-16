@@ -21,8 +21,8 @@ import (
 	"github.com/pkg/errors"
 	ctrl "sigs.k8s.io/controller-runtime"
 
-	v1alpha1 "github.com/upbound/provider-upjet-azapi/apis/resource/v1alpha1"
-	features "github.com/upbound/provider-upjet-azapi/internal/features"
+	v1alpha1 "github.com/upbound/provider-azapi/apis/resource/v1alpha1"
+	features "github.com/upbound/provider-azapi/internal/features"
 )
 
 // Setup adds a controller that reconciles DataPlaneResource managed resources.

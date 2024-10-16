@@ -19,7 +19,7 @@ import (
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
-	"github.com/upbound/provider-upjet-azapi/apis/v1beta1"
+	"github.com/upbound/provider-azapi/apis/v1beta1"
 )
 
 const (

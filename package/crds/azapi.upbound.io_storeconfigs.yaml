@@ -4,14 +4,14 @@ kind: CustomResourceDefinition
 metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.14.0
-  name: storeconfigs.upjet-azapi.upbound.io
+  name: storeconfigs.azapi.upbound.io
 spec:
-  group: upjet-azapi.upbound.io
+  group: azapi.upbound.io
   names:
     categories:
     - crossplane
     - store
-    - upjet-azapi
+    - azapi
     kind: StoreConfig
     listKind: StoreConfigList
     plural: storeconfigs
@@ -31,8 +31,8 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: A StoreConfig configures how upjet-azapi controller should store
-          connection details.
+        description: A StoreConfig configures how azapi controller should store connection
+          details.
         properties:
           apiVersion:
             description: |-
