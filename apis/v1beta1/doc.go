@@ -1,9 +1,9 @@
-/*
-Copyright 2022 Upbound Inc.
-*/
+// SPDX-FileCopyrightText: 2024 The Crossplane Authors <https://crossplane.io>
+//
+// SPDX-License-Identifier: Apache-2.0
 
-// Package v1beta1 contains the core resources of the upjet-azapi upjet provider.
+// Package v1beta1 contains the core resources of the azapi upjet provider.
 // +kubebuilder:object:generate=true
-// +groupName=upjet-azapi.upbound.io
+// +groupName=azapi.upbound.io
 // +versionName=v1beta1
 package v1beta1
