@@ -9,13 +9,12 @@ import (
 	_ "embed"
 
 	ujconfig "github.com/crossplane/upjet/pkg/config"
-
-	"github.com/upbound/provider-upjet-azapi/config/resource"
+	"github.com/upbound/provider-azapi/config/resources"
 )
 
 const (
-	resourcePrefix = "upjet-azapi"
-	modulePath     = "github.com/upbound/provider-upjet-azapi"
+	resourcePrefix = "azapi"
+	modulePath     = "github.com/upbound/provider-azapi"
 )
 
 //go:embed schema.json
@@ -27,7 +26,7 @@ var providerMetadata string
 // GetProvider returns provider configuration
 func GetProvider() *ujconfig.Provider {
 	pc := ujconfig.NewProvider([]byte(providerSchema), resourcePrefix, modulePath, []byte(providerMetadata),
-		ujconfig.WithRootGroup("upbound.io"),
+		ujconfig.WithRootGroup("azapi.upbound.io"),
 		ujconfig.WithIncludeList(ExternalNameConfigured()),
 		ujconfig.WithFeaturesPackage("internal/features"),
 		ujconfig.WithDefaultResourceOptions(
@@ -36,7 +35,7 @@ func GetProvider() *ujconfig.Provider {
 
 	for _, configure := range []func(provider *ujconfig.Provider){
 		// add custom config functions
-		resource.Configure,
+		resources.Configure,
 	} {
 		configure(pc)
 	}

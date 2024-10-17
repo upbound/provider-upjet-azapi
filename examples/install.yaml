@@ -1,6 +1,6 @@
 apiVersion: pkg.crossplane.io/v1
 kind: Provider
 metadata:
-  name: provider-upjet-azapi
+  name: provider-azapi
 spec:
-  package: upbound/provider-upjet-azapi:v0.1.0
+  package: upbound/provider-azapi:v0.1.0

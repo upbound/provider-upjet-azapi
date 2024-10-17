@@ -11,7 +11,7 @@ import (
 
 	"github.com/crossplane/upjet/pkg/pipeline"
 
-	"github.com/upbound/provider-upjet-azapi/config"
+	"github.com/upbound/provider-azapi/config"
 )
 
 func main() {

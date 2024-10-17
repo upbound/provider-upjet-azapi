@@ -1,6 +1,6 @@
-/*
-Copyright 2021 Upbound Inc.
-*/
+// SPDX-FileCopyrightText: 2024 The Crossplane Authors <https://crossplane.io>
+//
+// SPDX-License-Identifier: Apache-2.0
 
 package v1alpha1
 
@@ -22,11 +22,11 @@ type StoreConfigStatus struct {
 
 // +kubebuilder:object:root=true
 
-// A StoreConfig configures how upjet-azapi controller should store connection details.
+// A StoreConfig configures how azapi controller should store connection details.
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
 // +kubebuilder:printcolumn:name="TYPE",type="string",JSONPath=".spec.type"
 // +kubebuilder:printcolumn:name="DEFAULT-SCOPE",type="string",JSONPath=".spec.defaultScope"
-// +kubebuilder:resource:scope=Cluster,categories={crossplane,store,upjet-azapi}
+// +kubebuilder:resource:scope=Cluster,categories={crossplane,store,azapi}
 // +kubebuilder:subresource:status
 type StoreConfig struct {
 	metav1.TypeMeta   `json:",inline"`

@@ -1,7 +1,7 @@
 # ====================================================================================
 # Setup Project
 
-PROJECT_NAME ?= provider-upjet-azapi
+PROJECT_NAME ?= provider-azapi
 PROJECT_REPO ?= github.com/upbound/$(PROJECT_NAME)
 
 export TERRAFORM_VERSION ?= 1.5.7
@@ -14,9 +14,10 @@ export TERRAFORM_PROVIDER_SOURCE ?= Azure/azapi
 export TERRAFORM_PROVIDER_REPO ?= https://github.com/Azure/terraform-provider-azapi
 export TERRAFORM_PROVIDER_VERSION ?= 1.12.1
 export TERRAFORM_PROVIDER_DOWNLOAD_NAME ?= terraform-provider-azapi
-export TERRAFORM_PROVIDER_DOWNLOAD_URL_PREFIX ?= https://github.com/Azure/$(TERRAFORM_PROVIDER_DOWNLOAD_NAME)/releases/download/$(TERRAFORM_PROVIDER_VERSION)
+export TERRAFORM_PROVIDER_DOWNLOAD_URL_PREFIX ?= https://github.com/Azure/$(TERRAFORM_PROVIDER_DOWNLOAD_NAME)/releases/download/v$(TERRAFORM_PROVIDER_VERSION)
 export TERRAFORM_NATIVE_PROVIDER_BINARY ?= terraform-provider-azapi_v1.12.1
 export TERRAFORM_DOCS_PATH ?= docs/resources
+
 
 PLATFORMS ?= linux_amd64 linux_arm64
 
@@ -56,7 +57,7 @@ GO_SUBDIRS += cmd internal apis
 KIND_VERSION = v0.15.0
 UP_VERSION = v0.28.0
 UP_CHANNEL = stable
-UPTEST_VERSION = v0.5.0
+UPTEST_VERSION = v1.1.2
 -include build/makelib/k8s_tools.mk
 
 # ====================================================================================
@@ -92,7 +93,7 @@ fallthrough: submodules
 
 # NOTE(hasheddan): we force image building to happen prior to xpkg build so that
 # we ensure image is present in daemon.
-xpkg.build.provider-upjet-azapi: do.build.images
+xpkg.build.provider-azapi: do.build.images
 
 # NOTE(hasheddan): we ensure up is installed prior to running platform-specific
 # build steps in parallel to avoid encountering an installation race condition.

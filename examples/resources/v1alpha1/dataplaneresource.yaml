@@ -1,0 +1,41 @@
+apiVersion: resources.azapi.upbound.io/v1alpha1
+kind: DataPlaneResource
+metadata:
+  annotations:
+    meta.upbound.io/example-id: resources/v1alpha1/dataplaneresource
+  labels:
+    testing.upbound.io/example-name: dataset
+  name: dataset
+spec:
+  forProvider:
+    body: |-
+      ${jsonencode({
+          properties = {
+            type = "AzureBlob",
+            typeProperties = {
+              folderPath = {
+                value = "@dataset().MyFolderPath"
+                type  = "Expression"
+              }
+              fileName = {
+                value = "@dataset().MyFileName"
+                type  = "Expression"
+              }
+              format = {
+                type = "TextFormat"
+              }
+            }
+            parameters = {
+              MyFolderPath = {
+                type = "String"
+              }
+              MyFileName = {
+                type = "String"
+              }
+            }
+          }
+        })}
+    name: example-dataset
+    parentId: exampleforazapi.dev.azuresynapse.net
+    type: Microsoft.Synapse/workspaces/datasets@2020-12-01
+# This resource needs a valid parentId (trimprefix(data.azurerm_synapse_workspace.example.connectivity_endpoints.dev, "https://"))
