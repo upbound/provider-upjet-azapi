@@ -19,7 +19,7 @@ spec:
         })}
     location: West Europe
     name: registrytestupbound
-    parentId: ${azurerm_resource_group.example.id}
+    parentId: ${data.azurerm_resource_group.example.id}
     responseExportValues:
     - properties.loginServer
     - properties.policies.quarantinePolicy.status
