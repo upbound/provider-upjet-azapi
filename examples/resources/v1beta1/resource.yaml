@@ -17,6 +17,8 @@ spec:
             adminUserEnabled = true
           }
         })}
+    identity:
+      - type: SystemAssigned
     location: West Europe
     name: registrytestupbound
     parentId: ${data.azurerm_resource_group.example.id}

@@ -1,4 +1,19 @@
+# Copyright 2021 Upbound Inc.
+
 apiVersion: meta.pkg.crossplane.io/v1
 kind: Provider
 metadata:
   name: provider-azapi
+  annotations:
+    meta.crossplane.io/maintainer: Upbound <support@upbound.io>
+    meta.crossplane.io/source: github.com/upbound/provider-upjet-azapi
+    meta.crossplane.io/description: |
+      Upbound's official Crossplane provider to manage Microsoft Azure API
+      resources in Kubernetes.
+    meta.crossplane.io/readme: |
+      Provider Azapi is a Crossplane provider developed and supported by Upbound.
+      Available resources and their fields can be found in the [Upbound
+      Marketplace](https://marketplace.upbound.io/providers/upbound/provider-azapi).
+      If you encounter an issue please reach out on support@upbound.io email
+      address.
+    friendly-name.meta.crossplane.io: Provider Azapi
