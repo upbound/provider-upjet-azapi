@@ -1,8 +1,8 @@
-apiVersion: resources.azapi.upbound.io/v1alpha1
+apiVersion: resources.azapi.upbound.io/v1beta1
 kind: DataPlaneResource
 metadata:
   annotations:
-    meta.upbound.io/example-id: resources/v1alpha1/dataplaneresource
+    meta.upbound.io/example-id: resources/v1beta1/dataplaneresource
   labels:
     testing.upbound.io/example-name: dataset
   name: dataset
@@ -36,6 +36,6 @@ spec:
           }
         })}
     name: example-dataset
-    parentId: exampleforazapi.dev.azuresynapse.net
+    parentId: ${trimprefix(data.azurerm_synapse_workspace.example.connectivity_endpoints.dev,
+      "https://")}
     type: Microsoft.Synapse/workspaces/datasets@2020-12-01
-# This resource needs a valid parentId (trimprefix(data.azurerm_synapse_workspace.example.connectivity_endpoints.dev, "https://"))
