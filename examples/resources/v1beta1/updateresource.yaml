@@ -1,8 +1,8 @@
-apiVersion: resources.azapi.upbound.io/v1alpha1
+apiVersion: resources.azapi.upbound.io/v1beta1
 kind: UpdateResource
 metadata:
   annotations:
-    meta.upbound.io/example-id: resources/v1alpha1/updateresource
+    meta.upbound.io/example-id: resources/v1beta1/updateresource
   labels:
     testing.upbound.io/example-name: example
   name: example
