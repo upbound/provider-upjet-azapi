@@ -43,14 +43,7 @@ import (
 
 func main() {
 	var (
-		app               = kingpin.New(filepath.Base(os.Args[0]), "Terraform based Crossplane provider for AzAPI").DefaultEnvars()
-		deprecationAction = func(flagName string) kingpin.Action {
-			return func(c *kingpin.ParseContext) error {
-				_, err := fmt.Fprintf(os.Stderr, "warning: Command-line flag %q is deprecated and no longer used. It will be removed in a future release. Please remove it from all of your configurations (ControllerConfigs, etc.).\n", flagName)
-				kingpin.FatalIfError(err, "Failed to print the deprecation notice.")
-				return nil
-			}
-		}
+		app                     = kingpin.New(filepath.Base(os.Args[0]), "Terraform based Crossplane provider for AzAPI").DefaultEnvars()
 		debug                   = app.Flag("debug", "Run with debug logging.").Short('d').Bool()
 		syncPeriod              = app.Flag("sync", "Controller manager sync period such as 300ms, 1.5h, or 2h45m").Short('s').Default("1h").Duration()
 		pollInterval            = app.Flag("poll", "Poll interval controls how often an individual resource should be checked for drift.").Default("10m").Duration()
@@ -58,14 +51,21 @@ func main() {
 		leaderElection          = app.Flag("leader-election", "Use leader election for the controller manager.").Short('l').Default("false").OverrideDefaultFromEnvar("LEADER_ELECTION").Bool()
 		maxReconcileRate        = app.Flag("max-reconcile-rate", "The global maximum rate per second at which resources may be checked for drift from the desired state.").Default("10").Int()
 
-		_ = app.Flag("terraform-version", "Terraform version.").Envar("TERRAFORM_VERSION").Hidden().Action(deprecationAction("terraform-version")).String()
-		_ = app.Flag("terraform-provider-source", "Terraform provider source.").Envar("TERRAFORM_PROVIDER_SOURCE").Hidden().Action(deprecationAction("terraform-provider-source")).String()
-		_ = app.Flag("terraform-provider-version", "Terraform provider version.").Envar("TERRAFORM_PROVIDER_VERSION").Hidden().Action(deprecationAction("terraform-provider-version")).String()
-
 		namespace                  = app.Flag("namespace", "Namespace used to set as default scope in default secret store config.").Default("crossplane-system").Envar("POD_NAMESPACE").String()
 		enableExternalSecretStores = app.Flag("enable-external-secret-stores", "Enable support for ExternalSecretStores.").Default("false").Envar("ENABLE_EXTERNAL_SECRET_STORES").Bool()
 		enableManagementPolicies   = app.Flag("enable-management-policies", "Enable support for Management Policies.").Default("true").Envar("ENABLE_MANAGEMENT_POLICIES").Bool()
 		essTLSCertsPath            = app.Flag("ess-tls-cert-dir", "Path of ESS TLS certificates.").Envar("ESS_TLS_CERTS_DIR").String()
+
+		deprecationAction = func(flagName string) kingpin.Action {
+			return func(c *kingpin.ParseContext) error {
+				_, err := fmt.Fprintf(os.Stderr, "warning: Command-line flag %q is deprecated and no longer used. It will be removed in a future release. Please remove it from all of your configurations (ControllerConfigs, etc.).\n", flagName)
+				kingpin.FatalIfError(err, "Failed to print the deprecation notice.")
+				return nil
+			}
+		}
+		_ = app.Flag("terraform-version", "Terraform version.").Envar("TERRAFORM_VERSION").Hidden().Action(deprecationAction("terraform-version")).String()
+		_ = app.Flag("terraform-provider-source", "Terraform provider source.").Envar("TERRAFORM_PROVIDER_SOURCE").Hidden().Action(deprecationAction("terraform-provider-source")).String()
+		_ = app.Flag("terraform-provider-version", "Terraform provider version.").Envar("TERRAFORM_PROVIDER_VERSION").Hidden().Action(deprecationAction("terraform-provider-version")).String()
 	)
 
 	kingpin.MustParse(app.Parse(os.Args[1:]))

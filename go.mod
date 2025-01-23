@@ -1,6 +1,6 @@
 module github.com/upbound/provider-azapi
 
-go 1.23
+go 1.23.3
 
 require (
 	dario.cat/mergo v1.0.1
