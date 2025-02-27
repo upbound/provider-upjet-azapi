@@ -1,4 +1,4 @@
-name: Azure/azapi
+name: Azure/terraform-provider-azapi
 resources:
     azapi_data_plane_resource:
         subCategory: ""
