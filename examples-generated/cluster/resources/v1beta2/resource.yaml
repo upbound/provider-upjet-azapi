@@ -1,0 +1,28 @@
+apiVersion: resources.azapi.upbound.io/v1beta2
+kind: Resource
+metadata:
+  annotations:
+    meta.upbound.io/example-id: resources/v1beta2/resource
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    body:
+      properties:
+        adminUserEnabled: true
+      sku:
+        name: Standard
+    identity:
+    - identityIds:
+      - ${azurerm_user_assigned_identity.example.id}
+      type: SystemAssigned, UserAssigned
+    location: ${azurerm_resource_group.example.location}
+    name: registry1
+    parentId: ${azurerm_resource_group.example.id}
+    responseExportValues:
+    - properties.loginServer
+    - properties.policies.quarantinePolicy.status
+    tags:
+      Key: Value
+    type: Microsoft.ContainerRegistry/registries@2020-11-01-preview

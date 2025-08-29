@@ -1,0 +1,25 @@
+apiVersion: resources.azapi.upbound.io/v1beta1
+kind: UpdateResource
+metadata:
+  annotations:
+    meta.upbound.io/example-id: resources/v1beta1/updateresource
+  labels:
+    testing.upbound.io/example-name: example-loadbalancer-natrule
+  name: example-loadbalancer-natrule
+spec:
+  forProvider:
+    body: |-
+      {
+        "properties": {
+          "inboundNatRules": [
+            {
+              "properties": {
+                "idleTimeoutInMinutes": 15
+              }
+            }
+          ]
+        }
+      }
+    resourceId: "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-resource-group/providers/Microsoft.Network/loadBalancers/example-load-balancer"
+    type: Microsoft.Network/loadBalancers@2021-03-01
+# This resource needs a valid resourceId (network LoadBalancer id) and depends on network LoadBalancerNatRule

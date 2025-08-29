@@ -8,15 +8,15 @@ import (
 	"context"
 	"encoding/json"
 
-	"github.com/crossplane/crossplane-runtime/pkg/resource"
-	"github.com/crossplane/upjet/pkg/terraform"
-	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
-	tfsdk "github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
+	"github.com/Azure/terraform-provider-azapi/xpprovider"
+	"github.com/crossplane/crossplane-runtime/v2/pkg/resource"
+	"github.com/crossplane/upjet/v2/pkg/terraform"
 	"github.com/pkg/errors"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
-	"github.com/upbound/provider-azapi/apis/v1beta1"
+	clusterv1beta1 "github.com/upbound/provider-azapi/apis/cluster/v1beta1"
+	namespacedv1beta1 "github.com/upbound/provider-azapi/apis/namespaced/v1beta1"
 )
 
 const (
@@ -38,25 +38,16 @@ const (
 
 // TerraformSetupBuilder builds Terraform a terraform.SetupFn function which
 // returns Terraform provider setup configuration
-func TerraformSetupBuilder(tfProvider *schema.Provider) terraform.SetupFn {
-	return func(ctx context.Context, client client.Client, mg resource.Managed) (terraform.Setup, error) {
+func TerraformSetupBuilder() terraform.SetupFn {
+	return func(ctx context.Context, client client.Client, mgx resource.Managed) (terraform.Setup, error) {
 		ps := terraform.Setup{}
 
-		configRef := mg.GetProviderConfigReference()
-		if configRef == nil {
-			return ps, errors.New(errNoProviderConfig)
-		}
-		pc := &v1beta1.ProviderConfig{}
-		if err := client.Get(ctx, types.NamespacedName{Name: configRef.Name}, pc); err != nil {
-			return ps, errors.Wrap(err, errGetProviderConfig)
+		pcSpec, err := resolveProviderConfig(ctx, client, mgx)
+		if err != nil {
+			return terraform.Setup{}, err
 		}
 
-		t := resource.NewProviderConfigUsageTracker(client, &v1beta1.ProviderConfigUsage{})
-		if err := t.Track(ctx, mg); err != nil {
-			return ps, errors.Wrap(err, errTrackUsage)
-		}
-
-		data, err := resource.CommonCredentialExtractor(ctx, pc.Spec.Credentials.Source, client, pc.Spec.Credentials.CommonCredentialSelectors)
+		data, err := resource.CommonCredentialExtractor(ctx, pcSpec.Credentials.Source, client, pcSpec.Credentials.CommonCredentialSelectors)
 		if err != nil {
 			return ps, errors.Wrap(err, errExtractCredentials)
 		}
@@ -79,23 +70,96 @@ func TerraformSetupBuilder(tfProvider *schema.Provider) terraform.SetupFn {
 		if v, ok := creds[keyTenantID]; ok {
 			ps.Configuration[keyTerraformTenantID] = v
 		}
-		return ps, errors.Wrap(configureTFProviderMeta(ctx, &ps, *tfProvider), "failed to configure the Terraform AzureAD provider meta")
+		ps.FrameworkProvider, err = xpprovider.FrameworkProvider(ctx)
+		if err != nil {
+			return terraform.Setup{}, errors.Wrap(err, "error initializing the framework provider")
+		}
+		return ps, nil
 	}
 }
 
-func configureTFProviderMeta(ctx context.Context, ps *terraform.Setup, p schema.Provider) error {
-	// Please be aware that this implementation relies on the schema.Provider
-	// parameter `p` being a non-pointer. This is because normally
-	// the Terraform plugin SDK normally configures the provider
-	// only once and using a pointer argument here will cause
-	// race conditions between resources referring to different
-	// ProviderConfigs.
-	diag := p.Configure(context.WithoutCancel(ctx), &tfsdk.ResourceConfig{
-		Config: ps.Configuration,
-	})
-	if diag != nil && diag.HasError() {
-		return errors.Errorf("failed to configure the provider: %v", diag)
+func legacyToModernProviderConfigSpec(pc *clusterv1beta1.ProviderConfig) (*namespacedv1beta1.ProviderConfigSpec, error) {
+	if pc == nil {
+		return nil, nil
 	}
-	ps.Meta = p.Meta()
-	return nil
+	data, err := json.Marshal(pc.Spec)
+	if err != nil {
+		return nil, err
+	}
+
+	var mSpec namespacedv1beta1.ProviderConfigSpec
+	err = json.Unmarshal(data, &mSpec)
+	return &mSpec, err
+}
+
+func enrichLocalSecretRefs(pc *namespacedv1beta1.ProviderConfig, mg resource.Managed) {
+	if pc != nil && pc.Spec.Credentials.SecretRef != nil {
+		pc.Spec.Credentials.SecretRef.Namespace = mg.GetNamespace()
+	}
+}
+
+func resolveProviderConfig(ctx context.Context, crClient client.Client, mg resource.Managed) (*namespacedv1beta1.ProviderConfigSpec, error) {
+	switch managed := mg.(type) {
+	case resource.LegacyManaged:
+		return resolveProviderConfigLegacy(ctx, crClient, managed)
+	case resource.ModernManaged:
+		return resolveProviderConfigModern(ctx, crClient, managed)
+	default:
+		return nil, errors.New("resource is not a managed")
+	}
+}
+
+func resolveProviderConfigLegacy(ctx context.Context, client client.Client, mg resource.LegacyManaged) (*namespacedv1beta1.ProviderConfigSpec, error) {
+	configRef := mg.GetProviderConfigReference()
+	if configRef == nil {
+		return nil, errors.New(errNoProviderConfig)
+	}
+	pc := &clusterv1beta1.ProviderConfig{}
+	if err := client.Get(ctx, types.NamespacedName{Name: configRef.Name}, pc); err != nil {
+		return nil, errors.Wrap(err, errGetProviderConfig)
+	}
+
+	t := resource.NewLegacyProviderConfigUsageTracker(client, &clusterv1beta1.ProviderConfigUsage{})
+	if err := t.Track(ctx, mg); err != nil {
+		return nil, errors.Wrap(err, errTrackUsage)
+	}
+
+	return legacyToModernProviderConfigSpec(pc)
+}
+
+func resolveProviderConfigModern(ctx context.Context, crClient client.Client, mg resource.ModernManaged) (*namespacedv1beta1.ProviderConfigSpec, error) {
+	configRef := mg.GetProviderConfigReference()
+	if configRef == nil {
+		return nil, errors.New(errNoProviderConfig)
+	}
+
+	pcRuntimeObj, err := crClient.Scheme().New(namespacedv1beta1.SchemeGroupVersion.WithKind(configRef.Kind))
+	if err != nil {
+		return nil, errors.Wrapf(err, "referenced provider config kind %q is invalid for %s/%s", configRef.Kind, mg.GetNamespace(), mg.GetName())
+	}
+	pcObj, ok := pcRuntimeObj.(resource.ProviderConfig)
+	if !ok {
+		return nil, errors.Errorf("referenced provider config kind %q is not a provider config type %s/%s", configRef.Kind, mg.GetNamespace(), mg.GetName())
+	}
+
+	// Namespace will be ignored if the PC is a cluster-scoped type
+	if err := crClient.Get(ctx, types.NamespacedName{Name: configRef.Name, Namespace: mg.GetNamespace()}, pcObj); err != nil {
+		return nil, errors.Wrap(err, errGetProviderConfig)
+	}
+
+	var pcSpec namespacedv1beta1.ProviderConfigSpec
+	switch pc := pcObj.(type) {
+	case *namespacedv1beta1.ProviderConfig:
+		enrichLocalSecretRefs(pc, mg)
+		pcSpec = pc.Spec
+	case *namespacedv1beta1.ClusterProviderConfig:
+		pcSpec = pc.Spec
+	default:
+		return nil, errors.New("unknown provider config kind")
+	}
+	t := resource.NewProviderConfigUsageTracker(crClient, &namespacedv1beta1.ProviderConfigUsage{})
+	if err := t.Track(ctx, mg); err != nil {
+		return nil, errors.Wrap(err, errTrackUsage)
+	}
+	return &pcSpec, nil
 }
