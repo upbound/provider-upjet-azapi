@@ -10,12 +10,13 @@ import (
 	_ "embed"
 
 	"github.com/Azure/terraform-provider-azapi/xpprovider"
-	ujconfig "github.com/crossplane/upjet/pkg/config"
-	conversiontfjson "github.com/crossplane/upjet/pkg/types/conversion/tfjson"
+	ujconfig "github.com/crossplane/upjet/v2/pkg/config"
+	conversiontfjson "github.com/crossplane/upjet/v2/pkg/types/conversion/tfjson"
 	tfjson "github.com/hashicorp/terraform-json"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/pkg/errors"
-	"github.com/upbound/provider-azapi/config/resources"
+	resourcesCluster "github.com/upbound/provider-azapi/config/cluster/resources"
+	resourcesNamespaced "github.com/upbound/provider-azapi/config/namespaced/resources"
 )
 
 const (
@@ -53,25 +54,65 @@ func GetProvider(ctx context.Context, generationProvider bool) (*ujconfig.Provid
 	var err error
 	if generationProvider {
 		p, err = getProviderSchema(providerSchema)
-	} else {
-		p, err = xpprovider.GetProviderSchema(ctx)
+		if err != nil {
+			return nil, errors.Wrapf(err, "cannot get the Terraform provider schema with generation mode set to %t", generationProvider)
+		}
 	}
+	fwProvider, err := xpprovider.FrameworkProvider(ctx)
 	if err != nil {
 		return nil, errors.Wrapf(err, "cannot get the Terraform provider schema with generation mode set to %t", generationProvider)
 	}
 	pc := ujconfig.NewProvider([]byte(providerSchema), resourcePrefix, modulePath, []byte(providerMetadata),
 		ujconfig.WithIncludeList(resourceList(cliReconciledExternalNameConfigs)),
 		ujconfig.WithRootGroup("azapi.upbound.io"),
-		ujconfig.WithTerraformPluginSDKIncludeList(resourceList(ExternalNameConfigs)),
+		ujconfig.WithTerraformPluginFrameworkIncludeList(resourceList(ExternalNameConfigs)),
 		ujconfig.WithFeaturesPackage("internal/features"),
 		ujconfig.WithTerraformProvider(p),
+		ujconfig.WithTerraformPluginFrameworkProvider(fwProvider),
 		ujconfig.WithDefaultResourceOptions(
 			resourceConfigurator(),
 		))
 
 	for _, configure := range []func(provider *ujconfig.Provider){
 		// add custom config functions
-		resources.Configure,
+		resourcesCluster.Configure,
+	} {
+		configure(pc)
+	}
+
+	pc.ConfigureResources()
+	return pc, nil
+}
+
+// GetProviderNamespaced returns namespaced provider configuration
+func GetProviderNamespaced(ctx context.Context, generationProvider bool) (*ujconfig.Provider, error) {
+	var p *schema.Provider
+	var err error
+	if generationProvider {
+		p, err = getProviderSchema(providerSchema)
+		if err != nil {
+			return nil, errors.Wrapf(err, "cannot get the Terraform provider schema with generation mode set to %t", generationProvider)
+		}
+	}
+
+	fwProvider, err := xpprovider.FrameworkProvider(ctx)
+	if err != nil {
+		return nil, errors.Wrapf(err, "cannot get the Terraform provider schema with generation mode set to %t", generationProvider)
+	}
+	pc := ujconfig.NewProvider([]byte(providerSchema), resourcePrefix, modulePath, []byte(providerMetadata),
+		ujconfig.WithIncludeList(resourceList(cliReconciledExternalNameConfigs)),
+		ujconfig.WithRootGroup("azapi.m.upbound.io"),
+		ujconfig.WithTerraformPluginFrameworkIncludeList(resourceList(ExternalNameConfigs)),
+		ujconfig.WithFeaturesPackage("internal/features"),
+		ujconfig.WithTerraformProvider(p),
+		ujconfig.WithTerraformPluginFrameworkProvider(fwProvider),
+		ujconfig.WithDefaultResourceOptions(
+			resourceConfigurator(),
+		))
+
+	for _, configure := range []func(provider *ujconfig.Provider){
+		// add custom config functions
+		resourcesNamespaced.Configure,
 	} {
 		configure(pc)
 	}

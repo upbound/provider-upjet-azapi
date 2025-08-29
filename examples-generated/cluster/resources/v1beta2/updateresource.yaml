@@ -1,0 +1,17 @@
+apiVersion: resources.azapi.upbound.io/v1beta2
+kind: UpdateResource
+metadata:
+  annotations:
+    meta.upbound.io/example-id: resources/v1beta2/updateresource
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    body:
+      properties:
+        inboundNatRules:
+        - properties:
+            idleTimeoutInMinutes: 15
+    resourceId: ${azurerm_lb.example.id}
+    type: Microsoft.Network/loadBalancers@2021-03-01

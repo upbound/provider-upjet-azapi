@@ -1,0 +1,17 @@
+apiVersion: resources.azapi.m.upbound.io/v1beta1
+kind: ResourceAction
+metadata:
+  annotations:
+    meta.upbound.io/example-id: resources/v1beta1/resourceaction
+  labels:
+    testing.upbound.io/example-name: start
+  name: start
+  namespace: upbound-system
+spec:
+  forProvider:
+    action: start
+    count: '${var.enabled ? 1 : 0}'
+    resourceId: ${azurerm_spring_cloud_service.test.id}
+    responseExportValues:
+    - '*'
+    type: Microsoft.AppPlatform/Spring@2022-05-01-preview

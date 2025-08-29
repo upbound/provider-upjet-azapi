@@ -10,8 +10,8 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/crossplane/upjet/pkg/pipeline"
-	"gopkg.in/alecthomas/kingpin.v2"
+	"github.com/alecthomas/kingpin/v2"
+	"github.com/crossplane/upjet/v2/pkg/pipeline"
 
 	"github.com/upbound/provider-azapi/config"
 )
@@ -25,7 +25,9 @@ func main() {
 	if err != nil {
 		panic(fmt.Sprintf("cannot calculate the absolute path with %s", rootDir))
 	}
-	p, err := config.GetProvider(context.Background(), true)
-	kingpin.FatalIfError(err, "Cannot initialize the provider configuration")
-	pipeline.Run(p, absRootDir)
+	pc, err := config.GetProvider(context.Background(), true)
+	kingpin.FatalIfError(err, "Cannot initialize the cluster-scoped provider configuration")
+	pns, err := config.GetProviderNamespaced(context.Background(), true)
+	kingpin.FatalIfError(err, "Cannot initialize the namespaced provider configuration")
+	pipeline.Run(pc, pns, absRootDir)
 }
