@@ -4,15 +4,103 @@ Copyright 2022 Upbound Inc.
 
 package config
 
-import "github.com/crossplane/upjet/pkg/config"
+import (
+	"context"
+
+	"github.com/Azure/terraform-provider-azapi/xpprovider"
+	"github.com/pkg/errors"
+
+	"github.com/crossplane/upjet/v2/pkg/config"
+)
 
 // ExternalNameConfigs contains all external name configurations for this
 // provider.
 var ExternalNameConfigs = map[string]config.ExternalName{
-	"azapi_data_plane_resource": config.IdentifierFromProvider,
-	"azapi_resource":            config.IdentifierFromProvider,
-	"azapi_resource_action":     config.IdentifierFromProvider,
-	"azapi_update_resource":     config.IdentifierFromProvider,
+	"azapi_data_plane_resource": dataPlaneResource(),
+	"azapi_resource":            azapiResource(),
+	"azapi_resource_action":     azapiResourceAction(),
+	"azapi_update_resource":     azapiUpdateResource(),
+}
+
+func dataPlaneResource() config.ExternalName {
+	e := config.IdentifierFromProvider
+	e.GetIDFn = func(ctx context.Context, externalName string, parameters map[string]any, terraformProviderConfig map[string]any) (string, error) {
+		name, ok := parameters["name"].(string)
+		if !ok {
+			return "", errors.New("parameter `name` is required")
+		}
+		parentId, ok := parameters["parent_id"].(string)
+		if !ok {
+			return "", errors.New("parameter `parent_id` is required")
+		}
+		resourceType, ok := parameters["type"].(string)
+		if !ok {
+			return "", errors.New("parameter `type` is required")
+		}
+		return xpprovider.DataPlaneResourceId(name, parentId, resourceType)
+	}
+	return e
+}
+
+func azapiResource() config.ExternalName {
+	e := config.IdentifierFromProvider
+	e.GetIDFn = func(ctx context.Context, externalName string, parameters map[string]any, terraformProviderConfig map[string]any) (string, error) {
+		name, ok := parameters["name"].(string)
+		if !ok {
+			return "", errors.New("parameter `name` is required")
+		}
+		parentId, ok := parameters["parent_id"].(string)
+		if !ok {
+			return "", errors.New("parameter `parent_id` is required")
+		}
+		resourceType, ok := parameters["type"].(string)
+		if !ok {
+			return "", errors.New("parameter `type` is required")
+		}
+		return xpprovider.NewResourceID(name, parentId, resourceType)
+	}
+	return e
+}
+
+func azapiUpdateResource() config.ExternalName {
+	e := config.IdentifierFromProvider
+	e.GetIDFn = func(ctx context.Context, externalName string, parameters map[string]any, terraformProviderConfig map[string]any) (string, error) {
+		resourceType, ok := parameters["type"].(string)
+		if !ok {
+			return "", errors.New("parameter `type` is required")
+		}
+		resourceId, ok := parameters["resource_id"].(string)
+		if ok && resourceId != "" {
+			return xpprovider.ResourceIDWithResourceType(resourceId, resourceType)
+		}
+
+		name, ok := parameters["name"].(string)
+		if !ok {
+			return "", errors.New("parameter `name` is required")
+		}
+		parentId, ok := parameters["parent_id"].(string)
+		if !ok {
+			return "", errors.New("parameter `parent_id` is required")
+		}
+		return xpprovider.NewResourceID(name, parentId, resourceType)
+	}
+	return e
+}
+
+func azapiResourceAction() config.ExternalName {
+	e := config.IdentifierFromProvider
+	e.GetIDFn = func(ctx context.Context, externalName string, parameters map[string]any, terraformProviderConfig map[string]any) (string, error) {
+		resourceType, ok := parameters["resource_type"].(string)
+		if !ok {
+			return "", errors.New("parameter `type` is required")
+		}
+		resourceId, ok := parameters["resource_id"].(string)
+		if !ok {
+			return "", errors.New("parameter `resource_id` is required")
+		}
+		return xpprovider.ResourceIDWithResourceType(resourceId, resourceType)
+	}
+	return e
 }
 
 // ExternalNameConfigurations applies all external name configs listed in the
