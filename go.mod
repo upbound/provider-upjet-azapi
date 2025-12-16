@@ -2,6 +2,8 @@ module github.com/upbound/provider-azapi/v2
 
 go 1.24.11
 
+tool golang.org/x/tools/cmd/goimports
+
 require (
 	dario.cat/mergo v1.0.2
 	github.com/Azure/terraform-provider-azapi v1.15.0
@@ -125,6 +127,7 @@ require (
 	golang.org/x/oauth2 v0.30.0 // indirect
 	golang.org/x/sync v0.18.0 // indirect
 	golang.org/x/sys v0.38.0 // indirect
+	golang.org/x/telemetry v0.0.0-20251008203120-078029d740a8 // indirect
 	golang.org/x/term v0.37.0 // indirect
 	golang.org/x/text v0.31.0 // indirect
 	golang.org/x/time v0.11.0 // indirect
