@@ -15,11 +15,18 @@ func Configure(p *config.Provider) {
 	p.AddResourceConfigurator("azapi_data_plane_resource", func(r *config.Resource) {
 		r.Kind = "DataPlaneResource"
 		r.ShortGroup = group
+		// Following attributes trigger TF resource replacement, which is not
+		// supported per XRM in Crossplane.
+		delete(r.TerraformResource.Schema, "replace_triggers_external_values")
+		delete(r.TerraformResource.Schema, "replace_triggers_refs")
 	})
 	p.AddResourceConfigurator("azapi_resource", func(r *config.Resource) {
 		r.Kind = "Resource"
 		r.ShortGroup = group
-
+		// Following attributes trigger TF resource replacement, which is not
+		// supported per XRM in Crossplane.
+		delete(r.TerraformResource.Schema, "replace_triggers_external_values")
+		delete(r.TerraformResource.Schema, "replace_triggers_refs")
 	})
 	p.AddResourceConfigurator("azapi_resource_action", func(r *config.Resource) {
 		r.Kind = "ResourceAction"

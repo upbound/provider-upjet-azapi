@@ -31,7 +31,6 @@ func Configure(p *config.Provider) {
 		r.PreviousVersions = []string{versionV1Beta1}
 		r.ControllerReconcileVersion = versionV1Beta2
 		r.SetCRDStorageVersion(versionV1Beta1)
-
 		r.Conversions = r.Conversions[1:]
 		typeChangingPaths := []string{"body", "output", "responseExportValues"}
 		r.Conversions = append(r.Conversions,
@@ -39,11 +38,15 @@ func Configure(p *config.Provider) {
 			conversion.NewCustomConverter(versionV1Beta1, versionV1Beta2, dataPlaneResourceConverterFromv1beta1Tov1beta2),
 			conversion.NewCustomConverter(versionV1Beta2, versionV1Beta1, dataPlaneResourceConverterFromv1beta2Tov1beta1),
 		)
+		// Following attributes trigger TF resource replacement, which is not
+		// supported per XRM in Crossplane.
+		delete(r.TerraformResource.Schema, "replace_triggers_external_values")
+		delete(r.TerraformResource.Schema, "replace_triggers_refs")
 	})
+
 	p.AddResourceConfigurator("azapi_resource", func(r *config.Resource) {
 		r.Kind = "Resource"
 		r.ShortGroup = group
-
 		r.Version = versionV1Beta2
 		r.PreviousVersions = []string{versionV1Beta1}
 		r.ControllerReconcileVersion = versionV1Beta2
@@ -55,7 +58,12 @@ func Configure(p *config.Provider) {
 			conversion.NewCustomConverter(versionV1Beta1, versionV1Beta2, azapiResourceConverterFromv1beta1Tov1beta2),
 			conversion.NewCustomConverter(versionV1Beta2, versionV1Beta1, azapiResourceConverterFromv1beta2Tov1beta1),
 		)
+		// Following attributes trigger TF resource replacement, which is not
+		// supported per XRM in Crossplane.
+		delete(r.TerraformResource.Schema, "replace_triggers_external_values")
+		delete(r.TerraformResource.Schema, "replace_triggers_refs")
 	})
+
 	p.AddResourceConfigurator("azapi_resource_action", func(r *config.Resource) {
 		r.Kind = "ResourceAction"
 		r.ShortGroup = group
@@ -71,8 +79,8 @@ func Configure(p *config.Provider) {
 			conversion.NewCustomConverter(versionV1Beta1, versionV1Beta2, resourceActionConverterFromv1beta1Tov1beta2),
 			conversion.NewCustomConverter(versionV1Beta2, versionV1Beta1, resourceActionConverterFromv1beta2Tov1beta1),
 		)
-
 	})
+
 	p.AddResourceConfigurator("azapi_update_resource", func(r *config.Resource) {
 		r.Kind = "UpdateResource"
 		r.ShortGroup = group
@@ -90,7 +98,6 @@ func Configure(p *config.Provider) {
 			conversion.NewCustomConverter(versionV1Beta1, versionV1Beta2, updateResourceConverterFromv1beta1Tov1beta2),
 			conversion.NewCustomConverter(versionV1Beta2, versionV1Beta1, updateResourceConverterFromv1beta2Tov1beta1),
 		)
-
 	})
 }
 
