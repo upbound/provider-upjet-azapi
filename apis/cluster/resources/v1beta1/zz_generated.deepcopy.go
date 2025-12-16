@@ -193,22 +193,6 @@ func (in *DataPlaneResourceInitParameters) DeepCopyInto(out *DataPlaneResourceIn
 			(*out)[key] = outVal
 		}
 	}
-	if in.ReplaceTriggersExternalValues != nil {
-		in, out := &in.ReplaceTriggersExternalValues, &out.ReplaceTriggersExternalValues
-		*out = new(v1.JSON)
-		(*in).DeepCopyInto(*out)
-	}
-	if in.ReplaceTriggersRefs != nil {
-		in, out := &in.ReplaceTriggersRefs, &out.ReplaceTriggersRefs
-		*out = make([]*string, len(*in))
-		for i := range *in {
-			if (*in)[i] != nil {
-				in, out := &(*in)[i], &(*out)[i]
-				*out = new(string)
-				**out = **in
-			}
-		}
-	}
 	if in.ResponseExportValues != nil {
 		in, out := &in.ResponseExportValues, &out.ResponseExportValues
 		*out = make([]*string, len(*in))
@@ -475,22 +459,6 @@ func (in *DataPlaneResourceObservation) DeepCopyInto(out *DataPlaneResourceObser
 			(*out)[key] = outVal
 		}
 	}
-	if in.ReplaceTriggersExternalValues != nil {
-		in, out := &in.ReplaceTriggersExternalValues, &out.ReplaceTriggersExternalValues
-		*out = new(v1.JSON)
-		(*in).DeepCopyInto(*out)
-	}
-	if in.ReplaceTriggersRefs != nil {
-		in, out := &in.ReplaceTriggersRefs, &out.ReplaceTriggersRefs
-		*out = make([]*string, len(*in))
-		for i := range *in {
-			if (*in)[i] != nil {
-				in, out := &(*in)[i], &(*out)[i]
-				*out = new(string)
-				**out = **in
-			}
-		}
-	}
 	if in.ResponseExportValues != nil {
 		in, out := &in.ResponseExportValues, &out.ResponseExportValues
 		*out = make([]*string, len(*in))
@@ -713,22 +681,6 @@ func (in *DataPlaneResourceParameters) DeepCopyInto(out *DataPlaneResourceParame
 				}
 			}
 			(*out)[key] = outVal
-		}
-	}
-	if in.ReplaceTriggersExternalValues != nil {
-		in, out := &in.ReplaceTriggersExternalValues, &out.ReplaceTriggersExternalValues
-		*out = new(v1.JSON)
-		(*in).DeepCopyInto(*out)
-	}
-	if in.ReplaceTriggersRefs != nil {
-		in, out := &in.ReplaceTriggersRefs, &out.ReplaceTriggersRefs
-		*out = make([]*string, len(*in))
-		for i := range *in {
-			if (*in)[i] != nil {
-				in, out := &(*in)[i], &(*out)[i]
-				*out = new(string)
-				**out = **in
-			}
 		}
 	}
 	if in.ResponseExportValues != nil {
@@ -1740,22 +1692,6 @@ func (in *ResourceInitParameters) DeepCopyInto(out *ResourceInitParameters) {
 		*out = new(bool)
 		**out = **in
 	}
-	if in.ReplaceTriggersExternalValues != nil {
-		in, out := &in.ReplaceTriggersExternalValues, &out.ReplaceTriggersExternalValues
-		*out = new(v1.JSON)
-		(*in).DeepCopyInto(*out)
-	}
-	if in.ReplaceTriggersRefs != nil {
-		in, out := &in.ReplaceTriggersRefs, &out.ReplaceTriggersRefs
-		*out = make([]*string, len(*in))
-		for i := range *in {
-			if (*in)[i] != nil {
-				in, out := &(*in)[i], &(*out)[i]
-				*out = new(string)
-				**out = **in
-			}
-		}
-	}
 	if in.ResponseExportValues != nil {
 		in, out := &in.ResponseExportValues, &out.ResponseExportValues
 		*out = make([]*string, len(*in))
@@ -2097,22 +2033,6 @@ func (in *ResourceObservation) DeepCopyInto(out *ResourceObservation) {
 			(*out)[key] = outVal
 		}
 	}
-	if in.ReplaceTriggersExternalValues != nil {
-		in, out := &in.ReplaceTriggersExternalValues, &out.ReplaceTriggersExternalValues
-		*out = new(v1.JSON)
-		(*in).DeepCopyInto(*out)
-	}
-	if in.ReplaceTriggersRefs != nil {
-		in, out := &in.ReplaceTriggersRefs, &out.ReplaceTriggersRefs
-		*out = make([]*string, len(*in))
-		for i := range *in {
-			if (*in)[i] != nil {
-				in, out := &(*in)[i], &(*out)[i]
-				*out = new(string)
-				**out = **in
-			}
-		}
-	}
 	if in.ResponseExportValues != nil {
 		in, out := &in.ResponseExportValues, &out.ResponseExportValues
 		*out = make([]*string, len(*in))
@@ -2405,22 +2325,6 @@ func (in *ResourceParameters) DeepCopyInto(out *ResourceParameters) {
 				}
 			}
 			(*out)[key] = outVal
-		}
-	}
-	if in.ReplaceTriggersExternalValues != nil {
-		in, out := &in.ReplaceTriggersExternalValues, &out.ReplaceTriggersExternalValues
-		*out = new(v1.JSON)
-		(*in).DeepCopyInto(*out)
-	}
-	if in.ReplaceTriggersRefs != nil {
-		in, out := &in.ReplaceTriggersRefs, &out.ReplaceTriggersRefs
-		*out = make([]*string, len(*in))
-		for i := range *in {
-			if (*in)[i] != nil {
-				in, out := &(*in)[i], &(*out)[i]
-				*out = new(string)
-				**out = **in
-			}
 		}
 	}
 	if in.RemovingSpecialChars != nil {

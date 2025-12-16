@@ -11,7 +11,6 @@ import (
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
 	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
-	apiextv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
 
 type DataPlaneResourceInitParameters struct {
@@ -60,37 +59,6 @@ type DataPlaneResourceInitParameters struct {
 	// (Map of List of String) A mapping of query parameters to be sent with the read request.
 	// A mapping of query parameters to be sent with the read request.
 	ReadQueryParameters map[string][]*string `json:"readQueryParameters,omitempty" tf:"read_query_parameters,omitempty"`
-
-	// (Dynamic) Will trigger a replace of the resource when the value changes and is not null. This can be used by practitioners to force a replace of the resource when certain values change, e.g. changing the SKU of a virtual machine based on the value of variables or locals. The value is a dynamic, so practitioners can compose the input however they wish. For a "break glass" set the value to null to prevent the plan modifier taking effect.
-	// If you have null values that you do want to be tracked as affecting the resource replacement, include these inside an object.
-	// Advanced use cases are possible and resource replacement can be triggered by values external to the resource, for example when a dependent resource changes.
-	// Will trigger a replace of the resource when the value changes and is not `null`. This can be used by practitioners to force a replace of the resource when certain values change, e.g. changing the SKU of a virtual machine based on the value of variables or locals. The value is a `dynamic`, so practitioners can compose the input however they wish. For a "break glass" set the value to `null` to prevent the plan modifier taking effect.
-	// If you have `null` values that you do want to be tracked as affecting the resource replacement, include these inside an object.
-	// Advanced use cases are possible and resource replacement can be triggered by values external to the resource, for example when a dependent resource changes.
-	//
-	// e.g. to replace a resource when either the SKU or os_type attributes change:
-	//
-	// ```hcl
-	// resource "azapi_data_plane_resource" "example" {
-	// name = var.name
-	// type = "Microsoft.AppConfiguration/configurationStores/keyValues@1.0"
-	// body = {
-	// properties = {
-	// sku   = var.sku
-	// zones = var.zones
-	// }
-	// }
-	//
-	// replace_triggers_external_values = [
-	// var.sku,
-	// var.zones,
-	// ]
-	// }
-	// ```
-	ReplaceTriggersExternalValues *apiextv1.JSON `json:"replaceTriggersExternalValues,omitempty" tf:"replace_triggers_external_values,omitempty"`
-
-	// When the values at these paths change, the resource will be replaced. When the values at these paths change, the resource will be replaced.
-	ReplaceTriggersRefs []*string `json:"replaceTriggersRefs,omitempty" tf:"replace_triggers_refs,omitempty"`
 
 	// A list of path that needs to be exported from response body.
 	// Setting it to ["*"] will export the full response body.
@@ -165,37 +133,6 @@ type DataPlaneResourceObservation struct {
 	// (Map of List of String) A mapping of query parameters to be sent with the read request.
 	// A mapping of query parameters to be sent with the read request.
 	ReadQueryParameters map[string][]*string `json:"readQueryParameters,omitempty" tf:"read_query_parameters,omitempty"`
-
-	// (Dynamic) Will trigger a replace of the resource when the value changes and is not null. This can be used by practitioners to force a replace of the resource when certain values change, e.g. changing the SKU of a virtual machine based on the value of variables or locals. The value is a dynamic, so practitioners can compose the input however they wish. For a "break glass" set the value to null to prevent the plan modifier taking effect.
-	// If you have null values that you do want to be tracked as affecting the resource replacement, include these inside an object.
-	// Advanced use cases are possible and resource replacement can be triggered by values external to the resource, for example when a dependent resource changes.
-	// Will trigger a replace of the resource when the value changes and is not `null`. This can be used by practitioners to force a replace of the resource when certain values change, e.g. changing the SKU of a virtual machine based on the value of variables or locals. The value is a `dynamic`, so practitioners can compose the input however they wish. For a "break glass" set the value to `null` to prevent the plan modifier taking effect.
-	// If you have `null` values that you do want to be tracked as affecting the resource replacement, include these inside an object.
-	// Advanced use cases are possible and resource replacement can be triggered by values external to the resource, for example when a dependent resource changes.
-	//
-	// e.g. to replace a resource when either the SKU or os_type attributes change:
-	//
-	// ```hcl
-	// resource "azapi_data_plane_resource" "example" {
-	// name = var.name
-	// type = "Microsoft.AppConfiguration/configurationStores/keyValues@1.0"
-	// body = {
-	// properties = {
-	// sku   = var.sku
-	// zones = var.zones
-	// }
-	// }
-	//
-	// replace_triggers_external_values = [
-	// var.sku,
-	// var.zones,
-	// ]
-	// }
-	// ```
-	ReplaceTriggersExternalValues *apiextv1.JSON `json:"replaceTriggersExternalValues,omitempty" tf:"replace_triggers_external_values,omitempty"`
-
-	// When the values at these paths change, the resource will be replaced. When the values at these paths change, the resource will be replaced.
-	ReplaceTriggersRefs []*string `json:"replaceTriggersRefs,omitempty" tf:"replace_triggers_refs,omitempty"`
 
 	// A list of path that needs to be exported from response body.
 	// Setting it to ["*"] will export the full response body.
@@ -281,39 +218,6 @@ type DataPlaneResourceParameters struct {
 	// A mapping of query parameters to be sent with the read request.
 	// +kubebuilder:validation:Optional
 	ReadQueryParameters map[string][]*string `json:"readQueryParameters,omitempty" tf:"read_query_parameters,omitempty"`
-
-	// (Dynamic) Will trigger a replace of the resource when the value changes and is not null. This can be used by practitioners to force a replace of the resource when certain values change, e.g. changing the SKU of a virtual machine based on the value of variables or locals. The value is a dynamic, so practitioners can compose the input however they wish. For a "break glass" set the value to null to prevent the plan modifier taking effect.
-	// If you have null values that you do want to be tracked as affecting the resource replacement, include these inside an object.
-	// Advanced use cases are possible and resource replacement can be triggered by values external to the resource, for example when a dependent resource changes.
-	// Will trigger a replace of the resource when the value changes and is not `null`. This can be used by practitioners to force a replace of the resource when certain values change, e.g. changing the SKU of a virtual machine based on the value of variables or locals. The value is a `dynamic`, so practitioners can compose the input however they wish. For a "break glass" set the value to `null` to prevent the plan modifier taking effect.
-	// If you have `null` values that you do want to be tracked as affecting the resource replacement, include these inside an object.
-	// Advanced use cases are possible and resource replacement can be triggered by values external to the resource, for example when a dependent resource changes.
-	//
-	// e.g. to replace a resource when either the SKU or os_type attributes change:
-	//
-	// ```hcl
-	// resource "azapi_data_plane_resource" "example" {
-	// name = var.name
-	// type = "Microsoft.AppConfiguration/configurationStores/keyValues@1.0"
-	// body = {
-	// properties = {
-	// sku   = var.sku
-	// zones = var.zones
-	// }
-	// }
-	//
-	// replace_triggers_external_values = [
-	// var.sku,
-	// var.zones,
-	// ]
-	// }
-	// ```
-	// +kubebuilder:validation:Optional
-	ReplaceTriggersExternalValues *apiextv1.JSON `json:"replaceTriggersExternalValues,omitempty" tf:"replace_triggers_external_values,omitempty"`
-
-	// When the values at these paths change, the resource will be replaced. When the values at these paths change, the resource will be replaced.
-	// +kubebuilder:validation:Optional
-	ReplaceTriggersRefs []*string `json:"replaceTriggersRefs,omitempty" tf:"replace_triggers_refs,omitempty"`
 
 	// A list of path that needs to be exported from response body.
 	// Setting it to ["*"] will export the full response body.
