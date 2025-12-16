@@ -13,7 +13,7 @@ TERRAFORM_VERSION_VALID := $(shell [ "$(TERRAFORM_VERSION)" = "`printf "$(TERRAF
 
 export TERRAFORM_PROVIDER_SOURCE ?= Azure/azapi
 export TERRAFORM_PROVIDER_REPO ?= https://github.com/Azure/terraform-provider-azapi
-export TERRAFORM_PROVIDER_VERSION ?= 2.7.0
+export TERRAFORM_PROVIDER_VERSION ?= 2.8.0
 export TERRAFORM_PROVIDER_DOWNLOAD_NAME ?= terraform-provider-azapi
 export TERRAFORM_PROVIDER_DOWNLOAD_URL_PREFIX ?= https://github.com/Azure/$(TERRAFORM_PROVIDER_DOWNLOAD_NAME)/releases/download/v$(TERRAFORM_PROVIDER_VERSION)
 export TERRAFORM_NATIVE_PROVIDER_BINARY ?= terraform-provider-azapi_v2.7.0
@@ -133,7 +133,7 @@ $(TERRAFORM_PROVIDER_SCHEMA): $(TERRAFORM)
 	@$(INFO) generating provider schema for $(TERRAFORM_PROVIDER_SOURCE) $(TERRAFORM_PROVIDER_VERSION)
 	@mkdir -p $(TERRAFORM_WORKDIR)
 	@echo '{"terraform":[{"required_providers":[{"provider":{"source":"'"$(TERRAFORM_PROVIDER_SOURCE)"'","version":"'"$(TERRAFORM_PROVIDER_VERSION)"'"}}],"required_version":"'"$(TERRAFORM_VERSION)"'"}]}' > $(TERRAFORM_WORKDIR)/main.tf.json
-	@$(TERRAFORM) -chdir=$(TERRAFORM_WORKDIR) init > $(TERRAFORM_WORKDIR)/terraform-logs.txt 2>&1
+	@$(TERRAFORM) -chdir=$(TERRAFORM_WORKDIR) init --upgrade > $(TERRAFORM_WORKDIR)/terraform-logs.txt 2>&1
 	@$(TERRAFORM) -chdir=$(TERRAFORM_WORKDIR) providers schema -json=true > $(TERRAFORM_PROVIDER_SCHEMA) 2>> $(TERRAFORM_WORKDIR)/terraform-logs.txt
 	@$(OK) generating provider schema for $(TERRAFORM_PROVIDER_SOURCE) $(TERRAFORM_PROVIDER_VERSION)
 

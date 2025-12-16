@@ -9,7 +9,7 @@ require (
 	github.com/crossplane/crossplane-runtime/v2 v2.1.0
 	github.com/crossplane/crossplane-tools v0.0.0-20251017183449-dd4517244339
 	github.com/crossplane/upjet/v2 v2.2.1-0.20251128133821-1e4f37b6b5f8
-	github.com/hashicorp/terraform-json v0.27.1
+	github.com/hashicorp/terraform-json v0.27.2
 	github.com/hashicorp/terraform-plugin-sdk/v2 v2.38.1
 	github.com/pkg/errors v0.9.1
 	google.golang.org/grpc v1.75.1
@@ -66,12 +66,12 @@ require (
 	github.com/hashicorp/go-version v1.7.0 // indirect
 	github.com/hashicorp/hcl/v2 v2.24.0 // indirect
 	github.com/hashicorp/logutils v1.0.0 // indirect
-	github.com/hashicorp/terraform-plugin-framework v1.15.0 // indirect
+	github.com/hashicorp/terraform-plugin-framework v1.16.1 // indirect
 	github.com/hashicorp/terraform-plugin-framework-timeouts v0.4.1 // indirect
 	github.com/hashicorp/terraform-plugin-framework-validators v0.13.0 // indirect
 	github.com/hashicorp/terraform-plugin-go v0.29.0 // indirect
 	github.com/hashicorp/terraform-plugin-log v0.9.0 // indirect
-	github.com/hashicorp/terraform-plugin-testing v1.11.0 // indirect
+	github.com/hashicorp/terraform-plugin-testing v1.14.0-beta.1 // indirect
 	github.com/hashicorp/terraform-registry-address v0.4.0 // indirect
 	github.com/hashicorp/terraform-svchost v0.1.1 // indirect
 	github.com/hashicorp/yamux v0.1.2 // indirect
@@ -149,4 +149,4 @@ require (
 	sigs.k8s.io/yaml v1.6.0 // indirect
 )
 
-replace github.com/Azure/terraform-provider-azapi => github.com/upbound/terraform-provider-azapi v0.0.0-20251017090720-3dd7f4b26f05
+replace github.com/Azure/terraform-provider-azapi => github.com/upbound/terraform-provider-azapi v0.0.0-20251216073536-fa7bb6f0cc62 // v2.8.0-upjet.1
