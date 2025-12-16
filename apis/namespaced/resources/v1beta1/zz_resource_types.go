@@ -171,7 +171,7 @@ type ResourceInitParameters struct {
 	// Whether enabled the validation on `type` and `body` with embedded schema. Defaults to `true`.
 	SchemaValidationEnabled *bool `json:"schemaValidationEnabled,omitempty" tf:"schema_validation_enabled,omitempty"`
 
-	// only properties of the request body. This will be merge-patched to the body to construct the actual request body.
+	// only) A dynamic attribute that contains the write-only properties of the request body. This will be merge-patched to the body to construct the actual request body.
 	// A dynamic attribute that contains the write-only properties of the request body. This will be merge-patched to the body to construct the actual request body.
 	SensitiveBody *v1.JSON `json:"sensitiveBody,omitempty" tf:"sensitive_body,omitempty"`
 
@@ -328,7 +328,7 @@ type ResourceObservation struct {
 	// Whether enabled the validation on `type` and `body` with embedded schema. Defaults to `true`.
 	SchemaValidationEnabled *bool `json:"schemaValidationEnabled,omitempty" tf:"schema_validation_enabled,omitempty"`
 
-	// only properties of the request body. This will be merge-patched to the body to construct the actual request body.
+	// only) A dynamic attribute that contains the write-only properties of the request body. This will be merge-patched to the body to construct the actual request body.
 	// A dynamic attribute that contains the write-only properties of the request body. This will be merge-patched to the body to construct the actual request body.
 	SensitiveBody *v1.JSON `json:"sensitiveBody,omitempty" tf:"sensitive_body,omitempty"`
 
@@ -487,7 +487,7 @@ type ResourceParameters struct {
 	// +kubebuilder:validation:Optional
 	SchemaValidationEnabled *bool `json:"schemaValidationEnabled,omitempty" tf:"schema_validation_enabled,omitempty"`
 
-	// only properties of the request body. This will be merge-patched to the body to construct the actual request body.
+	// only) A dynamic attribute that contains the write-only properties of the request body. This will be merge-patched to the body to construct the actual request body.
 	// A dynamic attribute that contains the write-only properties of the request body. This will be merge-patched to the body to construct the actual request body.
 	// +kubebuilder:validation:Optional
 	SensitiveBody *v1.JSON `json:"sensitiveBody,omitempty" tf:"sensitive_body,omitempty"`
