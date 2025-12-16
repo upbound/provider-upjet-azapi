@@ -10,10 +10,10 @@ package cluster
 import (
 	"k8s.io/apimachinery/pkg/runtime"
 
-	v1beta1 "github.com/upbound/provider-azapi/apis/cluster/resources/v1beta1"
-	v1beta2 "github.com/upbound/provider-azapi/apis/cluster/resources/v1beta2"
-	v1alpha1 "github.com/upbound/provider-azapi/apis/cluster/v1alpha1"
-	v1beta1cluster "github.com/upbound/provider-azapi/apis/cluster/v1beta1"
+	v1beta1 "github.com/upbound/provider-azapi/v2/apis/cluster/resources/v1beta1"
+	v1beta2 "github.com/upbound/provider-azapi/v2/apis/cluster/resources/v1beta2"
+	v1alpha1 "github.com/upbound/provider-azapi/v2/apis/cluster/v1alpha1"
+	v1beta1cluster "github.com/upbound/provider-azapi/v2/apis/cluster/v1beta1"
 )
 
 func init() {

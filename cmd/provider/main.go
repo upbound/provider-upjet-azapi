@@ -40,15 +40,15 @@ import (
 	metricsserver "sigs.k8s.io/controller-runtime/pkg/metrics/server"
 	"sigs.k8s.io/controller-runtime/pkg/webhook"
 
-	apiscluster "github.com/upbound/provider-azapi/apis/cluster"
-	apisnamespaced "github.com/upbound/provider-azapi/apis/namespaced"
-	"github.com/upbound/provider-azapi/config"
-	"github.com/upbound/provider-azapi/internal/bootcheck"
-	"github.com/upbound/provider-azapi/internal/clients"
-	controllercluster "github.com/upbound/provider-azapi/internal/controller/cluster"
-	controllernamespaced "github.com/upbound/provider-azapi/internal/controller/namespaced"
-	"github.com/upbound/provider-azapi/internal/features"
-	"github.com/upbound/provider-azapi/internal/version"
+	apiscluster "github.com/upbound/provider-azapi/v2/apis/cluster"
+	apisnamespaced "github.com/upbound/provider-azapi/v2/apis/namespaced"
+	"github.com/upbound/provider-azapi/v2/config"
+	"github.com/upbound/provider-azapi/v2/internal/bootcheck"
+	"github.com/upbound/provider-azapi/v2/internal/clients"
+	controllercluster "github.com/upbound/provider-azapi/v2/internal/controller/cluster"
+	controllernamespaced "github.com/upbound/provider-azapi/v2/internal/controller/namespaced"
+	"github.com/upbound/provider-azapi/v2/internal/features"
+	"github.com/upbound/provider-azapi/v2/internal/version"
 )
 
 const (

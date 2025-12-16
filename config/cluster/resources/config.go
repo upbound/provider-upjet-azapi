@@ -12,8 +12,8 @@ import (
 	"github.com/crossplane/crossplane-runtime/v2/pkg/resource"
 	"github.com/crossplane/upjet/v2/pkg/config"
 	"github.com/crossplane/upjet/v2/pkg/config/conversion"
-	"github.com/upbound/provider-azapi/apis/cluster/resources/v1beta1"
-	"github.com/upbound/provider-azapi/apis/cluster/resources/v1beta2"
+	"github.com/upbound/provider-azapi/v2/apis/cluster/resources/v1beta1"
+	"github.com/upbound/provider-azapi/v2/apis/cluster/resources/v1beta2"
 )
 
 const (

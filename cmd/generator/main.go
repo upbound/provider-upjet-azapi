@@ -13,7 +13,7 @@ import (
 	"github.com/alecthomas/kingpin/v2"
 	"github.com/crossplane/upjet/v2/pkg/pipeline"
 
-	"github.com/upbound/provider-azapi/config"
+	"github.com/upbound/provider-azapi/v2/config"
 )
 
 func main() {

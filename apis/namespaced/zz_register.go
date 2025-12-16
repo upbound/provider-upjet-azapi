@@ -10,9 +10,9 @@ package namespaced
 import (
 	"k8s.io/apimachinery/pkg/runtime"
 
-	v1beta1 "github.com/upbound/provider-azapi/apis/namespaced/resources/v1beta1"
-	v1alpha1 "github.com/upbound/provider-azapi/apis/namespaced/v1alpha1"
-	v1beta1namespaced "github.com/upbound/provider-azapi/apis/namespaced/v1beta1"
+	v1beta1 "github.com/upbound/provider-azapi/v2/apis/namespaced/resources/v1beta1"
+	v1alpha1 "github.com/upbound/provider-azapi/v2/apis/namespaced/v1alpha1"
+	v1beta1namespaced "github.com/upbound/provider-azapi/v2/apis/namespaced/v1beta1"
 )
 
 func init() {

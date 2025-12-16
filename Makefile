@@ -3,6 +3,7 @@
 
 PROJECT_NAME ?= provider-azapi
 PROJECT_REPO ?= github.com/upbound/$(PROJECT_NAME)
+GO_PROJECT = github.com/upbound/provider-azapi/v2
 
 export TERRAFORM_VERSION ?= 1.5.7
 
