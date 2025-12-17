@@ -128,12 +128,6 @@ spec:
                           type: string
                       type: object
                     type: array
-                  ignoreBodyChanges:
-                    description: A list of properties that should be ignored when
-                      comparing the body with its current state.
-                    items:
-                      type: string
-                    type: array
                   ignoreCasing:
                     description: Whether ignore incorrect casing returned in body
                       to suppress plan-diff. Defaults to false.
@@ -186,10 +180,6 @@ spec:
                       (Map of List of String) A mapping of query parameters to be sent with the read request.
                       A mapping of query parameters to be sent with the read request.
                     type: object
-                  removingSpecialChars:
-                    description: Whether to remove special characters in resource
-                      name. Defaults to false.
-                    type: boolean
                   responseExportValues:
                     description: |-
                       A list of path that needs to be exported from response body.
@@ -345,12 +335,6 @@ spec:
                           type: string
                       type: object
                     type: array
-                  ignoreBodyChanges:
-                    description: A list of properties that should be ignored when
-                      comparing the body with its current state.
-                    items:
-                      type: string
-                    type: array
                   ignoreCasing:
                     description: Whether ignore incorrect casing returned in body
                       to suppress plan-diff. Defaults to false.
@@ -403,10 +387,6 @@ spec:
                       (Map of List of String) A mapping of query parameters to be sent with the read request.
                       A mapping of query parameters to be sent with the read request.
                     type: object
-                  removingSpecialChars:
-                    description: Whether to remove special characters in resource
-                      name. Defaults to false.
-                    type: boolean
                   responseExportValues:
                     description: |-
                       A list of path that needs to be exported from response body.
@@ -657,12 +637,6 @@ spec:
                           type: string
                       type: object
                     type: array
-                  ignoreBodyChanges:
-                    description: A list of properties that should be ignored when
-                      comparing the body with its current state.
-                    items:
-                      type: string
-                    type: array
                   ignoreCasing:
                     description: Whether ignore incorrect casing returned in body
                       to suppress plan-diff. Defaults to false.
@@ -720,10 +694,6 @@ spec:
                       (Map of List of String) A mapping of query parameters to be sent with the read request.
                       A mapping of query parameters to be sent with the read request.
                     type: object
-                  removingSpecialChars:
-                    description: Whether to remove special characters in resource
-                      name. Defaults to false.
-                    type: boolean
                   responseExportValues:
                     description: |-
                       A list of path that needs to be exported from response body.

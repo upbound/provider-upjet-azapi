@@ -77,12 +77,6 @@ spec:
                     description: A JSON object that contains the request body used
                       to add on an existing azure resource.
                     type: string
-                  ignoreBodyChanges:
-                    description: A list of properties that should be ignored when
-                      comparing the body with its current state.
-                    items:
-                      type: string
-                    type: array
                   ignoreCasing:
                     description: Whether ignore incorrect casing returned in body
                       to suppress plan-diff. Defaults to false.
@@ -221,12 +215,6 @@ spec:
                     description: A JSON object that contains the request body used
                       to add on an existing azure resource.
                     type: string
-                  ignoreBodyChanges:
-                    description: A list of properties that should be ignored when
-                      comparing the body with its current state.
-                    items:
-                      type: string
-                    type: array
                   ignoreCasing:
                     description: Whether ignore incorrect casing returned in body
                       to suppress plan-diff. Defaults to false.
@@ -451,12 +439,6 @@ spec:
                   id:
                     description: The ID of the azure resource.
                     type: string
-                  ignoreBodyChanges:
-                    description: A list of properties that should be ignored when
-                      comparing the body with its current state.
-                    items:
-                      type: string
-                    type: array
                   ignoreCasing:
                     description: Whether ignore incorrect casing returned in body
                       to suppress plan-diff. Defaults to false.
