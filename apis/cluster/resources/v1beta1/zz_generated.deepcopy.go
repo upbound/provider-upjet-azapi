@@ -1597,17 +1597,6 @@ func (in *ResourceInitParameters) DeepCopyInto(out *ResourceInitParameters) {
 			(*in)[i].DeepCopyInto(&(*out)[i])
 		}
 	}
-	if in.IgnoreBodyChanges != nil {
-		in, out := &in.IgnoreBodyChanges, &out.IgnoreBodyChanges
-		*out = make([]*string, len(*in))
-		for i := range *in {
-			if (*in)[i] != nil {
-				in, out := &(*in)[i], &(*out)[i]
-				*out = new(string)
-				**out = **in
-			}
-		}
-	}
 	if in.IgnoreCasing != nil {
 		in, out := &in.IgnoreCasing, &out.IgnoreCasing
 		*out = new(bool)
@@ -1686,11 +1675,6 @@ func (in *ResourceInitParameters) DeepCopyInto(out *ResourceInitParameters) {
 			}
 			(*out)[key] = outVal
 		}
-	}
-	if in.RemovingSpecialChars != nil {
-		in, out := &in.RemovingSpecialChars, &out.RemovingSpecialChars
-		*out = new(bool)
-		**out = **in
 	}
 	if in.ResponseExportValues != nil {
 		in, out := &in.ResponseExportValues, &out.ResponseExportValues
@@ -1933,17 +1917,6 @@ func (in *ResourceObservation) DeepCopyInto(out *ResourceObservation) {
 			(*in)[i].DeepCopyInto(&(*out)[i])
 		}
 	}
-	if in.IgnoreBodyChanges != nil {
-		in, out := &in.IgnoreBodyChanges, &out.IgnoreBodyChanges
-		*out = make([]*string, len(*in))
-		for i := range *in {
-			if (*in)[i] != nil {
-				in, out := &(*in)[i], &(*out)[i]
-				*out = new(string)
-				**out = **in
-			}
-		}
-	}
 	if in.IgnoreCasing != nil {
 		in, out := &in.IgnoreCasing, &out.IgnoreCasing
 		*out = new(bool)
@@ -1988,11 +1961,6 @@ func (in *ResourceObservation) DeepCopyInto(out *ResourceObservation) {
 	if in.ParentID != nil {
 		in, out := &in.ParentID, &out.ParentID
 		*out = new(string)
-		**out = **in
-	}
-	if in.RemovingSpecialChars != nil {
-		in, out := &in.RemovingSpecialChars, &out.RemovingSpecialChars
-		*out = new(bool)
 		**out = **in
 	}
 	if in.ReadHeaders != nil {
@@ -2237,17 +2205,6 @@ func (in *ResourceParameters) DeepCopyInto(out *ResourceParameters) {
 			(*in)[i].DeepCopyInto(&(*out)[i])
 		}
 	}
-	if in.IgnoreBodyChanges != nil {
-		in, out := &in.IgnoreBodyChanges, &out.IgnoreBodyChanges
-		*out = make([]*string, len(*in))
-		for i := range *in {
-			if (*in)[i] != nil {
-				in, out := &(*in)[i], &(*out)[i]
-				*out = new(string)
-				**out = **in
-			}
-		}
-	}
 	if in.IgnoreCasing != nil {
 		in, out := &in.IgnoreCasing, &out.IgnoreCasing
 		*out = new(bool)
@@ -2326,11 +2283,6 @@ func (in *ResourceParameters) DeepCopyInto(out *ResourceParameters) {
 			}
 			(*out)[key] = outVal
 		}
-	}
-	if in.RemovingSpecialChars != nil {
-		in, out := &in.RemovingSpecialChars, &out.RemovingSpecialChars
-		*out = new(bool)
-		**out = **in
 	}
 	if in.ResponseExportValues != nil {
 		in, out := &in.ResponseExportValues, &out.ResponseExportValues
@@ -2791,17 +2743,6 @@ func (in *UpdateResourceInitParameters) DeepCopyInto(out *UpdateResourceInitPara
 		*out = new(string)
 		**out = **in
 	}
-	if in.IgnoreBodyChanges != nil {
-		in, out := &in.IgnoreBodyChanges, &out.IgnoreBodyChanges
-		*out = make([]*string, len(*in))
-		for i := range *in {
-			if (*in)[i] != nil {
-				in, out := &(*in)[i], &(*out)[i]
-				*out = new(string)
-				**out = **in
-			}
-		}
-	}
 	if in.IgnoreCasing != nil {
 		in, out := &in.IgnoreCasing, &out.IgnoreCasing
 		*out = new(bool)
@@ -3013,17 +2954,6 @@ func (in *UpdateResourceObservation) DeepCopyInto(out *UpdateResourceObservation
 		*out = new(string)
 		**out = **in
 	}
-	if in.IgnoreBodyChanges != nil {
-		in, out := &in.IgnoreBodyChanges, &out.IgnoreBodyChanges
-		*out = make([]*string, len(*in))
-		for i := range *in {
-			if (*in)[i] != nil {
-				in, out := &(*in)[i], &(*out)[i]
-				*out = new(string)
-				**out = **in
-			}
-		}
-	}
 	if in.IgnoreCasing != nil {
 		in, out := &in.IgnoreCasing, &out.IgnoreCasing
 		*out = new(bool)
@@ -3202,17 +3132,6 @@ func (in *UpdateResourceParameters) DeepCopyInto(out *UpdateResourceParameters) 
 		in, out := &in.Body, &out.Body
 		*out = new(string)
 		**out = **in
-	}
-	if in.IgnoreBodyChanges != nil {
-		in, out := &in.IgnoreBodyChanges, &out.IgnoreBodyChanges
-		*out = make([]*string, len(*in))
-		for i := range *in {
-			if (*in)[i] != nil {
-				in, out := &(*in)[i], &(*out)[i]
-				*out = new(string)
-				**out = **in
-			}
-		}
 	}
 	if in.IgnoreCasing != nil {
 		in, out := &in.IgnoreCasing, &out.IgnoreCasing

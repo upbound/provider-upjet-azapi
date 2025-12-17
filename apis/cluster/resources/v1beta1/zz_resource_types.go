@@ -75,9 +75,6 @@ type ResourceInitParameters struct {
 	// A identity block as defined below.
 	Identity []IdentityInitParameters `json:"identity,omitempty" tf:"identity,omitempty"`
 
-	// A list of properties that should be ignored when comparing the body with its current state.
-	IgnoreBodyChanges []*string `json:"ignoreBodyChanges,omitempty" tf:"ignore_body_changes,omitempty"`
-
 	// Whether ignore incorrect casing returned in body to suppress plan-diff. Defaults to false.
 	IgnoreCasing *bool `json:"ignoreCasing,omitempty" tf:"ignore_casing,omitempty"`
 
@@ -110,9 +107,6 @@ type ResourceInitParameters struct {
 	// (Map of List of String) A mapping of query parameters to be sent with the read request.
 	// A mapping of query parameters to be sent with the read request.
 	ReadQueryParameters map[string][]*string `json:"readQueryParameters,omitempty" tf:"read_query_parameters,omitempty"`
-
-	// Whether to remove special characters in resource name. Defaults to false.
-	RemovingSpecialChars *bool `json:"removingSpecialChars,omitempty" tf:"removing_special_chars,omitempty"`
 
 	// A list of path that needs to be exported from response body.
 	// Setting it to ["*"] will export the full response body.
@@ -181,9 +175,6 @@ type ResourceObservation struct {
 	// A identity block as defined below.
 	Identity []IdentityObservation `json:"identity,omitempty" tf:"identity,omitempty"`
 
-	// A list of properties that should be ignored when comparing the body with its current state.
-	IgnoreBodyChanges []*string `json:"ignoreBodyChanges,omitempty" tf:"ignore_body_changes,omitempty"`
-
 	// Whether ignore incorrect casing returned in body to suppress plan-diff. Defaults to false.
 	IgnoreCasing *bool `json:"ignoreCasing,omitempty" tf:"ignore_casing,omitempty"`
 
@@ -210,9 +201,6 @@ type ResourceObservation struct {
 
 	// The ID of the azure resource in which this resource is created. Changing this forces a new resource to be created. It supports different kinds of deployment scope for top level resources:
 	ParentID *string `json:"parentId,omitempty" tf:"parent_id,omitempty"`
-
-	// Whether to remove special characters in resource name. Defaults to false.
-	RemovingSpecialChars *bool `json:"removingSpecialChars,omitempty" tf:"removing_special_chars,omitempty"`
 
 	// (Map of String) A mapping of headers to be sent with the read request.
 	// A mapping of headers to be sent with the read request.
@@ -293,10 +281,6 @@ type ResourceParameters struct {
 	// +kubebuilder:validation:Optional
 	Identity []IdentityParameters `json:"identity,omitempty" tf:"identity,omitempty"`
 
-	// A list of properties that should be ignored when comparing the body with its current state.
-	// +kubebuilder:validation:Optional
-	IgnoreBodyChanges []*string `json:"ignoreBodyChanges,omitempty" tf:"ignore_body_changes,omitempty"`
-
 	// Whether ignore incorrect casing returned in body to suppress plan-diff. Defaults to false.
 	// +kubebuilder:validation:Optional
 	IgnoreCasing *bool `json:"ignoreCasing,omitempty" tf:"ignore_casing,omitempty"`
@@ -338,10 +322,6 @@ type ResourceParameters struct {
 	// A mapping of query parameters to be sent with the read request.
 	// +kubebuilder:validation:Optional
 	ReadQueryParameters map[string][]*string `json:"readQueryParameters,omitempty" tf:"read_query_parameters,omitempty"`
-
-	// Whether to remove special characters in resource name. Defaults to false.
-	// +kubebuilder:validation:Optional
-	RemovingSpecialChars *bool `json:"removingSpecialChars,omitempty" tf:"removing_special_chars,omitempty"`
 
 	// A list of path that needs to be exported from response body.
 	// Setting it to ["*"] will export the full response body.

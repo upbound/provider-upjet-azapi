@@ -19,9 +19,6 @@ type UpdateResourceInitParameters struct {
 	// A JSON object that contains the request body used to add on an existing azure resource.
 	Body *string `json:"body,omitempty" tf:"body,omitempty"`
 
-	// A list of properties that should be ignored when comparing the body with its current state.
-	IgnoreBodyChanges []*string `json:"ignoreBodyChanges,omitempty" tf:"ignore_body_changes,omitempty"`
-
 	// Whether ignore incorrect casing returned in body to suppress plan-diff. Defaults to false.
 	IgnoreCasing *bool `json:"ignoreCasing,omitempty" tf:"ignore_casing,omitempty"`
 
@@ -87,9 +84,6 @@ type UpdateResourceObservation struct {
 
 	// The ID of the azure resource.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
-
-	// A list of properties that should be ignored when comparing the body with its current state.
-	IgnoreBodyChanges []*string `json:"ignoreBodyChanges,omitempty" tf:"ignore_body_changes,omitempty"`
 
 	// Whether ignore incorrect casing returned in body to suppress plan-diff. Defaults to false.
 	IgnoreCasing *bool `json:"ignoreCasing,omitempty" tf:"ignore_casing,omitempty"`
@@ -157,10 +151,6 @@ type UpdateResourceParameters struct {
 	// A JSON object that contains the request body used to add on an existing azure resource.
 	// +kubebuilder:validation:Optional
 	Body *string `json:"body,omitempty" tf:"body,omitempty"`
-
-	// A list of properties that should be ignored when comparing the body with its current state.
-	// +kubebuilder:validation:Optional
-	IgnoreBodyChanges []*string `json:"ignoreBodyChanges,omitempty" tf:"ignore_body_changes,omitempty"`
 
 	// Whether ignore incorrect casing returned in body to suppress plan-diff. Defaults to false.
 	// +kubebuilder:validation:Optional
