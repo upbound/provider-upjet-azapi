@@ -1,4 +1,4 @@
-FROM alpine:3.20.3
+FROM alpine:3.23.2
 
 ARG TARGETOS
 ARG TARGETARCH
