@@ -61,6 +61,7 @@ require (
 	github.com/google/gnostic-models v0.7.0 // indirect
 	github.com/google/go-cmp v0.7.0 // indirect
 	github.com/google/uuid v1.6.0 // indirect
+	github.com/hashicorp/go-azure-helpers v0.19.0 // indirect
 	github.com/hashicorp/go-cty v1.5.0 // indirect
 	github.com/hashicorp/go-hclog v1.6.3 // indirect
 	github.com/hashicorp/go-plugin v1.7.0 // indirect
@@ -152,4 +153,4 @@ require (
 	sigs.k8s.io/yaml v1.6.0 // indirect
 )
 
-replace github.com/Azure/terraform-provider-azapi => github.com/upbound/terraform-provider-azapi v0.0.0-20251216073536-fa7bb6f0cc62 // v2.8.0-upjet.1
+replace github.com/Azure/terraform-provider-azapi => github.com/upbound/terraform-provider-azapi v1.12.1-upjet.1 // v2.8.0-upjet.1

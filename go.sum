@@ -153,6 +153,8 @@ github.com/grpc-ecosystem/grpc-gateway/v2 v2.26.3 h1:5ZPtiqj0JL5oKWmcsq4VMaAW5uk
 github.com/grpc-ecosystem/grpc-gateway/v2 v2.26.3/go.mod h1:ndYquD05frm2vACXE1nsccT4oJzjhw2arTS2cpUD1PI=
 github.com/hashicorp/errwrap v1.1.0 h1:OxrOeh75EUXMY8TBjag2fzXGZ40LB6IKw45YeGUDY2I=
 github.com/hashicorp/errwrap v1.1.0/go.mod h1:YH+1FKiLXxHSkmPseP+kNlulaMuP3n2brvKWEqk/Jc4=
+github.com/hashicorp/go-azure-helpers v0.19.0 h1:V6WRP0VxbUuvFjBNZXaR6geGTN9nHIeTMyWIYzUUuPc=
+github.com/hashicorp/go-azure-helpers v0.19.0/go.mod h1:lZo52hYeyEoo4qpUUruaEec13bFyu8ldjX2zTFzVzss=
 github.com/hashicorp/go-checkpoint v0.5.0 h1:MFYpPZCnQqQTE18jFwSII6eUQrD/oxMFp3mlgcqk5mU=
 github.com/hashicorp/go-checkpoint v0.5.0/go.mod h1:7nfLNL10NsxqO4iWuW6tWW0HjZuDrwkBuEQsVcpCOgg=
 github.com/hashicorp/go-cleanhttp v0.5.2 h1:035FKYIWjmULyFRBKPs8TBQoi0x6d9G4xc9neXJWAZQ=
@@ -337,6 +339,8 @@ github.com/tmccombs/hcl2json v0.3.3 h1:+DLNYqpWE0CsOQiEZu+OZm5ZBImake3wtITYxQ8uL
 github.com/tmccombs/hcl2json v0.3.3/go.mod h1:Y2chtz2x9bAeRTvSibVRVgbLJhLJXKlUeIvjeVdnm4w=
 github.com/upbound/terraform-provider-azapi v0.0.0-20251216073536-fa7bb6f0cc62 h1:OhiWU1kE6uF+ZKYGM3VK6XCj6nXkmFg0SAGi157HqiU=
 github.com/upbound/terraform-provider-azapi v0.0.0-20251216073536-fa7bb6f0cc62/go.mod h1:9zaKxXlGimvg3BKj+Iyms2/C40+ObatohcJg2U1LMfk=
+github.com/upbound/terraform-provider-azapi v1.12.1-upjet.1 h1:T7smLhdOOgH6zcinba3V46Fb/DLDRiiIDLLtPbmvcqQ=
+github.com/upbound/terraform-provider-azapi v1.12.1-upjet.1/go.mod h1:pQbJq7P8rahUkKOZTsIwEmMLXZDesrJvNXwfccPsBjk=
 github.com/vmihailenco/msgpack v3.3.3+incompatible/go.mod h1:fy3FlTQTDXWkZ7Bh6AcGMlsjHatGryHQYUTf1ShIgkk=
 github.com/vmihailenco/msgpack v4.0.4+incompatible h1:dSLoQfGFAo3F6OoNhwUmLwVgaUXK79GlxNBwueZn0xI=
 github.com/vmihailenco/msgpack v4.0.4+incompatible/go.mod h1:fy3FlTQTDXWkZ7Bh6AcGMlsjHatGryHQYUTf1ShIgkk=
