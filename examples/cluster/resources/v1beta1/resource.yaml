@@ -1,0 +1,31 @@
+apiVersion: resources.azapi.upbound.io/v1beta1
+kind: Resource
+metadata:
+  annotations:
+    meta.upbound.io/example-id: resources/v1beta1/resource
+  labels:
+    testing.upbound.io/example-name: example-container-registry
+  name: example-container-registry
+spec:
+  forProvider:
+    body: |-
+      {
+        "sku": {
+          "name": "Standard"
+        },
+        "properties": {
+          "adminUserEnabled": true
+        }
+      }
+    identity:
+      - type: SystemAssigned
+    location: West Europe
+    name: registrytestupbound
+    parentId: /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-resource-group
+    responseExportValues:
+    - properties.loginServer
+    - properties.policies.quarantinePolicy.status
+    tags:
+      Key: Value
+    type: Microsoft.ContainerRegistry/registries@2020-11-01-preview
+# This resource needs a valid parentId (resource group example id)

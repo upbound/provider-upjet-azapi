@@ -17,3 +17,6 @@ metadata:
       If you encounter an issue please reach out on support@upbound.io email
       address.
     friendly-name.meta.crossplane.io: Provider Azapi
+spec:
+  capabilities:
+    - SafeStart

@@ -3,6 +3,7 @@
 
 PROJECT_NAME ?= provider-azapi
 PROJECT_REPO ?= github.com/upbound/$(PROJECT_NAME)
+GO_PROJECT = github.com/upbound/provider-azapi/v2
 
 export TERRAFORM_VERSION ?= 1.5.7
 
@@ -12,10 +13,7 @@ TERRAFORM_VERSION_VALID := $(shell [ "$(TERRAFORM_VERSION)" = "`printf "$(TERRAF
 
 export TERRAFORM_PROVIDER_SOURCE ?= Azure/azapi
 export TERRAFORM_PROVIDER_REPO ?= https://github.com/Azure/terraform-provider-azapi
-export TERRAFORM_PROVIDER_VERSION ?= 1.12.1
-export TERRAFORM_PROVIDER_DOWNLOAD_NAME ?= terraform-provider-azapi
-export TERRAFORM_PROVIDER_DOWNLOAD_URL_PREFIX ?= https://github.com/Azure/$(TERRAFORM_PROVIDER_DOWNLOAD_NAME)/releases/download/v$(TERRAFORM_PROVIDER_VERSION)
-export TERRAFORM_NATIVE_PROVIDER_BINARY ?= terraform-provider-azapi_v1.12.1
+export TERRAFORM_PROVIDER_VERSION ?= 2.8.0
 export TERRAFORM_DOCS_PATH ?= docs/resources
 
 
@@ -44,10 +42,10 @@ NPROCS ?= 1
 # to half the number of CPU cores.
 GO_TEST_PARALLEL := $(shell echo $$(( $(NPROCS) / 2 )))
 
-GO_REQUIRED_VERSION ?= 1.23
+GO_REQUIRED_VERSION ?= 1.24
 # GOLANGCILINT_VERSION is inherited from build submodule by default.
 # Uncomment below if you need to override the version.
-# GOLANGCILINT_VERSION ?= 1.54.0
+GOLANGCILINT_VERSION ?= 2.7.2
 GO_STATIC_PACKAGES = $(GO_PROJECT)/cmd/provider $(GO_PROJECT)/cmd/generator
 GO_LDFLAGS += -X $(GO_PROJECT)/internal/version.Version=$(VERSION)
 GO_SUBDIRS += cmd internal apis
@@ -58,9 +56,10 @@ GO_SUBDIRS += cmd internal apis
 
 KIND_VERSION = v0.30.0
 UPTEST_VERSION = v2.2.0
+KUSTOMIZE_VERSION = v5.3.0
 CRDDIFF_VERSION = v0.12.1
-CROSSPLANE_VERSION = 2.0.2
-CROSSPLANE_CLI_VERSION = v2.0.2
+CROSSPLANE_VERSION = 2.1.3
+CROSSPLANE_CLI_VERSION = v2.1.3
 
 -include build/makelib/k8s_tools.mk
 
@@ -79,6 +78,10 @@ XPKG_REG_ORGS ?= xpkg.upbound.io/upbound
 # inferred.
 XPKG_REG_ORGS_NO_PROMOTE ?= xpkg.upbound.io/upbound
 XPKGS = $(PROJECT_NAME)
+XPKG_DIR = $(OUTPUT_DIR)/package
+XPKG_IGNORE = kustomize/*,crds/kustomization.yaml
+XPKG_CLEANUP_EXAMPLES_ENABLED = true
+
 -include build/makelib/xpkg.mk
 
 # ====================================================================================
@@ -127,7 +130,7 @@ $(TERRAFORM_PROVIDER_SCHEMA): $(TERRAFORM)
 	@$(INFO) generating provider schema for $(TERRAFORM_PROVIDER_SOURCE) $(TERRAFORM_PROVIDER_VERSION)
 	@mkdir -p $(TERRAFORM_WORKDIR)
 	@echo '{"terraform":[{"required_providers":[{"provider":{"source":"'"$(TERRAFORM_PROVIDER_SOURCE)"'","version":"'"$(TERRAFORM_PROVIDER_VERSION)"'"}}],"required_version":"'"$(TERRAFORM_VERSION)"'"}]}' > $(TERRAFORM_WORKDIR)/main.tf.json
-	@$(TERRAFORM) -chdir=$(TERRAFORM_WORKDIR) init > $(TERRAFORM_WORKDIR)/terraform-logs.txt 2>&1
+	@$(TERRAFORM) -chdir=$(TERRAFORM_WORKDIR) init --upgrade > $(TERRAFORM_WORKDIR)/terraform-logs.txt 2>&1
 	@$(TERRAFORM) -chdir=$(TERRAFORM_WORKDIR) providers schema -json=true > $(TERRAFORM_PROVIDER_SCHEMA) 2>> $(TERRAFORM_WORKDIR)/terraform-logs.txt
 	@$(OK) generating provider schema for $(TERRAFORM_PROVIDER_SOURCE) $(TERRAFORM_PROVIDER_VERSION)
 
@@ -234,6 +237,20 @@ schema-version-diff:
 	@$(OK) Checking for native state schema version changes
 
 .PHONY: cobertura submodules fallthrough run crds.clean
+
+build.init: kustomize-crds
+
+kustomize-crds: output.init $(KUSTOMIZE) $(YQ)
+	@$(INFO) Kustomizing CRDs...
+	@rm -fr $(OUTPUT_DIR)/package || $(FAIL)
+	@cp -R package $(OUTPUT_DIR) && \
+	cd $(OUTPUT_DIR)/package/crds && \
+	$(KUSTOMIZE) create --autodetect || $(FAIL)
+	@export YQ=$(YQ) && \
+	XDG_CONFIG_HOME=$(PWD)/package $(KUSTOMIZE) build --enable-alpha-plugins $(OUTPUT_DIR)/package/kustomize -o $(OUTPUT_DIR)/package/crds.yaml || $(FAIL)
+	@$(OK) Kustomizing CRDs.
+
+.PHONY: kustomize-crds
 
 # ====================================================================================
 # Special Targets
