@@ -62,7 +62,6 @@ func azapiResource() config.ExternalName {
 	// Override GetExternalNameFn to handle resources where Azure API doesn't return
 	// the standard 'id' field (e.g., Storage Tables). Falls back to constructing
 	// the ID from parent_id and name when id is missing.
-	// See: https://github.com/upbound/provider-upjet-azapi/issues/XXX
 	e.GetExternalNameFn = func(tfstate map[string]any) (string, error) {
 		// First try standard id field
 		if id, ok := tfstate["id"].(string); ok && id != "" {
