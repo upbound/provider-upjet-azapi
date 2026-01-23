@@ -59,6 +59,26 @@ func azapiResource() config.ExternalName {
 		}
 		return xpprovider.NewResourceID(name, parentId, resourceType)
 	}
+	// Override GetExternalNameFn to handle resources where Azure API doesn't return
+	// the standard 'id' field (e.g., Storage Tables). Falls back to constructing
+	// the ID from parent_id and name when id is missing.
+	// See: https://github.com/upbound/provider-upjet-azapi/issues/XXX
+	e.GetExternalNameFn = func(tfstate map[string]any) (string, error) {
+		// First try standard id field
+		if id, ok := tfstate["id"].(string); ok && id != "" {
+			return id, nil
+		}
+		// Fallback: construct from parent_id + name
+		// This handles Azure resources where the API response doesn't include
+		// the full ARM resource ID (e.g., Storage Tables, some nested resources)
+		parentId, hasParentId := tfstate["parent_id"].(string)
+		name, hasName := tfstate["name"].(string)
+		if hasParentId && hasName && parentId != "" && name != "" {
+			// Construct the resource ID in the format: {parent_id}/{name}
+			return parentId + "/" + name, nil
+		}
+		return "", errors.New("cannot determine resource identity: 'id' field is empty and fallback from 'parent_id'/'name' failed")
+	}
 	return e
 }
 
