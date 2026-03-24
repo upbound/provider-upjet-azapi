@@ -15,6 +15,7 @@ import (
 	tfjson "github.com/hashicorp/terraform-json"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/pkg/errors"
+
 	resourcesCluster "github.com/upbound/provider-azapi/v2/config/cluster/resources"
 	resourcesNamespaced "github.com/upbound/provider-azapi/v2/config/namespaced/resources"
 )
