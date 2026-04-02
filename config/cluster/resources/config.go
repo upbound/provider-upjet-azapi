@@ -98,6 +98,9 @@ func Configure(p *config.Provider) {
 			conversion.NewCustomConverter(versionV1Beta1, versionV1Beta2, updateResourceConverterFromv1beta1Tov1beta2),
 			conversion.NewCustomConverter(versionV1Beta2, versionV1Beta1, updateResourceConverterFromv1beta2Tov1beta1),
 		)
+		// Following attributes trigger TF resource replacement, which is not
+		// supported per XRM in Crossplane.
+		delete(r.TerraformResource.Schema, "replace_triggers_external_values")
 	})
 }
 

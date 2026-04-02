@@ -38,5 +38,8 @@ func Configure(p *config.Provider) {
 		r.LateInitializer = config.LateInitializer{
 			IgnoredFields: []string{"name", "parent_id"},
 		}
+		// Following attributes trigger TF resource replacement, which is not
+		// supported per XRM in Crossplane.
+		delete(r.TerraformResource.Schema, "replace_triggers_external_values")
 	})
 }
