@@ -27,6 +27,9 @@ type ResourceActionInitParameters struct {
 	// +mapType=granular
 	Headers map[string]*string `json:"headers,omitempty" tf:"headers,omitempty"`
 
+	// If set to `true`, the resource action will ignore `Not Found` errors returned from the Azure API. Default is `false`.
+	IgnoreNotFound *bool `json:"ignoreNotFound,omitempty" tf:"ignore_not_found,omitempty"`
+
 	// A list of ARM resource IDs which are used to avoid modify azapi resources at the same time.
 	Locks []*string `json:"locks,omitempty" tf:"locks,omitempty"`
 
@@ -95,6 +98,9 @@ type ResourceActionObservation struct {
 	// A JSON object that contains the request body.
 	Body *string `json:"body,omitempty" tf:"body,omitempty"`
 
+	// Indicates whether the resource action was successfully performed.
+	Exist *bool `json:"exist,omitempty" tf:"exist,omitempty"`
+
 	// (Map of String) A map of headers to include in the request
 	// A map of headers to include in the request
 	// +mapType=granular
@@ -102,6 +108,9 @@ type ResourceActionObservation struct {
 
 	// The ID of the azure resource action.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// If set to `true`, the resource action will ignore `Not Found` errors returned from the Azure API. Default is `false`.
+	IgnoreNotFound *bool `json:"ignoreNotFound,omitempty" tf:"ignore_not_found,omitempty"`
 
 	// A list of ARM resource IDs which are used to avoid modify azapi resources at the same time.
 	Locks []*string `json:"locks,omitempty" tf:"locks,omitempty"`
@@ -181,6 +190,10 @@ type ResourceActionParameters struct {
 	// +kubebuilder:validation:Optional
 	// +mapType=granular
 	Headers map[string]*string `json:"headers,omitempty" tf:"headers,omitempty"`
+
+	// If set to `true`, the resource action will ignore `Not Found` errors returned from the Azure API. Default is `false`.
+	// +kubebuilder:validation:Optional
+	IgnoreNotFound *bool `json:"ignoreNotFound,omitempty" tf:"ignore_not_found,omitempty"`
 
 	// A list of ARM resource IDs which are used to avoid modify azapi resources at the same time.
 	// +kubebuilder:validation:Optional
