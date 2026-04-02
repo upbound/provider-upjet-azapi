@@ -335,8 +335,8 @@ github.com/stretchr/testify v1.10.0 h1:Xv5erBjTwe/5IxqUQTdXv5kgmIvbHo3QQyRwhJsOf
 github.com/stretchr/testify v1.10.0/go.mod h1:r2ic/lqez/lEtzL7wO/rwa5dbSLXVDPFyf8C91i36aY=
 github.com/tmccombs/hcl2json v0.3.3 h1:+DLNYqpWE0CsOQiEZu+OZm5ZBImake3wtITYxQ8uLFQ=
 github.com/tmccombs/hcl2json v0.3.3/go.mod h1:Y2chtz2x9bAeRTvSibVRVgbLJhLJXKlUeIvjeVdnm4w=
-github.com/upbound/terraform-provider-azapi v0.0.0-20251216073536-fa7bb6f0cc62 h1:OhiWU1kE6uF+ZKYGM3VK6XCj6nXkmFg0SAGi157HqiU=
-github.com/upbound/terraform-provider-azapi v0.0.0-20251216073536-fa7bb6f0cc62/go.mod h1:9zaKxXlGimvg3BKj+Iyms2/C40+ObatohcJg2U1LMfk=
+github.com/upbound/terraform-provider-azapi v0.0.0-20260402102223-b0e1ca93097f h1:/UnXnAN82hcr0eCHdosy+N9elbmHj0x8RurklrjPHzc=
+github.com/upbound/terraform-provider-azapi v0.0.0-20260402102223-b0e1ca93097f/go.mod h1:9zaKxXlGimvg3BKj+Iyms2/C40+ObatohcJg2U1LMfk=
 github.com/vmihailenco/msgpack v3.3.3+incompatible/go.mod h1:fy3FlTQTDXWkZ7Bh6AcGMlsjHatGryHQYUTf1ShIgkk=
 github.com/vmihailenco/msgpack v4.0.4+incompatible h1:dSLoQfGFAo3F6OoNhwUmLwVgaUXK79GlxNBwueZn0xI=
 github.com/vmihailenco/msgpack v4.0.4+incompatible/go.mod h1:fy3FlTQTDXWkZ7Bh6AcGMlsjHatGryHQYUTf1ShIgkk=

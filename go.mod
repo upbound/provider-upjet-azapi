@@ -1,6 +1,6 @@
 module github.com/upbound/provider-azapi/v2
 
-go 1.24.11
+go 1.25.8
 
 tool golang.org/x/tools/cmd/goimports
 
@@ -152,4 +152,4 @@ require (
 	sigs.k8s.io/yaml v1.6.0 // indirect
 )
 
-replace github.com/Azure/terraform-provider-azapi => github.com/upbound/terraform-provider-azapi v0.0.0-20251216073536-fa7bb6f0cc62 // v2.8.0-upjet.1
+replace github.com/Azure/terraform-provider-azapi => github.com/upbound/terraform-provider-azapi v0.0.0-20260402102223-b0e1ca93097f // v2.9.0-upjet.1

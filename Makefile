@@ -13,7 +13,7 @@ TERRAFORM_VERSION_VALID := $(shell [ "$(TERRAFORM_VERSION)" = "`printf "$(TERRAF
 
 export TERRAFORM_PROVIDER_SOURCE ?= Azure/azapi
 export TERRAFORM_PROVIDER_REPO ?= https://github.com/Azure/terraform-provider-azapi
-export TERRAFORM_PROVIDER_VERSION ?= 2.8.0
+export TERRAFORM_PROVIDER_VERSION ?= 2.9.0
 export TERRAFORM_DOCS_PATH ?= docs/resources
 
 
