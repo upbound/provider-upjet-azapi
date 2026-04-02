@@ -99,6 +99,15 @@ type ResourceInitParameters struct {
 	// These properties will not be included in the request body sent to the API, and the difference will not be shown in the plan output. Defaults to `false`.
 	IgnoreNullProperty *bool `json:"ignoreNullProperty,omitempty" tf:"ignore_null_property,omitempty"`
 
+	// side ordering).
+	// A list of list property paths where items not specified in configuration should be ignored. This is intended for partial list management when combined with `list_unique_id_property` (for example, to avoid perpetual drift from server-side ordering).
+	IgnoreOtherItemsInList []*string `json:"ignoreOtherItemsInList,omitempty" tf:"ignore_other_items_in_list,omitempty"`
+
+	// separated list of field names (e.g., "category, categoryGroup").
+	// A mapping of list property paths to the field name used as a unique identifier when comparing and merging list items. When not set, list items are matched by a `name` property (if present) or by list ordering. To match using multiple fields, specify a comma-separated list of field names (e.g., `"category, categoryGroup"`).
+	// +mapType=granular
+	ListUniqueIDProperty map[string]*string `json:"listUniqueIdProperty,omitempty" tf:"list_unique_id_property,omitempty"`
+
 	// (String) The location of the Azure resource.
 	// The location of the Azure resource.
 	Location *string `json:"location,omitempty" tf:"location,omitempty"`
@@ -242,6 +251,15 @@ type ResourceObservation struct {
 	// When set to `true`, the provider will ignore properties whose values are `null` in the `body`.
 	// These properties will not be included in the request body sent to the API, and the difference will not be shown in the plan output. Defaults to `false`.
 	IgnoreNullProperty *bool `json:"ignoreNullProperty,omitempty" tf:"ignore_null_property,omitempty"`
+
+	// side ordering).
+	// A list of list property paths where items not specified in configuration should be ignored. This is intended for partial list management when combined with `list_unique_id_property` (for example, to avoid perpetual drift from server-side ordering).
+	IgnoreOtherItemsInList []*string `json:"ignoreOtherItemsInList,omitempty" tf:"ignore_other_items_in_list,omitempty"`
+
+	// separated list of field names (e.g., "category, categoryGroup").
+	// A mapping of list property paths to the field name used as a unique identifier when comparing and merging list items. When not set, list items are matched by a `name` property (if present) or by list ordering. To match using multiple fields, specify a comma-separated list of field names (e.g., `"category, categoryGroup"`).
+	// +mapType=granular
+	ListUniqueIDProperty map[string]*string `json:"listUniqueIdProperty,omitempty" tf:"list_unique_id_property,omitempty"`
 
 	// (String) The location of the Azure resource.
 	// The location of the Azure resource.
@@ -405,6 +423,17 @@ type ResourceParameters struct {
 	// These properties will not be included in the request body sent to the API, and the difference will not be shown in the plan output. Defaults to `false`.
 	// +kubebuilder:validation:Optional
 	IgnoreNullProperty *bool `json:"ignoreNullProperty,omitempty" tf:"ignore_null_property,omitempty"`
+
+	// side ordering).
+	// A list of list property paths where items not specified in configuration should be ignored. This is intended for partial list management when combined with `list_unique_id_property` (for example, to avoid perpetual drift from server-side ordering).
+	// +kubebuilder:validation:Optional
+	IgnoreOtherItemsInList []*string `json:"ignoreOtherItemsInList,omitempty" tf:"ignore_other_items_in_list,omitempty"`
+
+	// separated list of field names (e.g., "category, categoryGroup").
+	// A mapping of list property paths to the field name used as a unique identifier when comparing and merging list items. When not set, list items are matched by a `name` property (if present) or by list ordering. To match using multiple fields, specify a comma-separated list of field names (e.g., `"category, categoryGroup"`).
+	// +kubebuilder:validation:Optional
+	// +mapType=granular
+	ListUniqueIDProperty map[string]*string `json:"listUniqueIdProperty,omitempty" tf:"list_unique_id_property,omitempty"`
 
 	// (String) The location of the Azure resource.
 	// The location of the Azure resource.

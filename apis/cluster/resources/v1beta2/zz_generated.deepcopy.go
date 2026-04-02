@@ -203,6 +203,27 @@ func (in *DataPlaneResourceInitParameters) DeepCopyInto(out *DataPlaneResourceIn
 		*out = new(RetryInitParameters)
 		(*in).DeepCopyInto(*out)
 	}
+	if in.SensitiveBody != nil {
+		in, out := &in.SensitiveBody, &out.SensitiveBody
+		*out = new(v1.JSON)
+		(*in).DeepCopyInto(*out)
+	}
+	if in.SensitiveBodyVersion != nil {
+		in, out := &in.SensitiveBodyVersion, &out.SensitiveBodyVersion
+		*out = make(map[string]*string, len(*in))
+		for key, val := range *in {
+			var outVal *string
+			if val == nil {
+				(*out)[key] = nil
+			} else {
+				inVal := (*in)[key]
+				in, out := &inVal, &outVal
+				*out = new(string)
+				**out = **in
+			}
+			(*out)[key] = outVal
+		}
+	}
 	if in.Type != nil {
 		in, out := &in.Type, &out.Type
 		*out = new(string)
@@ -463,6 +484,27 @@ func (in *DataPlaneResourceObservation) DeepCopyInto(out *DataPlaneResourceObser
 		*out = new(RetryObservation)
 		(*in).DeepCopyInto(*out)
 	}
+	if in.SensitiveBody != nil {
+		in, out := &in.SensitiveBody, &out.SensitiveBody
+		*out = new(v1.JSON)
+		(*in).DeepCopyInto(*out)
+	}
+	if in.SensitiveBodyVersion != nil {
+		in, out := &in.SensitiveBodyVersion, &out.SensitiveBodyVersion
+		*out = make(map[string]*string, len(*in))
+		for key, val := range *in {
+			var outVal *string
+			if val == nil {
+				(*out)[key] = nil
+			} else {
+				inVal := (*in)[key]
+				in, out := &inVal, &outVal
+				*out = new(string)
+				**out = **in
+			}
+			(*out)[key] = outVal
+		}
+	}
 	if in.Type != nil {
 		in, out := &in.Type, &out.Type
 		*out = new(string)
@@ -680,6 +722,27 @@ func (in *DataPlaneResourceParameters) DeepCopyInto(out *DataPlaneResourceParame
 		in, out := &in.Retry, &out.Retry
 		*out = new(RetryParameters)
 		(*in).DeepCopyInto(*out)
+	}
+	if in.SensitiveBody != nil {
+		in, out := &in.SensitiveBody, &out.SensitiveBody
+		*out = new(v1.JSON)
+		(*in).DeepCopyInto(*out)
+	}
+	if in.SensitiveBodyVersion != nil {
+		in, out := &in.SensitiveBodyVersion, &out.SensitiveBodyVersion
+		*out = make(map[string]*string, len(*in))
+		for key, val := range *in {
+			var outVal *string
+			if val == nil {
+				(*out)[key] = nil
+			} else {
+				inVal := (*in)[key]
+				in, out := &inVal, &outVal
+				*out = new(string)
+				**out = **in
+			}
+			(*out)[key] = outVal
+		}
 	}
 	if in.Type != nil {
 		in, out := &in.Type, &out.Type
@@ -957,6 +1020,11 @@ func (in *ResourceActionInitParameters) DeepCopyInto(out *ResourceActionInitPara
 			(*out)[key] = outVal
 		}
 	}
+	if in.IgnoreNotFound != nil {
+		in, out := &in.IgnoreNotFound, &out.IgnoreNotFound
+		*out = new(bool)
+		**out = **in
+	}
 	if in.Locks != nil {
 		in, out := &in.Locks, &out.Locks
 		*out = make([]*string, len(*in))
@@ -1082,6 +1150,11 @@ func (in *ResourceActionObservation) DeepCopyInto(out *ResourceActionObservation
 		*out = new(v1.JSON)
 		(*in).DeepCopyInto(*out)
 	}
+	if in.Exist != nil {
+		in, out := &in.Exist, &out.Exist
+		*out = new(bool)
+		**out = **in
+	}
 	if in.Headers != nil {
 		in, out := &in.Headers, &out.Headers
 		*out = make(map[string]*string, len(*in))
@@ -1101,6 +1174,11 @@ func (in *ResourceActionObservation) DeepCopyInto(out *ResourceActionObservation
 	if in.ID != nil {
 		in, out := &in.ID, &out.ID
 		*out = new(string)
+		**out = **in
+	}
+	if in.IgnoreNotFound != nil {
+		in, out := &in.IgnoreNotFound, &out.IgnoreNotFound
+		*out = new(bool)
 		**out = **in
 	}
 	if in.Locks != nil {
@@ -1216,6 +1294,11 @@ func (in *ResourceActionParameters) DeepCopyInto(out *ResourceActionParameters) 
 			}
 			(*out)[key] = outVal
 		}
+	}
+	if in.IgnoreNotFound != nil {
+		in, out := &in.IgnoreNotFound, &out.IgnoreNotFound
+		*out = new(bool)
+		**out = **in
 	}
 	if in.Locks != nil {
 		in, out := &in.Locks, &out.Locks
@@ -1576,6 +1659,33 @@ func (in *ResourceInitParameters) DeepCopyInto(out *ResourceInitParameters) {
 		*out = new(bool)
 		**out = **in
 	}
+	if in.IgnoreOtherItemsInList != nil {
+		in, out := &in.IgnoreOtherItemsInList, &out.IgnoreOtherItemsInList
+		*out = make([]*string, len(*in))
+		for i := range *in {
+			if (*in)[i] != nil {
+				in, out := &(*in)[i], &(*out)[i]
+				*out = new(string)
+				**out = **in
+			}
+		}
+	}
+	if in.ListUniqueIDProperty != nil {
+		in, out := &in.ListUniqueIDProperty, &out.ListUniqueIDProperty
+		*out = make(map[string]*string, len(*in))
+		for key, val := range *in {
+			var outVal *string
+			if val == nil {
+				(*out)[key] = nil
+			} else {
+				inVal := (*in)[key]
+				in, out := &inVal, &outVal
+				*out = new(string)
+				**out = **in
+			}
+			(*out)[key] = outVal
+		}
+	}
 	if in.Location != nil {
 		in, out := &in.Location, &out.Location
 		*out = new(string)
@@ -1890,6 +2000,33 @@ func (in *ResourceObservation) DeepCopyInto(out *ResourceObservation) {
 		*out = new(bool)
 		**out = **in
 	}
+	if in.IgnoreOtherItemsInList != nil {
+		in, out := &in.IgnoreOtherItemsInList, &out.IgnoreOtherItemsInList
+		*out = make([]*string, len(*in))
+		for i := range *in {
+			if (*in)[i] != nil {
+				in, out := &(*in)[i], &(*out)[i]
+				*out = new(string)
+				**out = **in
+			}
+		}
+	}
+	if in.ListUniqueIDProperty != nil {
+		in, out := &in.ListUniqueIDProperty, &out.ListUniqueIDProperty
+		*out = make(map[string]*string, len(*in))
+		for key, val := range *in {
+			var outVal *string
+			if val == nil {
+				(*out)[key] = nil
+			} else {
+				inVal := (*in)[key]
+				in, out := &inVal, &outVal
+				*out = new(string)
+				**out = **in
+			}
+			(*out)[key] = outVal
+		}
+	}
 	if in.Location != nil {
 		in, out := &in.Location, &out.Location
 		*out = new(string)
@@ -2171,6 +2308,33 @@ func (in *ResourceParameters) DeepCopyInto(out *ResourceParameters) {
 		in, out := &in.IgnoreNullProperty, &out.IgnoreNullProperty
 		*out = new(bool)
 		**out = **in
+	}
+	if in.IgnoreOtherItemsInList != nil {
+		in, out := &in.IgnoreOtherItemsInList, &out.IgnoreOtherItemsInList
+		*out = make([]*string, len(*in))
+		for i := range *in {
+			if (*in)[i] != nil {
+				in, out := &(*in)[i], &(*out)[i]
+				*out = new(string)
+				**out = **in
+			}
+		}
+	}
+	if in.ListUniqueIDProperty != nil {
+		in, out := &in.ListUniqueIDProperty, &out.ListUniqueIDProperty
+		*out = make(map[string]*string, len(*in))
+		for key, val := range *in {
+			var outVal *string
+			if val == nil {
+				(*out)[key] = nil
+			} else {
+				inVal := (*in)[key]
+				in, out := &inVal, &outVal
+				*out = new(string)
+				**out = **in
+			}
+			(*out)[key] = outVal
+		}
 	}
 	if in.Location != nil {
 		in, out := &in.Location, &out.Location
@@ -2699,6 +2863,33 @@ func (in *UpdateResourceInitParameters) DeepCopyInto(out *UpdateResourceInitPara
 		*out = new(bool)
 		**out = **in
 	}
+	if in.IgnoreOtherItemsInList != nil {
+		in, out := &in.IgnoreOtherItemsInList, &out.IgnoreOtherItemsInList
+		*out = make([]*string, len(*in))
+		for i := range *in {
+			if (*in)[i] != nil {
+				in, out := &(*in)[i], &(*out)[i]
+				*out = new(string)
+				**out = **in
+			}
+		}
+	}
+	if in.ListUniqueIDProperty != nil {
+		in, out := &in.ListUniqueIDProperty, &out.ListUniqueIDProperty
+		*out = make(map[string]*string, len(*in))
+		for key, val := range *in {
+			var outVal *string
+			if val == nil {
+				(*out)[key] = nil
+			} else {
+				inVal := (*in)[key]
+				in, out := &inVal, &outVal
+				*out = new(string)
+				**out = **in
+			}
+			(*out)[key] = outVal
+		}
+	}
 	if in.Locks != nil {
 		in, out := &in.Locks, &out.Locks
 		*out = make([]*string, len(*in))
@@ -2904,6 +3095,33 @@ func (in *UpdateResourceObservation) DeepCopyInto(out *UpdateResourceObservation
 		*out = new(bool)
 		**out = **in
 	}
+	if in.IgnoreOtherItemsInList != nil {
+		in, out := &in.IgnoreOtherItemsInList, &out.IgnoreOtherItemsInList
+		*out = make([]*string, len(*in))
+		for i := range *in {
+			if (*in)[i] != nil {
+				in, out := &(*in)[i], &(*out)[i]
+				*out = new(string)
+				**out = **in
+			}
+		}
+	}
+	if in.ListUniqueIDProperty != nil {
+		in, out := &in.ListUniqueIDProperty, &out.ListUniqueIDProperty
+		*out = make(map[string]*string, len(*in))
+		for key, val := range *in {
+			var outVal *string
+			if val == nil {
+				(*out)[key] = nil
+			} else {
+				inVal := (*in)[key]
+				in, out := &inVal, &outVal
+				*out = new(string)
+				**out = **in
+			}
+			(*out)[key] = outVal
+		}
+	}
 	if in.Locks != nil {
 		in, out := &in.Locks, &out.Locks
 		*out = make([]*string, len(*in))
@@ -3076,6 +3294,33 @@ func (in *UpdateResourceParameters) DeepCopyInto(out *UpdateResourceParameters) 
 		in, out := &in.IgnoreMissingProperty, &out.IgnoreMissingProperty
 		*out = new(bool)
 		**out = **in
+	}
+	if in.IgnoreOtherItemsInList != nil {
+		in, out := &in.IgnoreOtherItemsInList, &out.IgnoreOtherItemsInList
+		*out = make([]*string, len(*in))
+		for i := range *in {
+			if (*in)[i] != nil {
+				in, out := &(*in)[i], &(*out)[i]
+				*out = new(string)
+				**out = **in
+			}
+		}
+	}
+	if in.ListUniqueIDProperty != nil {
+		in, out := &in.ListUniqueIDProperty, &out.ListUniqueIDProperty
+		*out = make(map[string]*string, len(*in))
+		for key, val := range *in {
+			var outVal *string
+			if val == nil {
+				(*out)[key] = nil
+			} else {
+				inVal := (*in)[key]
+				in, out := &inVal, &outVal
+				*out = new(string)
+				**out = **in
+			}
+			(*out)[key] = outVal
+		}
 	}
 	if in.Locks != nil {
 		in, out := &in.Locks, &out.Locks

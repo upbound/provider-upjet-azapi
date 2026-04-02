@@ -28,6 +28,15 @@ type UpdateResourceInitParameters struct {
 	// Whether ignore not returned properties like credentials in `body` to suppress plan-diff. Defaults to `true`. It's recommend to enable this option when some sensitive properties are not returned in response body, instead of setting them in `lifecycle.ignore_changes` because it will make the sensitive fields unable to update.
 	IgnoreMissingProperty *bool `json:"ignoreMissingProperty,omitempty" tf:"ignore_missing_property,omitempty"`
 
+	// side ordering).
+	// A list of list property paths where items not specified in configuration should be ignored. This is intended for partial list management when combined with `list_unique_id_property` (for example, to avoid perpetual drift from server-side ordering).
+	IgnoreOtherItemsInList []*string `json:"ignoreOtherItemsInList,omitempty" tf:"ignore_other_items_in_list,omitempty"`
+
+	// separated list of field names (e.g., "category, categoryGroup").
+	// A mapping of list property paths to the field name used as a unique identifier when comparing and merging list items. When not set, list items are matched by a `name` property (if present) or by list ordering. To match using multiple fields, specify a comma-separated list of field names (e.g., `"category, categoryGroup"`).
+	// +mapType=granular
+	ListUniqueIDProperty map[string]*string `json:"listUniqueIdProperty,omitempty" tf:"list_unique_id_property,omitempty"`
+
 	// (List of String) A list of ARM resource IDs which are used to avoid create/modify/delete azapi resources at the same time.
 	// A list of ARM resource IDs which are used to avoid create/modify/delete azapi resources at the same time.
 	Locks []*string `json:"locks,omitempty" tf:"locks,omitempty"`
@@ -135,6 +144,15 @@ type UpdateResourceObservation struct {
 	// diff. Defaults to true. It's recommend to enable this option when some sensitive properties are not returned in response body, instead of setting them in lifecycle.ignore_changes because it will make the sensitive fields unable to update.
 	// Whether ignore not returned properties like credentials in `body` to suppress plan-diff. Defaults to `true`. It's recommend to enable this option when some sensitive properties are not returned in response body, instead of setting them in `lifecycle.ignore_changes` because it will make the sensitive fields unable to update.
 	IgnoreMissingProperty *bool `json:"ignoreMissingProperty,omitempty" tf:"ignore_missing_property,omitempty"`
+
+	// side ordering).
+	// A list of list property paths where items not specified in configuration should be ignored. This is intended for partial list management when combined with `list_unique_id_property` (for example, to avoid perpetual drift from server-side ordering).
+	IgnoreOtherItemsInList []*string `json:"ignoreOtherItemsInList,omitempty" tf:"ignore_other_items_in_list,omitempty"`
+
+	// separated list of field names (e.g., "category, categoryGroup").
+	// A mapping of list property paths to the field name used as a unique identifier when comparing and merging list items. When not set, list items are matched by a `name` property (if present) or by list ordering. To match using multiple fields, specify a comma-separated list of field names (e.g., `"category, categoryGroup"`).
+	// +mapType=granular
+	ListUniqueIDProperty map[string]*string `json:"listUniqueIdProperty,omitempty" tf:"list_unique_id_property,omitempty"`
 
 	// (List of String) A list of ARM resource IDs which are used to avoid create/modify/delete azapi resources at the same time.
 	// A list of ARM resource IDs which are used to avoid create/modify/delete azapi resources at the same time.
@@ -256,6 +274,17 @@ type UpdateResourceParameters struct {
 	// Whether ignore not returned properties like credentials in `body` to suppress plan-diff. Defaults to `true`. It's recommend to enable this option when some sensitive properties are not returned in response body, instead of setting them in `lifecycle.ignore_changes` because it will make the sensitive fields unable to update.
 	// +kubebuilder:validation:Optional
 	IgnoreMissingProperty *bool `json:"ignoreMissingProperty,omitempty" tf:"ignore_missing_property,omitempty"`
+
+	// side ordering).
+	// A list of list property paths where items not specified in configuration should be ignored. This is intended for partial list management when combined with `list_unique_id_property` (for example, to avoid perpetual drift from server-side ordering).
+	// +kubebuilder:validation:Optional
+	IgnoreOtherItemsInList []*string `json:"ignoreOtherItemsInList,omitempty" tf:"ignore_other_items_in_list,omitempty"`
+
+	// separated list of field names (e.g., "category, categoryGroup").
+	// A mapping of list property paths to the field name used as a unique identifier when comparing and merging list items. When not set, list items are matched by a `name` property (if present) or by list ordering. To match using multiple fields, specify a comma-separated list of field names (e.g., `"category, categoryGroup"`).
+	// +kubebuilder:validation:Optional
+	// +mapType=granular
+	ListUniqueIDProperty map[string]*string `json:"listUniqueIdProperty,omitempty" tf:"list_unique_id_property,omitempty"`
 
 	// (List of String) A list of ARM resource IDs which are used to avoid create/modify/delete azapi resources at the same time.
 	// A list of ARM resource IDs which are used to avoid create/modify/delete azapi resources at the same time.

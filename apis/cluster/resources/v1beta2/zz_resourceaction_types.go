@@ -29,6 +29,10 @@ type ResourceActionInitParameters struct {
 	// +mapType=granular
 	Headers map[string]*string `json:"headers,omitempty" tf:"headers,omitempty"`
 
+	// (Boolean) If set to true, the resource action will ignore Not Found errors returned from the Azure API. Default is false.
+	// If set to `true`, the resource action will ignore `Not Found` errors returned from the Azure API. Default is `false`.
+	IgnoreNotFound *bool `json:"ignoreNotFound,omitempty" tf:"ignore_not_found,omitempty"`
+
 	// (List of String) A list of ARM resource IDs which are used to avoid create/modify/delete azapi resources at the same time.
 	// A list of ARM resource IDs which are used to avoid create/modify/delete azapi resources at the same time.
 	Locks []*string `json:"locks,omitempty" tf:"locks,omitempty"`
@@ -127,6 +131,10 @@ type ResourceActionObservation struct {
 	// A dynamic attribute that contains the request body.
 	Body *v1.JSON `json:"body,omitempty" tf:"body,omitempty"`
 
+	// (Boolean) Indicates whether the resource action was successfully performed.
+	// Indicates whether the resource action was successfully performed.
+	Exist *bool `json:"exist,omitempty" tf:"exist,omitempty"`
+
 	// (Map of String) A map of headers to include in the request
 	// A map of headers to include in the request
 	// +mapType=granular
@@ -134,6 +142,10 @@ type ResourceActionObservation struct {
 
 	// (String) The ID of the Azure resource.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// (Boolean) If set to true, the resource action will ignore Not Found errors returned from the Azure API. Default is false.
+	// If set to `true`, the resource action will ignore `Not Found` errors returned from the Azure API. Default is `false`.
+	IgnoreNotFound *bool `json:"ignoreNotFound,omitempty" tf:"ignore_not_found,omitempty"`
 
 	// (List of String) A list of ARM resource IDs which are used to avoid create/modify/delete azapi resources at the same time.
 	// A list of ARM resource IDs which are used to avoid create/modify/delete azapi resources at the same time.
@@ -253,6 +265,11 @@ type ResourceActionParameters struct {
 	// +kubebuilder:validation:Optional
 	// +mapType=granular
 	Headers map[string]*string `json:"headers,omitempty" tf:"headers,omitempty"`
+
+	// (Boolean) If set to true, the resource action will ignore Not Found errors returned from the Azure API. Default is false.
+	// If set to `true`, the resource action will ignore `Not Found` errors returned from the Azure API. Default is `false`.
+	// +kubebuilder:validation:Optional
+	IgnoreNotFound *bool `json:"ignoreNotFound,omitempty" tf:"ignore_not_found,omitempty"`
 
 	// (List of String) A list of ARM resource IDs which are used to avoid create/modify/delete azapi resources at the same time.
 	// A list of ARM resource IDs which are used to avoid create/modify/delete azapi resources at the same time.

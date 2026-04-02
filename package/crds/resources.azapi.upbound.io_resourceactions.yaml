@@ -89,6 +89,10 @@ spec:
                       A map of headers to include in the request
                     type: object
                     x-kubernetes-map-type: granular
+                  ignoreNotFound:
+                    description: If set to `true`, the resource action will ignore
+                      `Not Found` errors returned from the Azure API. Default is `false`.
+                    type: boolean
                   locks:
                     description: A list of ARM resource IDs which are used to avoid
                       modify azapi resources at the same time.
@@ -223,6 +227,10 @@ spec:
                       A map of headers to include in the request
                     type: object
                     x-kubernetes-map-type: granular
+                  ignoreNotFound:
+                    description: If set to `true`, the resource action will ignore
+                      `Not Found` errors returned from the Azure API. Default is `false`.
+                    type: boolean
                   locks:
                     description: A list of ARM resource IDs which are used to avoid
                       modify azapi resources at the same time.
@@ -436,6 +444,10 @@ spec:
                   body:
                     description: A JSON object that contains the request body.
                     type: string
+                  exist:
+                    description: Indicates whether the resource action was successfully
+                      performed.
+                    type: boolean
                   headers:
                     additionalProperties:
                       type: string
@@ -447,6 +459,10 @@ spec:
                   id:
                     description: The ID of the azure resource action.
                     type: string
+                  ignoreNotFound:
+                    description: If set to `true`, the resource action will ignore
+                      `Not Found` errors returned from the Azure API. Default is `false`.
+                    type: boolean
                   locks:
                     description: A list of ARM resource IDs which are used to avoid
                       modify azapi resources at the same time.
@@ -694,6 +710,11 @@ spec:
                       A map of headers to include in the request
                     type: object
                     x-kubernetes-map-type: granular
+                  ignoreNotFound:
+                    description: |-
+                      (Boolean) If set to true, the resource action will ignore Not Found errors returned from the Azure API. Default is false.
+                      If set to `true`, the resource action will ignore `Not Found` errors returned from the Azure API. Default is `false`.
+                    type: boolean
                   locks:
                     description: |-
                       (List of String) A list of ARM resource IDs which are used to avoid create/modify/delete azapi resources at the same time.
@@ -856,6 +877,11 @@ spec:
                       A map of headers to include in the request
                     type: object
                     x-kubernetes-map-type: granular
+                  ignoreNotFound:
+                    description: |-
+                      (Boolean) If set to true, the resource action will ignore Not Found errors returned from the Azure API. Default is false.
+                      If set to `true`, the resource action will ignore `Not Found` errors returned from the Azure API. Default is `false`.
+                    type: boolean
                   locks:
                     description: |-
                       (List of String) A list of ARM resource IDs which are used to avoid create/modify/delete azapi resources at the same time.
@@ -1097,6 +1123,11 @@ spec:
                       (Dynamic) A dynamic attribute that contains the request body.
                       A dynamic attribute that contains the request body.
                     x-kubernetes-preserve-unknown-fields: true
+                  exist:
+                    description: |-
+                      (Boolean) Indicates whether the resource action was successfully performed.
+                      Indicates whether the resource action was successfully performed.
+                    type: boolean
                   headers:
                     additionalProperties:
                       type: string
@@ -1108,6 +1139,11 @@ spec:
                   id:
                     description: (String) The ID of the Azure resource.
                     type: string
+                  ignoreNotFound:
+                    description: |-
+                      (Boolean) If set to true, the resource action will ignore Not Found errors returned from the Azure API. Default is false.
+                      If set to `true`, the resource action will ignore `Not Found` errors returned from the Azure API. Default is `false`.
+                    type: boolean
                   locks:
                     description: |-
                       (List of String) A list of ARM resource IDs which are used to avoid create/modify/delete azapi resources at the same time.

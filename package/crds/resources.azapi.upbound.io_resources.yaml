@@ -143,6 +143,25 @@ spec:
                       When set to `true`, the provider will ignore properties whose values are `null` in the `body`.
                       These properties will not be included in the request body sent to the API, and the difference will not be shown in the plan output. Defaults to `false`.
                     type: boolean
+                  ignoreOtherItemsInList:
+                    description: A list of list property paths where items not specified
+                      in configuration should be ignored. This is intended for partial
+                      list management when combined with `list_unique_id_property`
+                      (for example, to avoid perpetual drift from server-side ordering).
+                    items:
+                      type: string
+                    type: array
+                  listUniqueIdProperty:
+                    additionalProperties:
+                      type: string
+                    description: A mapping of list property paths to the field name
+                      used as a unique identifier when comparing and merging list
+                      items. When not set, list items are matched by a `name` property
+                      (if present) or by list ordering. To match using multiple fields,
+                      specify a comma-separated list of field names (e.g., `"category,
+                      categoryGroup"`).
+                    type: object
+                    x-kubernetes-map-type: granular
                   location:
                     description: The Azure Region where the azure resource should
                       exist.
@@ -350,6 +369,25 @@ spec:
                       When set to `true`, the provider will ignore properties whose values are `null` in the `body`.
                       These properties will not be included in the request body sent to the API, and the difference will not be shown in the plan output. Defaults to `false`.
                     type: boolean
+                  ignoreOtherItemsInList:
+                    description: A list of list property paths where items not specified
+                      in configuration should be ignored. This is intended for partial
+                      list management when combined with `list_unique_id_property`
+                      (for example, to avoid perpetual drift from server-side ordering).
+                    items:
+                      type: string
+                    type: array
+                  listUniqueIdProperty:
+                    additionalProperties:
+                      type: string
+                    description: A mapping of list property paths to the field name
+                      used as a unique identifier when comparing and merging list
+                      items. When not set, list items are matched by a `name` property
+                      (if present) or by list ordering. To match using multiple fields,
+                      specify a comma-separated list of field names (e.g., `"category,
+                      categoryGroup"`).
+                    type: object
+                    x-kubernetes-map-type: granular
                   location:
                     description: The Azure Region where the azure resource should
                       exist.
@@ -652,6 +690,25 @@ spec:
                       When set to `true`, the provider will ignore properties whose values are `null` in the `body`.
                       These properties will not be included in the request body sent to the API, and the difference will not be shown in the plan output. Defaults to `false`.
                     type: boolean
+                  ignoreOtherItemsInList:
+                    description: A list of list property paths where items not specified
+                      in configuration should be ignored. This is intended for partial
+                      list management when combined with `list_unique_id_property`
+                      (for example, to avoid perpetual drift from server-side ordering).
+                    items:
+                      type: string
+                    type: array
+                  listUniqueIdProperty:
+                    additionalProperties:
+                      type: string
+                    description: A mapping of list property paths to the field name
+                      used as a unique identifier when comparing and merging list
+                      items. When not set, list items are matched by a `name` property
+                      (if present) or by list ordering. To match using multiple fields,
+                      specify a comma-separated list of field names (e.g., `"category,
+                      categoryGroup"`).
+                    type: object
+                    x-kubernetes-map-type: granular
                   location:
                     description: The Azure Region where the azure resource should
                       exist.
@@ -971,6 +1028,21 @@ spec:
                       When set to `true`, the provider will ignore properties whose values are `null` in the `body`.
                       These properties will not be included in the request body sent to the API, and the difference will not be shown in the plan output. Defaults to `false`.
                     type: boolean
+                  ignoreOtherItemsInList:
+                    description: |-
+                      side ordering).
+                      A list of list property paths where items not specified in configuration should be ignored. This is intended for partial list management when combined with `list_unique_id_property` (for example, to avoid perpetual drift from server-side ordering).
+                    items:
+                      type: string
+                    type: array
+                  listUniqueIdProperty:
+                    additionalProperties:
+                      type: string
+                    description: |-
+                      separated list of field names (e.g., "category, categoryGroup").
+                      A mapping of list property paths to the field name used as a unique identifier when comparing and merging list items. When not set, list items are matched by a `name` property (if present) or by list ordering. To match using multiple fields, specify a comma-separated list of field names (e.g., `"category, categoryGroup"`).
+                    type: object
+                    x-kubernetes-map-type: granular
                   location:
                     description: |-
                       (String) The location of the Azure resource.
@@ -1219,6 +1291,21 @@ spec:
                       When set to `true`, the provider will ignore properties whose values are `null` in the `body`.
                       These properties will not be included in the request body sent to the API, and the difference will not be shown in the plan output. Defaults to `false`.
                     type: boolean
+                  ignoreOtherItemsInList:
+                    description: |-
+                      side ordering).
+                      A list of list property paths where items not specified in configuration should be ignored. This is intended for partial list management when combined with `list_unique_id_property` (for example, to avoid perpetual drift from server-side ordering).
+                    items:
+                      type: string
+                    type: array
+                  listUniqueIdProperty:
+                    additionalProperties:
+                      type: string
+                    description: |-
+                      separated list of field names (e.g., "category, categoryGroup").
+                      A mapping of list property paths to the field name used as a unique identifier when comparing and merging list items. When not set, list items are matched by a `name` property (if present) or by list ordering. To match using multiple fields, specify a comma-separated list of field names (e.g., `"category, categoryGroup"`).
+                    type: object
+                    x-kubernetes-map-type: granular
                   location:
                     description: |-
                       (String) The location of the Azure resource.
@@ -1563,6 +1650,21 @@ spec:
                       When set to `true`, the provider will ignore properties whose values are `null` in the `body`.
                       These properties will not be included in the request body sent to the API, and the difference will not be shown in the plan output. Defaults to `false`.
                     type: boolean
+                  ignoreOtherItemsInList:
+                    description: |-
+                      side ordering).
+                      A list of list property paths where items not specified in configuration should be ignored. This is intended for partial list management when combined with `list_unique_id_property` (for example, to avoid perpetual drift from server-side ordering).
+                    items:
+                      type: string
+                    type: array
+                  listUniqueIdProperty:
+                    additionalProperties:
+                      type: string
+                    description: |-
+                      separated list of field names (e.g., "category, categoryGroup").
+                      A mapping of list property paths to the field name used as a unique identifier when comparing and merging list items. When not set, list items are matched by a `name` property (if present) or by list ordering. To match using multiple fields, specify a comma-separated list of field names (e.g., `"category, categoryGroup"`).
+                    type: object
+                    x-kubernetes-map-type: granular
                   location:
                     description: |-
                       (String) The location of the Azure resource.
