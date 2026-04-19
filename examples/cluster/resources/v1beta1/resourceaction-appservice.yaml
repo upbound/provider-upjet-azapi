@@ -1,0 +1,79 @@
+apiVersion: resources.azapi.upbound.io/v1beta1
+kind: ResourceAction
+metadata:
+  annotations:
+    meta.upbound.io/example-id: resources/v1beta1/resourceaction
+  labels:
+    testing.upbound.io/example-name: example-appservice-restart
+  name: example-appservice-restart
+spec:
+  forProvider:
+    action: restart
+    resourceId: /subscriptions/${data.subscription_id}/resourceGroups/uptest-example-resource-group-app/providers/Microsoft.Web/sites/uptest-example-app-service
+    type: Microsoft.Web/sites@2022-09-01
+---
+apiVersion: resources.azapi.upbound.io/v1beta1
+kind: Resource
+metadata:
+  annotations:
+    meta.upbound.io/example-id: resources/v1beta1/resourceaction
+  labels:
+    testing.upbound.io/example-name: example-appservice-restart
+  name: uptest-example-resource-group-app
+spec:
+  forProvider:
+    body: "{}"
+    parentId: /subscriptions/${data.subscription_id}
+    location: West Europe
+    name: uptest-example-resource-group-app
+    type: "Microsoft.Resources/resourceGroups@2020-06-01"
+---
+apiVersion: resources.azapi.upbound.io/v1beta1
+kind: Resource
+metadata:
+  annotations:
+    meta.upbound.io/example-id: resources/v1beta1/resourceaction
+  labels:
+    testing.upbound.io/example-name: example-appservice-restart
+  name: uptest-example-app-service-plan
+spec:
+  forProvider:
+    body: |-
+      {
+        "properties": {
+          "reserved": false
+        },
+        "sku": {
+          "name": "B1",
+          "tier": "Basic"
+        }
+      }
+    location: West Europe
+    name: uptest-example-app-service-plan
+    parentId: /subscriptions/${data.subscription_id}/resourceGroups/uptest-example-resource-group-app
+    type: Microsoft.Web/serverfarms@2022-09-01
+---
+apiVersion: resources.azapi.upbound.io/v1beta1
+kind: Resource
+metadata:
+  annotations:
+    meta.upbound.io/example-id: resources/v1beta1/resourceaction
+  labels:
+    testing.upbound.io/example-name: example-appservice-restart
+  name: uptest-example-app-service
+spec:
+  forProvider:
+    body: |-
+      {
+        "properties": {
+          "httpsOnly": true,
+          "serverFarmId": "/subscriptions/${data.subscription_id}/resourceGroups/uptest-example-resource-group-app/providers/Microsoft.Web/serverfarms/uptest-example-app-service-plan",
+          "siteConfig": {
+            "minTlsVersion": "1.2"
+          }
+        }
+      }
+    location: West Europe
+    name: uptest-example-app-service
+    parentId: /subscriptions/${data.subscription_id}/resourceGroups/uptest-example-resource-group-app
+    type: Microsoft.Web/sites@2022-09-01

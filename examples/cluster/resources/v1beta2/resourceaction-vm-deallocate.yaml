@@ -1,0 +1,118 @@
+apiVersion: resources.azapi.upbound.io/v1beta2
+kind: ResourceAction
+metadata:
+  annotations:
+    meta.upbound.io/example-id: resources/v1beta2/resourceaction
+  labels:
+    testing.upbound.io/example-name: example-vm-deallocate
+  name: example-vm-deallocate
+spec:
+  forProvider:
+    action: deallocate
+    resourceId: /subscriptions/${data.subscription_id}/resourceGroups/uptest-example-resource-group-vm/providers/Microsoft.Compute/virtualMachines/uptest-example-vm
+    type: Microsoft.Compute/virtualMachines@2022-11-01
+---
+apiVersion: resources.azapi.upbound.io/v1beta2
+kind: Resource
+metadata:
+  annotations:
+    meta.upbound.io/example-id: resources/v1beta2/resourceaction
+  labels:
+    testing.upbound.io/example-name: example-vm-deallocate
+  name: uptest-example-resource-group-vm
+spec:
+  forProvider:
+    body: {}
+    parentId: /subscriptions/${data.subscription_id}
+    location: West Europe
+    name: uptest-example-resource-group-vm
+    type: "Microsoft.Resources/resourceGroups@2020-06-01"
+---
+apiVersion: resources.azapi.upbound.io/v1beta2
+kind: Resource
+metadata:
+  annotations:
+    meta.upbound.io/example-id: resources/v1beta2/resourceaction
+  labels:
+    testing.upbound.io/example-name: example-vm-deallocate
+  name: uptest-example-vnet-vm
+spec:
+  forProvider:
+    body:
+      properties:
+        addressSpace:
+          addressPrefixes:
+            - 10.0.0.0/16
+        subnets:
+          - name: internal
+            properties:
+              addressPrefix: 10.0.2.0/24
+    location: West Europe
+    name: uptest-example-vnet-vm
+    parentId: /subscriptions/${data.subscription_id}/resourceGroups/uptest-example-resource-group-vm
+    type: Microsoft.Network/virtualNetworks@2022-07-01
+---
+apiVersion: resources.azapi.upbound.io/v1beta2
+kind: Resource
+metadata:
+  annotations:
+    meta.upbound.io/example-id: resources/v1beta2/resourceaction
+  labels:
+    testing.upbound.io/example-name: example-vm-deallocate
+  name: uptest-example-nic-vm
+spec:
+  forProvider:
+    body:
+      properties:
+        ipConfigurations:
+          - name: internal
+            properties:
+              privateIPAllocationMethod: Dynamic
+              subnet:
+                id: /subscriptions/${data.subscription_id}/resourceGroups/uptest-example-resource-group-vm/providers/Microsoft.Network/virtualNetworks/uptest-example-vnet-vm/subnets/internal
+    location: West Europe
+    name: uptest-example-nic-vm
+    parentId: /subscriptions/${data.subscription_id}/resourceGroups/uptest-example-resource-group-vm
+    type: Microsoft.Network/networkInterfaces@2022-07-01
+---
+apiVersion: resources.azapi.upbound.io/v1beta2
+kind: Resource
+metadata:
+  annotations:
+    meta.upbound.io/example-id: resources/v1beta2/resourceaction
+  labels:
+    testing.upbound.io/example-name: example-vm-deallocate
+  name: uptest-example-vm
+spec:
+  forProvider:
+    body:
+      properties:
+        hardwareProfile:
+          vmSize: Standard_F2
+        networkProfile:
+          networkInterfaces:
+            - id: /subscriptions/${data.subscription_id}/resourceGroups/uptest-example-resource-group-vm/providers/Microsoft.Network/networkInterfaces/uptest-example-nic-vm
+              properties:
+                primary: true
+        osProfile:
+          adminUsername: adminuser
+          adminPassword: P@ssw0rd1234!
+          computerName: uptest-example-vm
+          linuxConfiguration:
+            disablePasswordAuthentication: false
+        storageProfile:
+          imageReference:
+            offer: 0001-com-ubuntu-server-jammy
+            publisher: Canonical
+            sku: 22_04-lts
+            version: latest
+          osDisk:
+            caching: ReadWrite
+            createOption: FromImage
+            managedDisk:
+              storageAccountType: Standard_LRS
+            name: uptest-example-vm-osdisk
+    location: West Europe
+    name: uptest-example-vm
+    parentId: /subscriptions/${data.subscription_id}/resourceGroups/uptest-example-resource-group-vm
+    type: Microsoft.Compute/virtualMachines@2022-11-01

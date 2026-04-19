@@ -1,16 +1,59 @@
 apiVersion: resources.azapi.m.upbound.io/v1beta1
+kind: Resource
+metadata:
+  annotations:
+    meta.upbound.io/example-id: resources/v1beta1/resourceaction
+  labels:
+    testing.upbound.io/example-name: example-storage-regeneratekey
+  name: uptest-example-resource-group-sa
+  namespace: upbound-system
+spec:
+  forProvider:
+    body: {}
+    parentId: /subscriptions/${data.subscription_id}
+    location: West Europe
+    name: uptest-example-resource-group-sa
+    type: "Microsoft.Resources/resourceGroups@2020-06-01"
+---
+apiVersion: resources.azapi.m.upbound.io/v1beta1
+kind: Resource
+metadata:
+  annotations:
+    meta.upbound.io/example-id: resources/v1beta1/resourceaction
+  labels:
+    testing.upbound.io/example-name: example-storage-regeneratekey
+  name: uptest-example-storage-account-sa
+  namespace: upbound-system
+spec:
+  forProvider:
+    body:
+      kind: StorageV2
+      properties:
+        accessTier: Hot
+        minimumTlsVersion: TLS1_2
+        supportsHttpsTrafficOnly: true
+      sku:
+        name: Standard_LRS
+    location: West Europe
+    name: uptestexamplesa
+    parentId: /subscriptions/${data.subscription_id}/resourceGroups/uptest-example-resource-group-sa
+    type: Microsoft.Storage/storageAccounts@2022-09-01
+---
+apiVersion: resources.azapi.m.upbound.io/v1beta1
 kind: ResourceAction
 metadata:
   annotations:
     meta.upbound.io/example-id: resources/v1beta1/resourceaction
   labels:
-    testing.upbound.io/example-name: start
-  name: start
+    testing.upbound.io/example-name: example-storage-regeneratekey
+  name: example-regenerate-storage-key
+  namespace: upbound-system
 spec:
   forProvider:
-    action: start
-    resourceId: ${azurerm_spring_cloud_service.test.id}
+    action: regenerateKey
+    body:
+      keyName: key1
+    resourceId: /subscriptions/${data.subscription_id}/resourceGroups/uptest-example-resource-group-sa/providers/Microsoft.Storage/storageAccounts/uptestexamplesa
     responseExportValues:
-    - '*'
-    type: Microsoft.AppPlatform/Spring@2022-05-01-preview
-# This resource needs a valid resourceId (appplatform SpringCloudService id)
+    - keys
+    type: Microsoft.Storage/storageAccounts@2022-09-01
