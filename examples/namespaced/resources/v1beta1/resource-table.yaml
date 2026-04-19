@@ -1,0 +1,57 @@
+apiVersion: resources.azapi.m.upbound.io/v1beta1
+kind: Resource
+metadata:
+  annotations:
+    meta.upbound.io/example-id: resources/v1beta1/resource
+  labels:
+    testing.upbound.io/example-name: example-storage-table
+  name: uptest-example-resource-group-table
+  namespace: upbound-system
+spec:
+  forProvider:
+    body: {}
+    parentId: /subscriptions/${data.subscription_id}
+    location: West Europe
+    name: uptest-example-resource-group-table
+    type: "Microsoft.Resources/resourceGroups@2020-06-01"
+---
+apiVersion: resources.azapi.m.upbound.io/v1beta1
+kind: Resource
+metadata:
+  annotations:
+    meta.upbound.io/example-id: resources/v1beta1/resource
+  labels:
+    testing.upbound.io/example-name: example-storage-table
+  name: uptest-example-storage-account-table
+  namespace: upbound-system
+spec:
+  forProvider:
+    body:
+      kind: StorageV2
+      properties:
+        accessTier: Hot
+        minimumTlsVersion: TLS1_2
+        supportsHttpsTrafficOnly: true
+      sku:
+        name: Standard_LRS
+    location: West Europe
+    name: uptestexampletable
+    parentId: /subscriptions/${data.subscription_id}/resourceGroups/uptest-example-resource-group-table
+    type: Microsoft.Storage/storageAccounts@2023-05-01
+---
+apiVersion: resources.azapi.m.upbound.io/v1beta1
+kind: Resource
+metadata:
+  annotations:
+    meta.upbound.io/example-id: resources/v1beta1/resource
+  labels:
+    testing.upbound.io/example-name: example-storage-table
+  name: uptest-example-storage-table
+  namespace: upbound-system
+spec:
+  forProvider:
+    body:
+      properties: {}
+    name: TestTable
+    parentId: /subscriptions/${data.subscription_id}/resourceGroups/uptest-example-resource-group-table/providers/Microsoft.Storage/storageAccounts/uptestexampletable/tableServices/default
+    type: Microsoft.Storage/storageAccounts/tableServices/tables@2023-05-01
