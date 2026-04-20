@@ -100,7 +100,7 @@ func enrichLocalSecretRefs(pc *namespacedv1beta1.ProviderConfig, mg resource.Man
 
 func resolveProviderConfig(ctx context.Context, crClient client.Client, mg resource.Managed) (*namespacedv1beta1.ProviderConfigSpec, error) {
 	switch managed := mg.(type) {
-	case resource.LegacyManaged:
+	case resource.LegacyManaged: //nolint:staticcheck // still handling the cluster-scoped MRs
 		return resolveProviderConfigLegacy(ctx, crClient, managed)
 	case resource.ModernManaged:
 		return resolveProviderConfigModern(ctx, crClient, managed)
@@ -109,7 +109,7 @@ func resolveProviderConfig(ctx context.Context, crClient client.Client, mg resou
 	}
 }
 
-func resolveProviderConfigLegacy(ctx context.Context, client client.Client, mg resource.LegacyManaged) (*namespacedv1beta1.ProviderConfigSpec, error) {
+func resolveProviderConfigLegacy(ctx context.Context, client client.Client, mg resource.LegacyManaged) (*namespacedv1beta1.ProviderConfigSpec, error) { //nolint:staticcheck // still handling the cluster-scoped MRs
 	configRef := mg.GetProviderConfigReference()
 	if configRef == nil {
 		return nil, errors.New(errNoProviderConfig)

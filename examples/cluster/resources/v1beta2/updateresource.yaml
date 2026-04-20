@@ -11,8 +11,98 @@ spec:
     body:
       properties:
         inboundNatRules:
-        - properties:
-            idleTimeoutInMinutes: 15
-    resourceId: "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-resource-group/providers/Microsoft.Network/loadBalancers/example-load-balancer"
+          - properties:
+              idleTimeoutInMinutes: 15
+    resourceId: "/subscriptions/${data.subscription_id}/resourceGroups/uptest-example-resource-group-lb/providers/Microsoft.Network/loadBalancers/uptest-example-load-balancer"
     type: Microsoft.Network/loadBalancers@2021-03-01
-# This resource needs a valid resourceId (Azure network LoadBalancer id) and depends on network LoadBalancerNatRule
+---
+apiVersion: resources.azapi.upbound.io/v1beta2
+kind: Resource
+metadata:
+  annotations:
+    meta.upbound.io/example-id: resources/v1beta2/resource
+  labels:
+    testing.upbound.io/example-name: example-load-balancer
+  name: uptest-example-resource-group-lb
+spec:
+  forProvider:
+    body: {}
+    parentId: /subscriptions/${data.subscription_id}
+    location: West Europe
+    name: uptest-example-resource-group-lb
+    type: "Microsoft.Resources/resourceGroups@2020-06-01"
+---
+apiVersion: resources.azapi.upbound.io/v1beta2
+kind: Resource
+metadata:
+  annotations:
+    meta.upbound.io/example-id: resources/v1beta2/resource
+  labels:
+    testing.upbound.io/example-name: example-load-balancer
+  name: uptest-example-public-ip
+spec:
+  forProvider:
+    body:
+      properties:
+        ddosSettings:
+          protectionMode: VirtualNetworkInherited
+        idleTimeoutInMinutes: 4
+        publicIPAddressVersion: IPv4
+        publicIPAllocationMethod: Static
+      sku:
+        name: Standard
+        tier: Regional
+    location: West Europe
+    name: uptest-example-public-ip
+    parentId: /subscriptions/${data.subscription_id}/resourceGroups/uptest-example-resource-group-lb
+    responseExportValues:
+      - "*"
+    type: Microsoft.Network/publicIPAddresses@2022-07-01
+---
+apiVersion: resources.azapi.upbound.io/v1beta2
+kind: Resource
+metadata:
+  annotations:
+    meta.upbound.io/example-id: resources/v1beta2/resource
+  labels:
+    testing.upbound.io/example-name: example-load-balancer
+  name: uptest-example-load-balancer
+spec:
+  forProvider:
+    body:
+      properties:
+        frontendIPConfigurations:
+          - name: PublicIPAddress
+            properties:
+              publicIPAddress:
+                id: /subscriptions/${data.subscription_id}/resourceGroups/uptest-example-resource-group-lb/providers/Microsoft.Network/publicIPAddresses/uptest-example-public-ip
+      sku:
+        name: Standard
+        tier: Regional
+    location: West Europe
+    name: uptest-example-load-balancer
+    parentId: /subscriptions/${data.subscription_id}/resourceGroups/uptest-example-resource-group-lb
+    responseExportValues:
+      - "*"
+    type: Microsoft.Network/loadBalancers@2022-07-01
+---
+apiVersion: resources.azapi.upbound.io/v1beta2
+kind: Resource
+metadata:
+  annotations:
+    meta.upbound.io/example-id: resources/v1beta2/updateresource
+  labels:
+    testing.upbound.io/example-name: example-loadbalancer-natrule
+  name: uptest-example-lb-nat-rule
+spec:
+  forProvider:
+    body:
+      properties:
+        backendPort: 3389
+        frontendIPConfiguration:
+          id: /subscriptions/${data.subscription_id}/resourceGroups/uptest-example-resource-group-lb/providers/Microsoft.Network/loadBalancers/uptest-example-load-balancer/frontendIPConfigurations/PublicIPAddress
+        frontendPort: 3389
+        protocol: Tcp
+    name: RDPAccess
+    parentId: /subscriptions/${data.subscription_id}/resourceGroups/uptest-example-resource-group-lb/providers/Microsoft.Network/loadBalancers/uptest-example-load-balancer
+    type: Microsoft.Network/loadBalancers/inboundNatRules@2021-03-01

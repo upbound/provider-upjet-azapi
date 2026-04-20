@@ -90,7 +90,7 @@ func azapiUpdateResource() config.ExternalName {
 func azapiResourceAction() config.ExternalName {
 	e := config.IdentifierFromProvider
 	e.GetIDFn = func(ctx context.Context, externalName string, parameters map[string]any, terraformProviderConfig map[string]any) (string, error) {
-		resourceType, ok := parameters["resource_type"].(string)
+		resourceType, ok := parameters["type"].(string)
 		if !ok {
 			return "", errors.New("parameter `type` is required")
 		}

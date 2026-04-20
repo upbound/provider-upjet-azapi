@@ -1,41 +1,58 @@
 apiVersion: resources.azapi.upbound.io/v1beta1
-kind: DataPlaneResource
+kind: Resource
 metadata:
   annotations:
     meta.upbound.io/example-id: resources/v1beta1/dataplaneresource
   labels:
-    testing.upbound.io/example-name: example-dataset
-  name: example-dataset
+    testing.upbound.io/example-name: example-purview-collection
+  name: uptest-example-resource-group-purview
+spec:
+  forProvider:
+    body: "{}"
+    parentId: /subscriptions/${data.subscription_id}
+    location: West US
+    name: uptest-example-resource-group-purview
+    type: "Microsoft.Resources/resourceGroups@2021-04-01"
+---
+apiVersion: resources.azapi.upbound.io/v1beta1
+kind: Resource
+metadata:
+  annotations:
+    meta.upbound.io/example-id: resources/v1beta1/dataplaneresource
+  labels:
+    testing.upbound.io/example-name: example-purview-collection
+  name: uptest-example-purview-account
 spec:
   forProvider:
     body: |-
       {
         "properties": {
-          "type": "AzureBlob",
-          "typeProperties": {
-            "folderPath": {
-              "value": "@dataset().MyFolderPath",
-              "type": "Expression"
-            },
-            "fileName": {
-              "value": "@dataset().MyFileName",
-              "type": "Expression"
-            },
-            "format": {
-              "type": "TextFormat"
-            }
-          },
-          "parameters": {
-            "MyFolderPath": {
-              "type": "String"
-            },
-            "MyFileName": {
-              "type": "String"
-            }
-          }
+          "publicNetworkAccess": "Enabled"
         }
       }
-    name: example-dataset
-    parentId: exampleforazapi.dev.azuresynapse.net
-    type: Microsoft.Synapse/workspaces/datasets@2020-12-01
-# This resource needs a valid parentId (trimprefix(data.azurerm_synapse_workspace.example.connectivity_endpoints.dev, "https://"))
+    identity:
+      - type: SystemAssigned
+        identityIds: []
+    responseExportValues: ["*"]
+    parentId: /subscriptions/${data.subscription_id}/resourceGroups/uptest-example-resource-group-purview
+    location: West US
+    name: uptestexamplepurview
+    type: "Microsoft.Purview/accounts@2021-12-01"
+---
+apiVersion: resources.azapi.upbound.io/v1beta1
+kind: DataPlaneResource
+metadata:
+  annotations:
+    meta.upbound.io/example-id: resources/v1beta1/dataplaneresource
+  labels:
+    testing.upbound.io/example-name: example-purview-collection
+  name: uptest-example-purview-collection
+spec:
+  forProvider:
+    body: |-
+      {
+        "friendlyName": "UptestExample"
+      }
+    name: defaultResourceSetRuleConfig
+    parentId: uptestexamplepurview.purview.azure.com
+    type: "Microsoft.Purview/accounts/Account/collections@2019-11-01-preview"

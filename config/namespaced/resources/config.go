@@ -19,6 +19,10 @@ func Configure(p *config.Provider) {
 		// supported per XRM in Crossplane.
 		delete(r.TerraformResource.Schema, "replace_triggers_external_values")
 		delete(r.TerraformResource.Schema, "replace_triggers_refs")
+		// disable scraped argument docs to prevent duplicate field
+		// descriptions in CRD schema as all fields have descriptions
+		// provided by their TF schema
+		r.MetaResource.ArgumentDocs = map[string]string{}
 	})
 	p.AddResourceConfigurator("azapi_resource", func(r *config.Resource) {
 		r.Kind = "Resource"
@@ -27,10 +31,18 @@ func Configure(p *config.Provider) {
 		// supported per XRM in Crossplane.
 		delete(r.TerraformResource.Schema, "replace_triggers_external_values")
 		delete(r.TerraformResource.Schema, "replace_triggers_refs")
+		// disable scraped argument docs to prevent duplicate field
+		// descriptions in CRD schema as all fields have descriptions
+		// provided by their TF schema
+		r.MetaResource.ArgumentDocs = map[string]string{}
 	})
 	p.AddResourceConfigurator("azapi_resource_action", func(r *config.Resource) {
 		r.Kind = "ResourceAction"
 		r.ShortGroup = group
+		// disable scraped argument docs to prevent duplicate field
+		// descriptions in CRD schema as all fields have descriptions
+		// provided by their TF schema
+		r.MetaResource.ArgumentDocs = map[string]string{}
 	})
 	p.AddResourceConfigurator("azapi_update_resource", func(r *config.Resource) {
 		r.Kind = "UpdateResource"
@@ -38,5 +50,12 @@ func Configure(p *config.Provider) {
 		r.LateInitializer = config.LateInitializer{
 			IgnoredFields: []string{"name", "parent_id"},
 		}
+		// Following attributes trigger TF resource replacement, which is not
+		// supported per XRM in Crossplane.
+		delete(r.TerraformResource.Schema, "replace_triggers_external_values")
+		// disable scraped argument docs to prevent duplicate field
+		// descriptions in CRD schema as all fields have descriptions
+		// provided by their TF schema
+		r.MetaResource.ArgumentDocs = map[string]string{}
 	})
 }
