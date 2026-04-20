@@ -42,7 +42,7 @@ NPROCS ?= 1
 # to half the number of CPU cores.
 GO_TEST_PARALLEL := $(shell echo $$(( $(NPROCS) / 2 )))
 
-GO_REQUIRED_VERSION ?= 1.24
+GO_REQUIRED_VERSION ?= $(shell grep -E '^go ' go.mod | awk '{print $2}')
 # GOLANGCILINT_VERSION is inherited from build submodule by default.
 # Uncomment below if you need to override the version.
 GOLANGCILINT_VERSION ?= 2.8.0
