@@ -16,58 +16,45 @@ import (
 
 type DataPlaneResourceInitParameters struct {
 
-	// (Dynamic) A dynamic attribute that contains the request body.
 	// A dynamic attribute that contains the request body.
 	Body *v1.JSON `json:"body,omitempty" tf:"body,omitempty"`
 
-	// (Map of String) A mapping of headers to be sent with the create request.
 	// A mapping of headers to be sent with the create request.
 	// +mapType=granular
 	CreateHeaders map[string]*string `json:"createHeaders,omitempty" tf:"create_headers,omitempty"`
 
-	// (Map of List of String) A mapping of query parameters to be sent with the create request.
 	// A mapping of query parameters to be sent with the create request.
 	CreateQueryParameters map[string][]*string `json:"createQueryParameters,omitempty" tf:"create_query_parameters,omitempty"`
 
-	// (Map of String) A mapping of headers to be sent with the delete request.
 	// A mapping of headers to be sent with the delete request.
 	// +mapType=granular
 	DeleteHeaders map[string]*string `json:"deleteHeaders,omitempty" tf:"delete_headers,omitempty"`
 
-	// (Map of List of String) A mapping of query parameters to be sent with the delete request.
 	// A mapping of query parameters to be sent with the delete request.
 	DeleteQueryParameters map[string][]*string `json:"deleteQueryParameters,omitempty" tf:"delete_query_parameters,omitempty"`
 
-	// (Boolean) A dynamic attribute that contains the request body.
 	// A dynamic attribute that contains the request body.
 	IgnoreCasing *bool `json:"ignoreCasing,omitempty" tf:"ignore_casing,omitempty"`
 
-	// diff. Defaults to true. It's recommend to enable this option when some sensitive properties are not returned in response body, instead of setting them in lifecycle.ignore_changes because it will make the sensitive fields unable to update.
 	// Whether ignore not returned properties like credentials in `body` to suppress plan-diff. Defaults to `true`. It's recommend to enable this option when some sensitive properties are not returned in response body, instead of setting them in `lifecycle.ignore_changes` because it will make the sensitive fields unable to update.
 	IgnoreMissingProperty *bool `json:"ignoreMissingProperty,omitempty" tf:"ignore_missing_property,omitempty"`
 
-	// (List of String) A list of ARM resource IDs which are used to avoid create/modify/delete azapi resources at the same time.
 	// A list of ARM resource IDs which are used to avoid create/modify/delete azapi resources at the same time.
 	Locks []*string `json:"locks,omitempty" tf:"locks,omitempty"`
 
-	// (String) Specifies the name (identifier segment) of the data plane resource. Changing this forces a new resource to be created.
 	// Specifies the name of the Azure resource. Changing this forces a new resource to be created.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
-	// (String) The ID of the azure resource in which this resource is created. Changing this forces a new resource to be created.
 	// The ID of the azure resource in which this resource is created. Changing this forces a new resource to be created.
 	ParentID *string `json:"parentId,omitempty" tf:"parent_id,omitempty"`
 
-	// (Map of String) A mapping of headers to be sent with the read request.
 	// A mapping of headers to be sent with the read request.
 	// +mapType=granular
 	ReadHeaders map[string]*string `json:"readHeaders,omitempty" tf:"read_headers,omitempty"`
 
-	// (Map of List of String) A mapping of query parameters to be sent with the read request.
 	// A mapping of query parameters to be sent with the read request.
 	ReadQueryParameters map[string][]*string `json:"readQueryParameters,omitempty" tf:"read_query_parameters,omitempty"`
 
-	// (Dynamic) The attribute can accept either a list or a map.
 	// The attribute can accept either a list or a map.
 	//
 	// - **List**: A list of paths that need to be exported from the response body. Setting it to `["*"]` will export the full response body. Here's an example. If it sets to `["properties.loginServer", "properties.policies.quarantinePolicy.status"]`, it will set the following HCL object to the computed property output.
@@ -97,67 +84,52 @@ type DataPlaneResourceInitParameters struct {
 	// To learn more about JMESPath, visit [JMESPath](https://jmespath.org/).
 	ResponseExportValues *v1.JSON `json:"responseExportValues,omitempty" tf:"response_export_values,omitempty"`
 
-	// (Attributes) The retry object supports the following attributes: (see below for nested schema)
 	Retry *RetryInitParameters `json:"retry,omitempty" tf:"retry,omitempty"`
 
-	// type>@<api-version>. <resource-type> is the Azure resource type, for example, Microsoft.Storage/storageAccounts. <api-version> is version of the API used to manage this azure resource.
 	// In a format like `<resource-type>@<api-version>`. `<resource-type>` is the Azure resource type, for example, `Microsoft.Storage/storageAccounts`. `<api-version>` is version of the API used to manage this azure resource.
 	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 
-	// (Map of String) A mapping of headers to be sent with the update request.
 	// A mapping of headers to be sent with the update request.
 	// +mapType=granular
 	UpdateHeaders map[string]*string `json:"updateHeaders,omitempty" tf:"update_headers,omitempty"`
 
-	// (Map of List of String) A mapping of query parameters to be sent with the update request.
 	// A mapping of query parameters to be sent with the update request.
 	UpdateQueryParameters map[string][]*string `json:"updateQueryParameters,omitempty" tf:"update_query_parameters,omitempty"`
 }
 
 type DataPlaneResourceObservation struct {
 
-	// (Dynamic) A dynamic attribute that contains the request body.
 	// A dynamic attribute that contains the request body.
 	Body *v1.JSON `json:"body,omitempty" tf:"body,omitempty"`
 
-	// (Map of String) A mapping of headers to be sent with the create request.
 	// A mapping of headers to be sent with the create request.
 	// +mapType=granular
 	CreateHeaders map[string]*string `json:"createHeaders,omitempty" tf:"create_headers,omitempty"`
 
-	// (Map of List of String) A mapping of query parameters to be sent with the create request.
 	// A mapping of query parameters to be sent with the create request.
 	CreateQueryParameters map[string][]*string `json:"createQueryParameters,omitempty" tf:"create_query_parameters,omitempty"`
 
-	// (Map of String) A mapping of headers to be sent with the delete request.
 	// A mapping of headers to be sent with the delete request.
 	// +mapType=granular
 	DeleteHeaders map[string]*string `json:"deleteHeaders,omitempty" tf:"delete_headers,omitempty"`
 
-	// (Map of List of String) A mapping of query parameters to be sent with the delete request.
 	// A mapping of query parameters to be sent with the delete request.
 	DeleteQueryParameters map[string][]*string `json:"deleteQueryParameters,omitempty" tf:"delete_query_parameters,omitempty"`
 
-	// (String) The ID of the Azure resource.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
-	// (Boolean) A dynamic attribute that contains the request body.
 	// A dynamic attribute that contains the request body.
 	IgnoreCasing *bool `json:"ignoreCasing,omitempty" tf:"ignore_casing,omitempty"`
 
-	// diff. Defaults to true. It's recommend to enable this option when some sensitive properties are not returned in response body, instead of setting them in lifecycle.ignore_changes because it will make the sensitive fields unable to update.
 	// Whether ignore not returned properties like credentials in `body` to suppress plan-diff. Defaults to `true`. It's recommend to enable this option when some sensitive properties are not returned in response body, instead of setting them in `lifecycle.ignore_changes` because it will make the sensitive fields unable to update.
 	IgnoreMissingProperty *bool `json:"ignoreMissingProperty,omitempty" tf:"ignore_missing_property,omitempty"`
 
-	// (List of String) A list of ARM resource IDs which are used to avoid create/modify/delete azapi resources at the same time.
 	// A list of ARM resource IDs which are used to avoid create/modify/delete azapi resources at the same time.
 	Locks []*string `json:"locks,omitempty" tf:"locks,omitempty"`
 
-	// (String) Specifies the name (identifier segment) of the data plane resource. Changing this forces a new resource to be created.
 	// Specifies the name of the Azure resource. Changing this forces a new resource to be created.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
-	// (Dynamic) The output HCL object containing the properties specified in response_export_values. Here are some examples to use the values.
 	// The output HCL object containing the properties specified in `response_export_values`. Here are some examples to use the values.azurecr.io"
 	// output "login_server" {
 	// value = azapi_data_plane_resource.example.output.properties.loginServer
@@ -170,20 +142,16 @@ type DataPlaneResourceObservation struct {
 	// ```
 	Output *v1.JSON `json:"output,omitempty" tf:"output,omitempty"`
 
-	// (String) The ID of the azure resource in which this resource is created. Changing this forces a new resource to be created.
 	// The ID of the azure resource in which this resource is created. Changing this forces a new resource to be created.
 	ParentID *string `json:"parentId,omitempty" tf:"parent_id,omitempty"`
 
-	// (Map of String) A mapping of headers to be sent with the read request.
 	// A mapping of headers to be sent with the read request.
 	// +mapType=granular
 	ReadHeaders map[string]*string `json:"readHeaders,omitempty" tf:"read_headers,omitempty"`
 
-	// (Map of List of String) A mapping of query parameters to be sent with the read request.
 	// A mapping of query parameters to be sent with the read request.
 	ReadQueryParameters map[string][]*string `json:"readQueryParameters,omitempty" tf:"read_query_parameters,omitempty"`
 
-	// (Dynamic) The attribute can accept either a list or a map.
 	// The attribute can accept either a list or a map.
 	//
 	// - **List**: A list of paths that need to be exported from the response body. Setting it to `["*"]` will export the full response body. Here's an example. If it sets to `["properties.loginServer", "properties.policies.quarantinePolicy.status"]`, it will set the following HCL object to the computed property output.
@@ -213,89 +181,72 @@ type DataPlaneResourceObservation struct {
 	// To learn more about JMESPath, visit [JMESPath](https://jmespath.org/).
 	ResponseExportValues *v1.JSON `json:"responseExportValues,omitempty" tf:"response_export_values,omitempty"`
 
-	// (Attributes) The retry object supports the following attributes: (see below for nested schema)
 	Retry *RetryObservation `json:"retry,omitempty" tf:"retry,omitempty"`
 
-	// type>@<api-version>. <resource-type> is the Azure resource type, for example, Microsoft.Storage/storageAccounts. <api-version> is version of the API used to manage this azure resource.
 	// In a format like `<resource-type>@<api-version>`. `<resource-type>` is the Azure resource type, for example, `Microsoft.Storage/storageAccounts`. `<api-version>` is version of the API used to manage this azure resource.
 	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 
-	// (Map of String) A mapping of headers to be sent with the update request.
 	// A mapping of headers to be sent with the update request.
 	// +mapType=granular
 	UpdateHeaders map[string]*string `json:"updateHeaders,omitempty" tf:"update_headers,omitempty"`
 
-	// (Map of List of String) A mapping of query parameters to be sent with the update request.
 	// A mapping of query parameters to be sent with the update request.
 	UpdateQueryParameters map[string][]*string `json:"updateQueryParameters,omitempty" tf:"update_query_parameters,omitempty"`
 }
 
 type DataPlaneResourceParameters struct {
 
-	// (Dynamic) A dynamic attribute that contains the request body.
 	// A dynamic attribute that contains the request body.
 	// +kubebuilder:validation:Optional
 	Body *v1.JSON `json:"body,omitempty" tf:"body,omitempty"`
 
-	// (Map of String) A mapping of headers to be sent with the create request.
 	// A mapping of headers to be sent with the create request.
 	// +kubebuilder:validation:Optional
 	// +mapType=granular
 	CreateHeaders map[string]*string `json:"createHeaders,omitempty" tf:"create_headers,omitempty"`
 
-	// (Map of List of String) A mapping of query parameters to be sent with the create request.
 	// A mapping of query parameters to be sent with the create request.
 	// +kubebuilder:validation:Optional
 	CreateQueryParameters map[string][]*string `json:"createQueryParameters,omitempty" tf:"create_query_parameters,omitempty"`
 
-	// (Map of String) A mapping of headers to be sent with the delete request.
 	// A mapping of headers to be sent with the delete request.
 	// +kubebuilder:validation:Optional
 	// +mapType=granular
 	DeleteHeaders map[string]*string `json:"deleteHeaders,omitempty" tf:"delete_headers,omitempty"`
 
-	// (Map of List of String) A mapping of query parameters to be sent with the delete request.
 	// A mapping of query parameters to be sent with the delete request.
 	// +kubebuilder:validation:Optional
 	DeleteQueryParameters map[string][]*string `json:"deleteQueryParameters,omitempty" tf:"delete_query_parameters,omitempty"`
 
-	// (Boolean) A dynamic attribute that contains the request body.
 	// A dynamic attribute that contains the request body.
 	// +kubebuilder:validation:Optional
 	IgnoreCasing *bool `json:"ignoreCasing,omitempty" tf:"ignore_casing,omitempty"`
 
-	// diff. Defaults to true. It's recommend to enable this option when some sensitive properties are not returned in response body, instead of setting them in lifecycle.ignore_changes because it will make the sensitive fields unable to update.
 	// Whether ignore not returned properties like credentials in `body` to suppress plan-diff. Defaults to `true`. It's recommend to enable this option when some sensitive properties are not returned in response body, instead of setting them in `lifecycle.ignore_changes` because it will make the sensitive fields unable to update.
 	// +kubebuilder:validation:Optional
 	IgnoreMissingProperty *bool `json:"ignoreMissingProperty,omitempty" tf:"ignore_missing_property,omitempty"`
 
-	// (List of String) A list of ARM resource IDs which are used to avoid create/modify/delete azapi resources at the same time.
 	// A list of ARM resource IDs which are used to avoid create/modify/delete azapi resources at the same time.
 	// +kubebuilder:validation:Optional
 	Locks []*string `json:"locks,omitempty" tf:"locks,omitempty"`
 
-	// (String) Specifies the name (identifier segment) of the data plane resource. Changing this forces a new resource to be created.
 	// Specifies the name of the Azure resource. Changing this forces a new resource to be created.
 	// +kubebuilder:validation:Optional
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
-	// (String) The ID of the azure resource in which this resource is created. Changing this forces a new resource to be created.
 	// The ID of the azure resource in which this resource is created. Changing this forces a new resource to be created.
 	// +kubebuilder:validation:Optional
 	ParentID *string `json:"parentId,omitempty" tf:"parent_id,omitempty"`
 
-	// (Map of String) A mapping of headers to be sent with the read request.
 	// A mapping of headers to be sent with the read request.
 	// +kubebuilder:validation:Optional
 	// +mapType=granular
 	ReadHeaders map[string]*string `json:"readHeaders,omitempty" tf:"read_headers,omitempty"`
 
-	// (Map of List of String) A mapping of query parameters to be sent with the read request.
 	// A mapping of query parameters to be sent with the read request.
 	// +kubebuilder:validation:Optional
 	ReadQueryParameters map[string][]*string `json:"readQueryParameters,omitempty" tf:"read_query_parameters,omitempty"`
 
-	// (Dynamic) The attribute can accept either a list or a map.
 	// The attribute can accept either a list or a map.
 	//
 	// - **List**: A list of paths that need to be exported from the response body. Setting it to `["*"]` will export the full response body. Here's an example. If it sets to `["properties.loginServer", "properties.policies.quarantinePolicy.status"]`, it will set the following HCL object to the computed property output.
@@ -326,22 +277,18 @@ type DataPlaneResourceParameters struct {
 	// +kubebuilder:validation:Optional
 	ResponseExportValues *v1.JSON `json:"responseExportValues,omitempty" tf:"response_export_values,omitempty"`
 
-	// (Attributes) The retry object supports the following attributes: (see below for nested schema)
 	// +kubebuilder:validation:Optional
 	Retry *RetryParameters `json:"retry,omitempty" tf:"retry,omitempty"`
 
-	// type>@<api-version>. <resource-type> is the Azure resource type, for example, Microsoft.Storage/storageAccounts. <api-version> is version of the API used to manage this azure resource.
 	// In a format like `<resource-type>@<api-version>`. `<resource-type>` is the Azure resource type, for example, `Microsoft.Storage/storageAccounts`. `<api-version>` is version of the API used to manage this azure resource.
 	// +kubebuilder:validation:Optional
 	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 
-	// (Map of String) A mapping of headers to be sent with the update request.
 	// A mapping of headers to be sent with the update request.
 	// +kubebuilder:validation:Optional
 	// +mapType=granular
 	UpdateHeaders map[string]*string `json:"updateHeaders,omitempty" tf:"update_headers,omitempty"`
 
-	// (Map of List of String) A mapping of query parameters to be sent with the update request.
 	// A mapping of query parameters to be sent with the update request.
 	// +kubebuilder:validation:Optional
 	UpdateQueryParameters map[string][]*string `json:"updateQueryParameters,omitempty" tf:"update_query_parameters,omitempty"`
@@ -349,73 +296,58 @@ type DataPlaneResourceParameters struct {
 
 type RetryInitParameters struct {
 
-	// (List of String) A list of regular expressions to match against error messages. If any of the regular expressions match, the request will be retried.
 	// A list of regular expressions to match against error messages. If any of the regular expressions match, the request will be retried.
 	ErrorMessageRegex []*string `json:"errorMessageRegex,omitempty" tf:"error_message_regex,omitempty"`
 
-	// (Number) The base number of seconds to wait between retries. Default is 10.
 	// The base number of seconds to wait between retries. Default is `10`.
 	IntervalSeconds *float64 `json:"intervalSeconds,omitempty" tf:"interval_seconds,omitempty"`
 
-	// (Number) The maximum number of seconds to wait between retries. Default is 180.
 	// The maximum number of seconds to wait between retries. Default is `180`.
 	MaxIntervalSeconds *float64 `json:"maxIntervalSeconds,omitempty" tf:"max_interval_seconds,omitempty"`
 
-	// (Number, Deprecated) The multiplier to apply to the interval between retries. Default is 1.5.
 	// The multiplier to apply to the interval between retries. Default is `1.5`.
 	Multiplier *float64 `json:"multiplier,omitempty" tf:"multiplier,omitempty"`
 
-	// RandomizationFactor, 1 + RandomizationFactor]). Therefore set to zero 0.0 for no randomization. Default is 0.5.
 	// The randomization factor to apply to the interval between retries. The formula for the randomized interval is: `RetryInterval * (random value in range [1 - RandomizationFactor, 1 + RandomizationFactor])`. Therefore set to zero `0.0` for no randomization. Default is `0.5`.
 	RandomizationFactor *float64 `json:"randomizationFactor,omitempty" tf:"randomization_factor,omitempty"`
 }
 
 type RetryObservation struct {
 
-	// (List of String) A list of regular expressions to match against error messages. If any of the regular expressions match, the request will be retried.
 	// A list of regular expressions to match against error messages. If any of the regular expressions match, the request will be retried.
 	ErrorMessageRegex []*string `json:"errorMessageRegex,omitempty" tf:"error_message_regex,omitempty"`
 
-	// (Number) The base number of seconds to wait between retries. Default is 10.
 	// The base number of seconds to wait between retries. Default is `10`.
 	IntervalSeconds *float64 `json:"intervalSeconds,omitempty" tf:"interval_seconds,omitempty"`
 
-	// (Number) The maximum number of seconds to wait between retries. Default is 180.
 	// The maximum number of seconds to wait between retries. Default is `180`.
 	MaxIntervalSeconds *float64 `json:"maxIntervalSeconds,omitempty" tf:"max_interval_seconds,omitempty"`
 
-	// (Number, Deprecated) The multiplier to apply to the interval between retries. Default is 1.5.
 	// The multiplier to apply to the interval between retries. Default is `1.5`.
 	Multiplier *float64 `json:"multiplier,omitempty" tf:"multiplier,omitempty"`
 
-	// RandomizationFactor, 1 + RandomizationFactor]). Therefore set to zero 0.0 for no randomization. Default is 0.5.
 	// The randomization factor to apply to the interval between retries. The formula for the randomized interval is: `RetryInterval * (random value in range [1 - RandomizationFactor, 1 + RandomizationFactor])`. Therefore set to zero `0.0` for no randomization. Default is `0.5`.
 	RandomizationFactor *float64 `json:"randomizationFactor,omitempty" tf:"randomization_factor,omitempty"`
 }
 
 type RetryParameters struct {
 
-	// (List of String) A list of regular expressions to match against error messages. If any of the regular expressions match, the request will be retried.
 	// A list of regular expressions to match against error messages. If any of the regular expressions match, the request will be retried.
 	// +kubebuilder:validation:Optional
 	ErrorMessageRegex []*string `json:"errorMessageRegex" tf:"error_message_regex,omitempty"`
 
-	// (Number) The base number of seconds to wait between retries. Default is 10.
 	// The base number of seconds to wait between retries. Default is `10`.
 	// +kubebuilder:validation:Optional
 	IntervalSeconds *float64 `json:"intervalSeconds,omitempty" tf:"interval_seconds,omitempty"`
 
-	// (Number) The maximum number of seconds to wait between retries. Default is 180.
 	// The maximum number of seconds to wait between retries. Default is `180`.
 	// +kubebuilder:validation:Optional
 	MaxIntervalSeconds *float64 `json:"maxIntervalSeconds,omitempty" tf:"max_interval_seconds,omitempty"`
 
-	// (Number, Deprecated) The multiplier to apply to the interval between retries. Default is 1.5.
 	// The multiplier to apply to the interval between retries. Default is `1.5`.
 	// +kubebuilder:validation:Optional
 	Multiplier *float64 `json:"multiplier,omitempty" tf:"multiplier,omitempty"`
 
-	// RandomizationFactor, 1 + RandomizationFactor]). Therefore set to zero 0.0 for no randomization. Default is 0.5.
 	// The randomization factor to apply to the interval between retries. The formula for the randomized interval is: `RetryInterval * (random value in range [1 - RandomizationFactor, 1 + RandomizationFactor])`. Therefore set to zero `0.0` for no randomization. Default is `0.5`.
 	// +kubebuilder:validation:Optional
 	RandomizationFactor *float64 `json:"randomizationFactor,omitempty" tf:"randomization_factor,omitempty"`
