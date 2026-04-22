@@ -30,7 +30,7 @@ func Configure(p *config.Provider) {
 		r.ShortGroup = group
 		r.Version = versionV1Beta2
 		r.PreviousVersions = []string{versionV1Beta1}
-		r.ControllerReconcileVersion = versionV1Beta2
+		r.ControllerReconcileVersion = versionV1Beta2 //nolint:staticcheck // still handling the deprecated behavior until rollout
 		r.SetCRDStorageVersion(versionV1Beta1)
 		r.Conversions = r.Conversions[1:]
 		typeChangingPaths := []string{"body", "output", "responseExportValues"}
@@ -43,6 +43,10 @@ func Configure(p *config.Provider) {
 		// supported per XRM in Crossplane.
 		delete(r.TerraformResource.Schema, "replace_triggers_external_values")
 		delete(r.TerraformResource.Schema, "replace_triggers_refs")
+		// disable scraped argument docs to prevent duplicate field
+		// descriptions in CRD schema as all fields have descriptions
+		// provided by their TF schema
+		r.MetaResource.ArgumentDocs = map[string]string{}
 	})
 
 	p.AddResourceConfigurator("azapi_resource", func(r *config.Resource) {
@@ -50,7 +54,7 @@ func Configure(p *config.Provider) {
 		r.ShortGroup = group
 		r.Version = versionV1Beta2
 		r.PreviousVersions = []string{versionV1Beta1}
-		r.ControllerReconcileVersion = versionV1Beta2
+		r.ControllerReconcileVersion = versionV1Beta2 //nolint:staticcheck // still handling the deprecated behavior until rollout
 		r.SetCRDStorageVersion(versionV1Beta1)
 		r.Conversions = r.Conversions[1:]
 		typeChangingPaths := []string{"body", "output", "responseExportValues"}
@@ -63,6 +67,10 @@ func Configure(p *config.Provider) {
 		// supported per XRM in Crossplane.
 		delete(r.TerraformResource.Schema, "replace_triggers_external_values")
 		delete(r.TerraformResource.Schema, "replace_triggers_refs")
+		// disable scraped argument docs to prevent duplicate field
+		// descriptions in CRD schema as all fields have descriptions
+		// provided by their TF schema
+		r.MetaResource.ArgumentDocs = map[string]string{}
 	})
 
 	p.AddResourceConfigurator("azapi_resource_action", func(r *config.Resource) {
@@ -71,7 +79,7 @@ func Configure(p *config.Provider) {
 
 		r.Version = versionV1Beta2
 		r.PreviousVersions = []string{versionV1Beta1}
-		r.ControllerReconcileVersion = versionV1Beta2
+		r.ControllerReconcileVersion = versionV1Beta2 //nolint:staticcheck // still handling the deprecated behavior until rollout
 		r.SetCRDStorageVersion(versionV1Beta1)
 		r.Conversions = r.Conversions[1:]
 		typeChangingPaths := []string{"body", "output", "responseExportValues"}
@@ -80,6 +88,10 @@ func Configure(p *config.Provider) {
 			conversion.NewCustomConverter(versionV1Beta1, versionV1Beta2, resourceActionConverterFromv1beta1Tov1beta2),
 			conversion.NewCustomConverter(versionV1Beta2, versionV1Beta1, resourceActionConverterFromv1beta2Tov1beta1),
 		)
+		// disable scraped argument docs to prevent duplicate field
+		// descriptions in CRD schema as all fields have descriptions
+		// provided by their TF schema
+		r.MetaResource.ArgumentDocs = map[string]string{}
 	})
 
 	p.AddResourceConfigurator("azapi_update_resource", func(r *config.Resource) {
@@ -90,7 +102,7 @@ func Configure(p *config.Provider) {
 		}
 		r.Version = versionV1Beta2
 		r.PreviousVersions = []string{versionV1Beta1}
-		r.ControllerReconcileVersion = versionV1Beta2
+		r.ControllerReconcileVersion = versionV1Beta2 //nolint:staticcheck // still handling the deprecated behavior until rollout
 		r.SetCRDStorageVersion(versionV1Beta1)
 		r.Conversions = r.Conversions[1:]
 		typeChangingPaths := []string{"body", "output", "responseExportValues"}
@@ -99,6 +111,10 @@ func Configure(p *config.Provider) {
 			conversion.NewCustomConverter(versionV1Beta1, versionV1Beta2, updateResourceConverterFromv1beta1Tov1beta2),
 			conversion.NewCustomConverter(versionV1Beta2, versionV1Beta1, updateResourceConverterFromv1beta2Tov1beta1),
 		)
+		// disable scraped argument docs to prevent duplicate field
+		// descriptions in CRD schema as all fields have descriptions
+		// provided by their TF schema
+		r.MetaResource.ArgumentDocs = map[string]string{}
 	})
 }
 

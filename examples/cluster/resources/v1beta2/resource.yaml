@@ -5,6 +5,22 @@ metadata:
     meta.upbound.io/example-id: resources/v1beta2/resource
   labels:
     testing.upbound.io/example-name: example-container-registry
+  name: uptest-example-resource-group-cr
+spec:
+  forProvider:
+    body: {}
+    parentId: /subscriptions/${data.subscription_id}
+    location: West Europe
+    name: uptest-example-resource-group-cr
+    type: "Microsoft.Resources/resourceGroups@2021-04-01"
+---
+apiVersion: resources.azapi.upbound.io/v1beta2
+kind: Resource
+metadata:
+  annotations:
+    meta.upbound.io/example-id: resources/v1beta2/resource
+  labels:
+    testing.upbound.io/example-name: example-container-registry
   name: example-container-registry
 spec:
   forProvider:
@@ -17,11 +33,10 @@ spec:
       - type: SystemAssigned
     location: West Europe
     name: registrytestupbound
-    parentId: /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-resource-group
+    parentId: /subscriptions/${data.subscription_id}/resourceGroups/uptest-example-resource-group-cr
     responseExportValues:
     - properties.loginServer
     - properties.policies.quarantinePolicy.status
     tags:
       Key: Value
     type: Microsoft.ContainerRegistry/registries@2020-11-01-preview
-# This resource needs a valid parentId (resource group example id)
