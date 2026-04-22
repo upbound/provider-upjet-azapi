@@ -50,7 +50,7 @@ type DataPlaneResourceInitParameters struct {
 	// A list of ARM resource IDs which are used to avoid create/modify/delete azapi resources at the same time.
 	Locks []*string `json:"locks,omitempty" tf:"locks,omitempty"`
 
-	// (String) Specifies the name of the Azure resource. Changing this forces a new resource to be created.
+	// (String) Specifies the name (identifier segment) of the data plane resource. Changing this forces a new resource to be created.
 	// Specifies the name of the Azure resource. Changing this forces a new resource to be created.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
@@ -153,7 +153,7 @@ type DataPlaneResourceObservation struct {
 	// A list of ARM resource IDs which are used to avoid create/modify/delete azapi resources at the same time.
 	Locks []*string `json:"locks,omitempty" tf:"locks,omitempty"`
 
-	// (String) Specifies the name of the Azure resource. Changing this forces a new resource to be created.
+	// (String) Specifies the name (identifier segment) of the data plane resource. Changing this forces a new resource to be created.
 	// Specifies the name of the Azure resource. Changing this forces a new resource to be created.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
@@ -274,7 +274,7 @@ type DataPlaneResourceParameters struct {
 	// +kubebuilder:validation:Optional
 	Locks []*string `json:"locks,omitempty" tf:"locks,omitempty"`
 
-	// (String) Specifies the name of the Azure resource. Changing this forces a new resource to be created.
+	// (String) Specifies the name (identifier segment) of the data plane resource. Changing this forces a new resource to be created.
 	// Specifies the name of the Azure resource. Changing this forces a new resource to be created.
 	// +kubebuilder:validation:Optional
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`

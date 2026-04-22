@@ -3,7 +3,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.19.0
+    controller-gen.kubebuilder.io/version: v0.20.1
   name: dataplaneresources.resources.azapi.m.upbound.io
 spec:
   group: resources.azapi.m.upbound.io
@@ -117,7 +117,7 @@ spec:
                     type: array
                   name:
                     description: |-
-                      (String) Specifies the name of the Azure resource. Changing this forces a new resource to be created.
+                      (String) Specifies the name (identifier segment) of the data plane resource. Changing this forces a new resource to be created.
                       Specifies the name of the Azure resource. Changing this forces a new resource to be created.
                     type: string
                   parentId:
@@ -299,7 +299,7 @@ spec:
                     type: array
                   name:
                     description: |-
-                      (String) Specifies the name of the Azure resource. Changing this forces a new resource to be created.
+                      (String) Specifies the name (identifier segment) of the data plane resource. Changing this forces a new resource to be created.
                       Specifies the name of the Azure resource. Changing this forces a new resource to be created.
                     type: string
                   parentId:
@@ -547,7 +547,7 @@ spec:
                     type: array
                   name:
                     description: |-
-                      (String) Specifies the name of the Azure resource. Changing this forces a new resource to be created.
+                      (String) Specifies the name (identifier segment) of the data plane resource. Changing this forces a new resource to be created.
                       Specifies the name of the Azure resource. Changing this forces a new resource to be created.
                     type: string
                   output:
