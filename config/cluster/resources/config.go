@@ -30,7 +30,7 @@ func Configure(p *config.Provider) {
 		r.Version = versionV1Beta2
 		r.PreviousVersions = []string{versionV1Beta1}
 		r.ControllerReconcileVersion = versionV1Beta2 //nolint:staticcheck // still handling the deprecated behavior until rollout
-		r.SetCRDStorageVersion(versionV1Beta1)
+		r.SetCRDStorageVersion(r.Version)
 		r.Conversions = r.Conversions[1:]
 		typeChangingPaths := []string{"body", "output", "responseExportValues"}
 		r.Conversions = append(r.Conversions,
@@ -38,6 +38,14 @@ func Configure(p *config.Provider) {
 			conversion.NewCustomConverter(versionV1Beta1, versionV1Beta2, dataPlaneResourceConverterFromv1beta1Tov1beta2),
 			conversion.NewCustomConverter(versionV1Beta2, versionV1Beta1, dataPlaneResourceConverterFromv1beta2Tov1beta1),
 		)
+		if err := r.SetDeprecatedVersion("v1beta1",
+			config.VersionDeprecation{
+				Warning:            "This API version is deprecated.",
+				DeprecationRelease: "v2.1.0",
+			}); err != nil {
+			panic(err)
+		}
+
 		// Following attributes trigger TF resource replacement, which is not
 		// supported per XRM in Crossplane.
 		delete(r.TerraformResource.Schema, "replace_triggers_external_values")
@@ -54,7 +62,7 @@ func Configure(p *config.Provider) {
 		r.Version = versionV1Beta2
 		r.PreviousVersions = []string{versionV1Beta1}
 		r.ControllerReconcileVersion = versionV1Beta2 //nolint:staticcheck // still handling the deprecated behavior until rollout
-		r.SetCRDStorageVersion(versionV1Beta1)
+		r.SetCRDStorageVersion(r.Version)
 		r.Conversions = r.Conversions[1:]
 		typeChangingPaths := []string{"body", "output", "responseExportValues"}
 		r.Conversions = append(r.Conversions,
@@ -62,6 +70,13 @@ func Configure(p *config.Provider) {
 			conversion.NewCustomConverter(versionV1Beta1, versionV1Beta2, azapiResourceConverterFromv1beta1Tov1beta2),
 			conversion.NewCustomConverter(versionV1Beta2, versionV1Beta1, azapiResourceConverterFromv1beta2Tov1beta1),
 		)
+		if err := r.SetDeprecatedVersion("v1beta1",
+			config.VersionDeprecation{
+				Warning:            "This API version is deprecated.",
+				DeprecationRelease: "v2.1.0",
+			}); err != nil {
+			panic(err)
+		}
 		// Following attributes trigger TF resource replacement, which is not
 		// supported per XRM in Crossplane.
 		delete(r.TerraformResource.Schema, "replace_triggers_external_values")
@@ -79,7 +94,7 @@ func Configure(p *config.Provider) {
 		r.Version = versionV1Beta2
 		r.PreviousVersions = []string{versionV1Beta1}
 		r.ControllerReconcileVersion = versionV1Beta2 //nolint:staticcheck // still handling the deprecated behavior until rollout
-		r.SetCRDStorageVersion(versionV1Beta1)
+		r.SetCRDStorageVersion(r.Version)
 		r.Conversions = r.Conversions[1:]
 		typeChangingPaths := []string{"body", "output", "responseExportValues"}
 		r.Conversions = append(r.Conversions,
@@ -87,6 +102,13 @@ func Configure(p *config.Provider) {
 			conversion.NewCustomConverter(versionV1Beta1, versionV1Beta2, resourceActionConverterFromv1beta1Tov1beta2),
 			conversion.NewCustomConverter(versionV1Beta2, versionV1Beta1, resourceActionConverterFromv1beta2Tov1beta1),
 		)
+		if err := r.SetDeprecatedVersion("v1beta1",
+			config.VersionDeprecation{
+				Warning:            "This API version is deprecated.",
+				DeprecationRelease: "v2.1.0",
+			}); err != nil {
+			panic(err)
+		}
 		// disable scraped argument docs to prevent duplicate field
 		// descriptions in CRD schema as all fields have descriptions
 		// provided by their TF schema
@@ -102,7 +124,7 @@ func Configure(p *config.Provider) {
 		r.Version = versionV1Beta2
 		r.PreviousVersions = []string{versionV1Beta1}
 		r.ControllerReconcileVersion = versionV1Beta2 //nolint:staticcheck // still handling the deprecated behavior until rollout
-		r.SetCRDStorageVersion(versionV1Beta1)
+		r.SetCRDStorageVersion(r.Version)
 		r.Conversions = r.Conversions[1:]
 		typeChangingPaths := []string{"body", "output", "responseExportValues"}
 		r.Conversions = append(r.Conversions,
@@ -110,6 +132,13 @@ func Configure(p *config.Provider) {
 			conversion.NewCustomConverter(versionV1Beta1, versionV1Beta2, updateResourceConverterFromv1beta1Tov1beta2),
 			conversion.NewCustomConverter(versionV1Beta2, versionV1Beta1, updateResourceConverterFromv1beta2Tov1beta1),
 		)
+		if err := r.SetDeprecatedVersion("v1beta1",
+			config.VersionDeprecation{
+				Warning:            "This API version is deprecated.",
+				DeprecationRelease: "v2.1.0",
+			}); err != nil {
+			panic(err)
+		}
 		// Following attributes trigger TF resource replacement, which is not
 		// supported per XRM in Crossplane.
 		delete(r.TerraformResource.Schema, "replace_triggers_external_values")
