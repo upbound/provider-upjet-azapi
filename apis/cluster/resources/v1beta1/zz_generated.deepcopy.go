@@ -209,6 +209,27 @@ func (in *DataPlaneResourceInitParameters) DeepCopyInto(out *DataPlaneResourceIn
 		*out = new(RetryInitParameters)
 		(*in).DeepCopyInto(*out)
 	}
+	if in.SensitiveBody != nil {
+		in, out := &in.SensitiveBody, &out.SensitiveBody
+		*out = new(v1.JSON)
+		(*in).DeepCopyInto(*out)
+	}
+	if in.SensitiveBodyVersion != nil {
+		in, out := &in.SensitiveBodyVersion, &out.SensitiveBodyVersion
+		*out = make(map[string]*string, len(*in))
+		for key, val := range *in {
+			var outVal *string
+			if val == nil {
+				(*out)[key] = nil
+			} else {
+				inVal := (*in)[key]
+				in, out := &inVal, &outVal
+				*out = new(string)
+				**out = **in
+			}
+			(*out)[key] = outVal
+		}
+	}
 	if in.Type != nil {
 		in, out := &in.Type, &out.Type
 		*out = new(string)
@@ -722,8 +743,8 @@ func (in *DataPlaneResourceParameters) DeepCopyInto(out *DataPlaneResourceParame
 	}
 	if in.SensitiveBody != nil {
 		in, out := &in.SensitiveBody, &out.SensitiveBody
-		*out = new(string)
-		**out = **in
+		*out = new(v1.JSON)
+		(*in).DeepCopyInto(*out)
 	}
 	if in.SensitiveBodyVersion != nil {
 		in, out := &in.SensitiveBodyVersion, &out.SensitiveBodyVersion

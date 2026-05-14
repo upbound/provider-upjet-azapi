@@ -69,6 +69,13 @@ type DataPlaneResourceInitParameters struct {
 	// (Attributes) The retry object supports the following attributes: (see below for nested schema)
 	Retry *RetryInitParameters `json:"retry,omitempty" tf:"retry,omitempty"`
 
+	// A dynamic attribute that contains the write-only properties of the request body. This will be merge-patched to the body to construct the actual request body.
+	SensitiveBody *apiextv1.JSON `json:"sensitiveBody,omitempty" tf:"sensitive_body,omitempty"`
+
+	// A map where the key is the path to the property in `sensitive_body` and the value is the version of the property. The key is a string in the format of `path.to.property[index].subproperty`, where `index` is the index of the item in an array. When the version is changed, the property will be included in the request body, otherwise it will be omitted from the request body.
+	// +mapType=granular
+	SensitiveBodyVersion map[string]*string `json:"sensitiveBodyVersion,omitempty" tf:"sensitive_body_version,omitempty"`
+
 	// It is in a format like <resource-type>@<api-version>. <api-version> is version of the API used to manage this azure data plane resource.
 	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 
@@ -238,10 +245,9 @@ type DataPlaneResourceParameters struct {
 	// +kubebuilder:validation:Optional
 	Retry *RetryParameters `json:"retry,omitempty" tf:"retry,omitempty"`
 
-	// A JSON-encoded string that contains the request body.
-	// A JSON-encoded string that contains the write-only properties of the request body. This will be merge-patched to the body to construct the actual request body.
+	// A dynamic attribute that contains the write-only properties of the request body. This will be merge-patched to the body to construct the actual request body.
 	// +kubebuilder:validation:Optional
-	SensitiveBody *string `json:"sensitiveBody,omitempty" tf:"sensitive_body,omitempty"`
+	SensitiveBody *apiextv1.JSON `json:"sensitiveBody,omitempty" tf:"sensitive_body,omitempty"`
 
 	// A map where the key is the path to the property in `sensitive_body` and the value is the version of the property. The key is a string in the format of `path.to.property[index].subproperty`, where `index` is the index of the item in an array. When the version is changed, the property will be included in the request body, otherwise it will be omitted from the request body.
 	// +kubebuilder:validation:Optional
