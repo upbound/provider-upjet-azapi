@@ -410,6 +410,7 @@ type ResourceActionStatus struct {
 
 // +kubebuilder:object:root=true
 // +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
 // ResourceAction is the Schema for the ResourceActions API. This resource allows you to perform an action on an existing Azure resource.g., starting or stopping an Azure Virtual Machine.	Please note that when deleting this resource, no action will be performed on the Azure resource unless the when argument is set to destroy.
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
