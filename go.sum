@@ -61,8 +61,8 @@ github.com/crossplane/crossplane-runtime/v2 v2.2.0 h1:jLoQm9D5buk9lBqwRtQ40ueaFo
 github.com/crossplane/crossplane-runtime/v2 v2.2.0/go.mod h1:8I+x4w5bG4x8aO8ifF/QC8GZoNCN6v21NHzgoYPNYAQ=
 github.com/crossplane/crossplane-tools v0.0.0-20251017183449-dd4517244339 h1:MPbMxSlY+82UsjrLUAGyXlh/iX1tL5WNj8W9SOaq/nk=
 github.com/crossplane/crossplane-tools v0.0.0-20251017183449-dd4517244339/go.mod h1:8etxwmP4cZwJDwen4+PQlnc1tggltAhEfyyigmdHulQ=
-github.com/crossplane/upjet/v2 v2.2.1-0.20260414070754-c6d5213346ac h1:UTpdbFgBAcTesLtQvqp65dUueUzbcoydd0Ru6VLYH6I=
-github.com/crossplane/upjet/v2 v2.2.1-0.20260414070754-c6d5213346ac/go.mod h1:5Lxrd+g6r81gWPib3D8mAxvsQ81aieMs7jkhXtHFgmM=
+github.com/crossplane/upjet/v2 v2.2.1-0.20260517113542-0beea8e928de h1:fff9tIdd+k02/cAAFRoqLz2RE1Lhm8UhYZvDqNa7u6k=
+github.com/crossplane/upjet/v2 v2.2.1-0.20260517113542-0beea8e928de/go.mod h1:I8NuvZHSbskEUK2Ov/q9+MSHuS7rGkwiGUsaua3xleg=
 github.com/cyphar/filepath-securejoin v0.6.1 h1:5CeZ1jPXEiYt3+Z6zqprSAgSWiggmpVyciv8syjIpVE=
 github.com/cyphar/filepath-securejoin v0.6.1/go.mod h1:A8hd4EnAeyujCJRrICiOWqjS1AX0a9kM5XL+NwKoYSc=
 github.com/dave/jennifer v1.7.1 h1:B4jJJDHelWcDhlRQxWeo0Npa/pYKBLrirAQoTN45txo=
