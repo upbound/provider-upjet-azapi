@@ -10,7 +10,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1common "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
+	v2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 	v1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
 
@@ -378,8 +378,8 @@ type RetryParameters struct {
 
 // DataPlaneResourceSpec defines the desired state of DataPlaneResource
 type DataPlaneResourceSpec struct {
-	v1common.ResourceSpec `json:",inline"`
-	ForProvider           DataPlaneResourceParameters `json:"forProvider"`
+	v2.ClusterManagedResourceSpec `json:",inline"`
+	ForProvider                   DataPlaneResourceParameters `json:"forProvider"`
 	// THIS IS A BETA FIELD. It will be honored
 	// unless the Management Policies feature flag is disabled.
 	// InitProvider holds the same fields as ForProvider, with the exception
@@ -395,8 +395,8 @@ type DataPlaneResourceSpec struct {
 
 // DataPlaneResourceStatus defines the observed state of DataPlaneResource.
 type DataPlaneResourceStatus struct {
-	v1common.ResourceStatus `json:",inline"`
-	AtProvider              DataPlaneResourceObservation `json:"atProvider,omitempty"`
+	v2.ManagedResourceStatus `json:",inline"`
+	AtProvider               DataPlaneResourceObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true
