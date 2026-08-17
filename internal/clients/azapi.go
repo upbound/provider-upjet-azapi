@@ -10,6 +10,7 @@ import (
 
 	"github.com/Azure/terraform-provider-azapi/xpprovider"
 	"github.com/crossplane/crossplane-runtime/v2/pkg/resource"
+	xpv2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 	"github.com/crossplane/upjet/v2/pkg/terraform"
 	"github.com/pkg/errors"
 	"k8s.io/apimachinery/pkg/types"
@@ -34,48 +35,116 @@ const (
 	keyTerraformClientID       = "client_id"
 	keyTerraformClientSecret   = "client_secret"
 	keyTerraformTenantID       = "tenant_id"
+
+	// error messages and config keys specific to OIDC / Workload Identity
+	// Federation auth
+	errTenantIDNotSet    = "tenant ID must be set in ProviderConfig when credentials source is OIDCTokenFile"
+	errClientIDNotSet    = "client ID must be set in ProviderConfig when credentials source is OIDCTokenFile"
+	keyUseOIDC           = "use_oidc"
+	keyEnvironment       = "environment"
+	keyOidcTokenFilePath = "oidc_token_file_path"
+	// defaultOidcTokenFilePath is the path the Workload Identity mutating
+	// webhook projects the federated token to by default.
+	defaultOidcTokenFilePath = "/var/run/secrets/azure/tokens/azure-identity-token"
+)
+
+const (
+	credentialsSourceOIDCTokenFile xpv2.CredentialsSource = "OIDCTokenFile"
 )
 
 // TerraformSetupBuilder builds Terraform a terraform.SetupFn function which
 // returns Terraform provider setup configuration
 func TerraformSetupBuilder() terraform.SetupFn {
 	return func(ctx context.Context, client client.Client, mgx resource.Managed) (terraform.Setup, error) {
-		ps := terraform.Setup{}
+		ps := terraform.Setup{Configuration: map[string]any{}}
 
 		pcSpec, err := resolveProviderConfig(ctx, client, mgx)
 		if err != nil {
 			return terraform.Setup{}, err
 		}
 
-		data, err := resource.CommonCredentialExtractor(ctx, pcSpec.Credentials.Source, client, pcSpec.Credentials.CommonCredentialSelectors)
-		if err != nil {
-			return ps, errors.Wrap(err, errExtractCredentials)
+		switch pcSpec.Credentials.Source { //nolint:exhaustive
+		case credentialsSourceOIDCTokenFile:
+			err = oidcAuth(pcSpec, &ps)
+		default:
+			err = spAuth(ctx, pcSpec, &ps, client)
 		}
-		creds := map[string]string{}
-		if err := json.Unmarshal(data, &creds); err != nil {
-			return ps, errors.Wrap(err, errUnmarshalCredentials)
+		if err != nil {
+			return terraform.Setup{}, err
 		}
 
-		// set provider configuration
-		ps.Configuration = map[string]any{}
-		if v, ok := creds[keySubscriptionID]; ok {
-			ps.Configuration[keyTerraformSubscriptionID] = v
-		}
-		if v, ok := creds[keyClientID]; ok {
-			ps.Configuration[keyTerraformClientID] = v
-		}
-		if v, ok := creds[keyClientSecret]; ok {
-			ps.Configuration[keyTerraformClientSecret] = v
-		}
-		if v, ok := creds[keyTenantID]; ok {
-			ps.Configuration[keyTerraformTenantID] = v
-		}
+		applyCommonOverrides(pcSpec, &ps)
+
 		ps.FrameworkProvider, err = xpprovider.FrameworkProvider(ctx)
 		if err != nil {
 			return terraform.Setup{}, errors.Wrap(err, "error initializing the framework provider")
 		}
 		return ps, nil
 	}
+}
+
+// applyCommonOverrides applies ProviderConfigSpec fields that are common to
+// every credentials source. It is called once, after the credentials-source
+// switch in TerraformSetupBuilder, so that Environment and SubscriptionID are
+// honored regardless of which auth path populated ps.Configuration (e.g. so a
+// Secret-sourced setup can still opt into "usgovernment", and so
+// SubscriptionID can override the value extracted from a Secret if the user
+// explicitly sets it).
+func applyCommonOverrides(pcSpec *namespacedv1beta1.ProviderConfigSpec, ps *terraform.Setup) {
+	if pcSpec.Environment != nil && *pcSpec.Environment != "" {
+		ps.Configuration[keyEnvironment] = *pcSpec.Environment
+	}
+	if pcSpec.SubscriptionID != nil && *pcSpec.SubscriptionID != "" {
+		ps.Configuration[keyTerraformSubscriptionID] = *pcSpec.SubscriptionID
+	}
+}
+
+// spAuth populates ps.Configuration from the Secret/Environment/Filesystem/
+// None credential sources, using the CommonCredentialExtractor.
+func spAuth(ctx context.Context, pcSpec *namespacedv1beta1.ProviderConfigSpec, ps *terraform.Setup, crClient client.Client) error {
+	data, err := resource.CommonCredentialExtractor(ctx, pcSpec.Credentials.Source, crClient, pcSpec.Credentials.CommonCredentialSelectors)
+	if err != nil {
+		return errors.Wrap(err, errExtractCredentials)
+	}
+	creds := map[string]string{}
+	if err := json.Unmarshal(data, &creds); err != nil {
+		return errors.Wrap(err, errUnmarshalCredentials)
+	}
+
+	if v, ok := creds[keySubscriptionID]; ok {
+		ps.Configuration[keyTerraformSubscriptionID] = v
+	}
+	if v, ok := creds[keyClientID]; ok {
+		ps.Configuration[keyTerraformClientID] = v
+	}
+	if v, ok := creds[keyClientSecret]; ok {
+		ps.Configuration[keyTerraformClientSecret] = v
+	}
+	if v, ok := creds[keyTenantID]; ok {
+		ps.Configuration[keyTerraformTenantID] = v
+	}
+	return nil
+}
+
+// oidcAuth populates ps.Configuration for the OIDCTokenFile credential
+// source (Workload Identity Federation via a projected service-account
+// token file).
+func oidcAuth(pcSpec *namespacedv1beta1.ProviderConfigSpec, ps *terraform.Setup) error {
+	if pcSpec.TenantID == nil || len(*pcSpec.TenantID) == 0 {
+		return errors.New(errTenantIDNotSet)
+	}
+	if pcSpec.ClientID == nil || len(*pcSpec.ClientID) == 0 {
+		return errors.New(errClientIDNotSet)
+	}
+	ps.Configuration[keyUseOIDC] = true
+	tokenPath := defaultOidcTokenFilePath
+	if pcSpec.OidcTokenFilePath != nil && len(*pcSpec.OidcTokenFilePath) > 0 {
+		tokenPath = *pcSpec.OidcTokenFilePath
+	}
+	ps.Configuration[keyOidcTokenFilePath] = tokenPath
+	ps.Configuration[keyTerraformTenantID] = *pcSpec.TenantID
+	ps.Configuration[keyTerraformClientID] = *pcSpec.ClientID
+	return nil
 }
 
 func legacyToModernProviderConfigSpec(pc *clusterv1beta1.ProviderConfig) (*namespacedv1beta1.ProviderConfigSpec, error) {
