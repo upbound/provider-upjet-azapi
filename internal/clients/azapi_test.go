@@ -24,7 +24,11 @@ func strPtr(s string) *string { return &s }
 
 func TestOidcAuth(t *testing.T) {
 	cases := map[string]struct {
-		spec    *namespacedv1beta1.ProviderConfigSpec
+		spec *namespacedv1beta1.ProviderConfigSpec
+		// env is the value of AZURE_FEDERATED_TOKEN_FILE for the case. It is
+		// always applied via t.Setenv so the cases stay hermetic regardless of
+		// the environment the tests run in.
+		env     string
 		want    map[string]any
 		wantErr string
 	}{
@@ -69,6 +73,53 @@ func TestOidcAuth(t *testing.T) {
 				keyTerraformClientID: "client-1",
 			},
 		},
+		"FederatedTokenFileEnvPreferredOverDefault": {
+			// The Workload Identity webhook sets
+			// AZURE_FEDERATED_TOKEN_FILE to the path it actually projected
+			// the token to, which has moved between webhook releases, so it
+			// must win over the hardcoded default.
+			spec: &namespacedv1beta1.ProviderConfigSpec{
+				TenantID: strPtr("tenant-1"),
+				ClientID: strPtr("client-1"),
+			},
+			env: "/var/run/secrets/azure/tokens/injected-token",
+			want: map[string]any{
+				keyUseOIDC:           true,
+				keyOidcTokenFilePath: "/var/run/secrets/azure/tokens/injected-token",
+				keyTerraformTenantID: "tenant-1",
+				keyTerraformClientID: "client-1",
+			},
+		},
+		"ExplicitTokenPathWinsOverFederatedTokenFileEnv": {
+			spec: &namespacedv1beta1.ProviderConfigSpec{
+				TenantID:          strPtr("tenant-1"),
+				ClientID:          strPtr("client-1"),
+				OidcTokenFilePath: strPtr("/custom/path/token"),
+			},
+			env: "/var/run/secrets/azure/tokens/injected-token",
+			want: map[string]any{
+				keyUseOIDC:           true,
+				keyOidcTokenFilePath: "/custom/path/token",
+				keyTerraformTenantID: "tenant-1",
+				keyTerraformClientID: "client-1",
+			},
+		},
+		"EmptyTokenPathFallsBackToFederatedTokenFileEnv": {
+			// An empty-string OidcTokenFilePath is treated as unset, so the
+			// env var still takes precedence over the hardcoded default.
+			spec: &namespacedv1beta1.ProviderConfigSpec{
+				TenantID:          strPtr("tenant-1"),
+				ClientID:          strPtr("client-1"),
+				OidcTokenFilePath: strPtr(""),
+			},
+			env: "/var/run/secrets/azure/tokens/injected-token",
+			want: map[string]any{
+				keyUseOIDC:           true,
+				keyOidcTokenFilePath: "/var/run/secrets/azure/tokens/injected-token",
+				keyTerraformTenantID: "tenant-1",
+				keyTerraformClientID: "client-1",
+			},
+		},
 		"SubscriptionIDNotAppliedByOidcAuthDirectly": {
 			// SubscriptionID is applied centrally by applyCommonOverrides in
 			// TerraformSetupBuilder, not by oidcAuth itself.
@@ -96,6 +147,9 @@ func TestOidcAuth(t *testing.T) {
 
 	for name, tc := range cases {
 		t.Run(name, func(t *testing.T) {
+			// Always set the variable, empty included, so a value leaking in
+			// from the ambient environment cannot change the outcome.
+			t.Setenv(envAzureFederatedTokenFile, tc.env)
 			ps := &terraform.Setup{Configuration: map[string]any{}}
 			err := oidcAuth(tc.spec, ps)
 			if tc.wantErr != "" {

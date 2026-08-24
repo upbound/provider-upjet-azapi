@@ -7,6 +7,7 @@ package clients
 import (
 	"context"
 	"encoding/json"
+	"os"
 
 	"github.com/Azure/terraform-provider-azapi/xpprovider"
 	"github.com/crossplane/crossplane-runtime/v2/pkg/resource"
@@ -46,6 +47,12 @@ const (
 	// defaultOidcTokenFilePath is the path the Workload Identity mutating
 	// webhook projects the federated token to by default.
 	defaultOidcTokenFilePath = "/var/run/secrets/azure/tokens/azure-identity-token"
+	// envAzureFederatedTokenFile is the environment variable the Azure
+	// Workload Identity mutating webhook sets on injected pods to the path it
+	// actually projected the federated token to. That path has changed
+	// between webhook releases, so it is a more reliable source than
+	// defaultOidcTokenFilePath.
+	envAzureFederatedTokenFile = "AZURE_FEDERATED_TOKEN_FILE"
 )
 
 const (
@@ -137,7 +144,14 @@ func oidcAuth(pcSpec *namespacedv1beta1.ProviderConfigSpec, ps *terraform.Setup)
 		return errors.New(errClientIDNotSet)
 	}
 	ps.Configuration[keyUseOIDC] = true
+	// An explicit spec.oidcTokenFilePath always wins. Otherwise prefer
+	// AZURE_FEDERATED_TOKEN_FILE, which the Azure Workload Identity webhook
+	// sets to wherever it actually projected the token, falling back to the
+	// historical hardcoded default only when that variable is unset.
 	tokenPath := defaultOidcTokenFilePath
+	if v := os.Getenv(envAzureFederatedTokenFile); len(v) > 0 {
+		tokenPath = v
+	}
 	if pcSpec.OidcTokenFilePath != nil && len(*pcSpec.OidcTokenFilePath) > 0 {
 		tokenPath = *pcSpec.OidcTokenFilePath
 	}

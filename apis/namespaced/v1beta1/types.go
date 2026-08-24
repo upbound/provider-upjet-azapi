@@ -37,7 +37,10 @@ type ProviderConfigSpec struct {
 	// OidcTokenFilePath is the path to the file containing the OIDC/federated
 	// identity token, projected into the pod by the Workload Identity
 	// mutating webhook. Only used if Credentials.Source is OIDCTokenFile.
-	// Defaults to "/var/run/secrets/azure/tokens/azure-identity-token".
+	// If unset, the AZURE_FEDERATED_TOKEN_FILE environment variable is used,
+	// which the Azure Workload Identity webhook sets to the path it projected
+	// the token to. If that is also unset, it defaults to
+	// "/var/run/secrets/azure/tokens/azure-identity-token".
 	// +kubebuilder:validation:Optional
 	OidcTokenFilePath *string `json:"oidcTokenFilePath,omitempty"`
 
