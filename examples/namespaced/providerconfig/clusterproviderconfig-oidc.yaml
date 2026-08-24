@@ -1,0 +1,15 @@
+apiVersion: azapi.m.upbound.io/v1beta1
+kind: ClusterProviderConfig
+metadata:
+  name: default-oidc
+spec:
+  credentials:
+    source: OIDCTokenFile
+  tenantID: "00000000-0000-0000-0000-000000000000"
+  clientID: "11111111-1111-1111-1111-111111111111"
+  # oidcTokenFilePath is optional. When unset, the provider uses the
+  # AZURE_FEDERATED_TOKEN_FILE environment variable, which the Azure Workload
+  # Identity mutating webhook sets on injected pods to the path it projected
+  # the federated token to. If that variable is not set either, it falls back
+  # to /var/run/secrets/azure/tokens/azure-identity-token. Set this field only
+  # to pin a specific path.
