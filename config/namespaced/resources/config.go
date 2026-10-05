@@ -31,6 +31,8 @@ func Configure(p *config.Provider) {
 		// supported per XRM in Crossplane.
 		delete(r.TerraformResource.Schema, "replace_triggers_external_values")
 		delete(r.TerraformResource.Schema, "replace_triggers_refs")
+		// Following write-only attribute is moved to status.
+		config.MoveToStatus(r.TerraformResource, "ignore_body_changes")
 		// disable scraped argument docs to prevent duplicate field
 		// descriptions in CRD schema as all fields have descriptions
 		// provided by their TF schema
@@ -39,6 +41,10 @@ func Configure(p *config.Provider) {
 	p.AddResourceConfigurator("azapi_resource_action", func(r *config.Resource) {
 		r.Kind = "ResourceAction"
 		r.ShortGroup = group
+		// Following write-only attribute and its version are moved to status.
+		// Marking sensitive_body sensitive drops it from the status schema.
+		r.TerraformResource.Schema["sensitive_body"].Sensitive = true
+		config.MoveToStatus(r.TerraformResource, "sensitive_body", "sensitive_body_version")
 		// disable scraped argument docs to prevent duplicate field
 		// descriptions in CRD schema as all fields have descriptions
 		// provided by their TF schema

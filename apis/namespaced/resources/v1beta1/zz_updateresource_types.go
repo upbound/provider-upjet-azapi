@@ -14,15 +14,44 @@ import (
 	v1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
 
+type ReadOverrideInitParameters struct {
+
+	// The name of the action appended to the resource ID, for example `list`.
+	Action *string `json:"action,omitempty" tf:"action,omitempty"`
+
+	// The HTTP method used to read the resource. The only supported value is `POST`.
+	Method *string `json:"method,omitempty" tf:"method,omitempty"`
+}
+
+type ReadOverrideObservation struct {
+
+	// The name of the action appended to the resource ID, for example `list`.
+	Action *string `json:"action,omitempty" tf:"action,omitempty"`
+
+	// The HTTP method used to read the resource. The only supported value is `POST`.
+	Method *string `json:"method,omitempty" tf:"method,omitempty"`
+}
+
+type ReadOverrideParameters struct {
+
+	// The name of the action appended to the resource ID, for example `list`.
+	// +kubebuilder:validation:Optional
+	Action *string `json:"action" tf:"action,omitempty"`
+
+	// The HTTP method used to read the resource. The only supported value is `POST`.
+	// +kubebuilder:validation:Optional
+	Method *string `json:"method" tf:"method,omitempty"`
+}
+
 type UpdateResourceInitParameters struct {
 
 	// A dynamic attribute that contains the request body.
 	Body *v1.JSON `json:"body,omitempty" tf:"body,omitempty"`
 
-	// Whether ignore the casing of the property names in the response body. Defaults to `false`.
+	// Whether ignore the casing of the property names in the response body.
 	IgnoreCasing *bool `json:"ignoreCasing,omitempty" tf:"ignore_casing,omitempty"`
 
-	// Whether ignore not returned properties like credentials in `body` to suppress plan-diff. Defaults to `true`. It's recommend to enable this option when some sensitive properties are not returned in response body, instead of setting them in `lifecycle.ignore_changes` because it will make the sensitive fields unable to update.
+	// Whether ignore not returned properties like credentials in `body` to suppress plan-diff. It's recommend to enable this option when some sensitive properties are not returned in response body, instead of setting them in `lifecycle.ignore_changes` because it will make the sensitive fields unable to update.
 	IgnoreMissingProperty *bool `json:"ignoreMissingProperty,omitempty" tf:"ignore_missing_property,omitempty"`
 
 	// A list of list property paths where items not specified in configuration should be ignored. This is intended for partial list management when combined with `list_unique_id_property` (for example, to avoid perpetual drift from server-side ordering).
@@ -54,6 +83,8 @@ type UpdateResourceInitParameters struct {
 	// A mapping of headers to be sent with the read request.
 	// +mapType=granular
 	ReadHeaders map[string]*string `json:"readHeaders,omitempty" tf:"read_headers,omitempty"`
+
+	ReadOverride *ReadOverrideInitParameters `json:"readOverride,omitempty" tf:"read_override,omitempty"`
 
 	// A mapping of query parameters to be sent with the read request.
 	ReadQueryParameters map[string][]*string `json:"readQueryParameters,omitempty" tf:"read_query_parameters,omitempty"`
@@ -92,7 +123,7 @@ type UpdateResourceInitParameters struct {
 
 	Retry *UpdateResourceRetryInitParameters `json:"retry,omitempty" tf:"retry,omitempty"`
 
-	// A dynamic attribute that contains the write-only properties of the request body. This will be merge-patched to the body to construct the actual request body.
+	// A dynamic attribute that contains the write-only properties of the request body. This will be merge-patched to the body to construct the actual request body. If a property is defined in both `body` and `sensitive_body`, the `sensitive_body` value takes precedence.
 	SensitiveBody *v1.JSON `json:"sensitiveBody,omitempty" tf:"sensitive_body,omitempty"`
 
 	// A map where the key is the path to the property in `sensitive_body` and the value is the version of the property. The key is a string in the format of `path.to.property[index].subproperty`, where `index` is the index of the item in an array. When the version is changed, the property will be included in the request body, otherwise it will be omitted from the request body.
@@ -117,10 +148,10 @@ type UpdateResourceObservation struct {
 
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
-	// Whether ignore the casing of the property names in the response body. Defaults to `false`.
+	// Whether ignore the casing of the property names in the response body.
 	IgnoreCasing *bool `json:"ignoreCasing,omitempty" tf:"ignore_casing,omitempty"`
 
-	// Whether ignore not returned properties like credentials in `body` to suppress plan-diff. Defaults to `true`. It's recommend to enable this option when some sensitive properties are not returned in response body, instead of setting them in `lifecycle.ignore_changes` because it will make the sensitive fields unable to update.
+	// Whether ignore not returned properties like credentials in `body` to suppress plan-diff. It's recommend to enable this option when some sensitive properties are not returned in response body, instead of setting them in `lifecycle.ignore_changes` because it will make the sensitive fields unable to update.
 	IgnoreMissingProperty *bool `json:"ignoreMissingProperty,omitempty" tf:"ignore_missing_property,omitempty"`
 
 	// A list of list property paths where items not specified in configuration should be ignored. This is intended for partial list management when combined with `list_unique_id_property` (for example, to avoid perpetual drift from server-side ordering).
@@ -165,6 +196,8 @@ type UpdateResourceObservation struct {
 	// +mapType=granular
 	ReadHeaders map[string]*string `json:"readHeaders,omitempty" tf:"read_headers,omitempty"`
 
+	ReadOverride *ReadOverrideObservation `json:"readOverride,omitempty" tf:"read_override,omitempty"`
+
 	// A mapping of query parameters to be sent with the read request.
 	ReadQueryParameters map[string][]*string `json:"readQueryParameters,omitempty" tf:"read_query_parameters,omitempty"`
 
@@ -202,7 +235,7 @@ type UpdateResourceObservation struct {
 
 	Retry *UpdateResourceRetryObservation `json:"retry,omitempty" tf:"retry,omitempty"`
 
-	// A dynamic attribute that contains the write-only properties of the request body. This will be merge-patched to the body to construct the actual request body.
+	// A dynamic attribute that contains the write-only properties of the request body. This will be merge-patched to the body to construct the actual request body. If a property is defined in both `body` and `sensitive_body`, the `sensitive_body` value takes precedence.
 	SensitiveBody *v1.JSON `json:"sensitiveBody,omitempty" tf:"sensitive_body,omitempty"`
 
 	// A map where the key is the path to the property in `sensitive_body` and the value is the version of the property. The key is a string in the format of `path.to.property[index].subproperty`, where `index` is the index of the item in an array. When the version is changed, the property will be included in the request body, otherwise it will be omitted from the request body.
@@ -226,11 +259,11 @@ type UpdateResourceParameters struct {
 	// +kubebuilder:validation:Optional
 	Body *v1.JSON `json:"body,omitempty" tf:"body,omitempty"`
 
-	// Whether ignore the casing of the property names in the response body. Defaults to `false`.
+	// Whether ignore the casing of the property names in the response body.
 	// +kubebuilder:validation:Optional
 	IgnoreCasing *bool `json:"ignoreCasing,omitempty" tf:"ignore_casing,omitempty"`
 
-	// Whether ignore not returned properties like credentials in `body` to suppress plan-diff. Defaults to `true`. It's recommend to enable this option when some sensitive properties are not returned in response body, instead of setting them in `lifecycle.ignore_changes` because it will make the sensitive fields unable to update.
+	// Whether ignore not returned properties like credentials in `body` to suppress plan-diff. It's recommend to enable this option when some sensitive properties are not returned in response body, instead of setting them in `lifecycle.ignore_changes` because it will make the sensitive fields unable to update.
 	// +kubebuilder:validation:Optional
 	IgnoreMissingProperty *bool `json:"ignoreMissingProperty,omitempty" tf:"ignore_missing_property,omitempty"`
 
@@ -269,6 +302,9 @@ type UpdateResourceParameters struct {
 	// +kubebuilder:validation:Optional
 	// +mapType=granular
 	ReadHeaders map[string]*string `json:"readHeaders,omitempty" tf:"read_headers,omitempty"`
+
+	// +kubebuilder:validation:Optional
+	ReadOverride *ReadOverrideParameters `json:"readOverride,omitempty" tf:"read_override,omitempty"`
 
 	// A mapping of query parameters to be sent with the read request.
 	// +kubebuilder:validation:Optional
@@ -311,7 +347,7 @@ type UpdateResourceParameters struct {
 	// +kubebuilder:validation:Optional
 	Retry *UpdateResourceRetryParameters `json:"retry,omitempty" tf:"retry,omitempty"`
 
-	// A dynamic attribute that contains the write-only properties of the request body. This will be merge-patched to the body to construct the actual request body.
+	// A dynamic attribute that contains the write-only properties of the request body. This will be merge-patched to the body to construct the actual request body. If a property is defined in both `body` and `sensitive_body`, the `sensitive_body` value takes precedence.
 	// +kubebuilder:validation:Optional
 	SensitiveBody *v1.JSON `json:"sensitiveBody,omitempty" tf:"sensitive_body,omitempty"`
 
@@ -339,16 +375,16 @@ type UpdateResourceRetryInitParameters struct {
 	// A list of regular expressions to match against error messages. If any of the regular expressions match, the request will be retried.
 	ErrorMessageRegex []*string `json:"errorMessageRegex,omitempty" tf:"error_message_regex,omitempty"`
 
-	// The base number of seconds to wait between retries. Default is `10`.
+	// The base number of seconds to wait between retries.
 	IntervalSeconds *float64 `json:"intervalSeconds,omitempty" tf:"interval_seconds,omitempty"`
 
-	// The maximum number of seconds to wait between retries. Default is `180`.
+	// The maximum number of seconds to wait between retries.
 	MaxIntervalSeconds *float64 `json:"maxIntervalSeconds,omitempty" tf:"max_interval_seconds,omitempty"`
 
-	// The multiplier to apply to the interval between retries. Default is `1.5`.
+	// The multiplier to apply to the interval between retries.
 	Multiplier *float64 `json:"multiplier,omitempty" tf:"multiplier,omitempty"`
 
-	// The randomization factor to apply to the interval between retries. The formula for the randomized interval is: `RetryInterval * (random value in range [1 - RandomizationFactor, 1 + RandomizationFactor])`. Therefore set to zero `0.0` for no randomization. Default is `0.5`.
+	// The randomization factor to apply to the interval between retries. The formula for the randomized interval is: `RetryInterval * (random value in range [1 - RandomizationFactor, 1 + RandomizationFactor])`. Therefore set to zero `0.0` for no randomization.
 	RandomizationFactor *float64 `json:"randomizationFactor,omitempty" tf:"randomization_factor,omitempty"`
 }
 
@@ -357,16 +393,16 @@ type UpdateResourceRetryObservation struct {
 	// A list of regular expressions to match against error messages. If any of the regular expressions match, the request will be retried.
 	ErrorMessageRegex []*string `json:"errorMessageRegex,omitempty" tf:"error_message_regex,omitempty"`
 
-	// The base number of seconds to wait between retries. Default is `10`.
+	// The base number of seconds to wait between retries.
 	IntervalSeconds *float64 `json:"intervalSeconds,omitempty" tf:"interval_seconds,omitempty"`
 
-	// The maximum number of seconds to wait between retries. Default is `180`.
+	// The maximum number of seconds to wait between retries.
 	MaxIntervalSeconds *float64 `json:"maxIntervalSeconds,omitempty" tf:"max_interval_seconds,omitempty"`
 
-	// The multiplier to apply to the interval between retries. Default is `1.5`.
+	// The multiplier to apply to the interval between retries.
 	Multiplier *float64 `json:"multiplier,omitempty" tf:"multiplier,omitempty"`
 
-	// The randomization factor to apply to the interval between retries. The formula for the randomized interval is: `RetryInterval * (random value in range [1 - RandomizationFactor, 1 + RandomizationFactor])`. Therefore set to zero `0.0` for no randomization. Default is `0.5`.
+	// The randomization factor to apply to the interval between retries. The formula for the randomized interval is: `RetryInterval * (random value in range [1 - RandomizationFactor, 1 + RandomizationFactor])`. Therefore set to zero `0.0` for no randomization.
 	RandomizationFactor *float64 `json:"randomizationFactor,omitempty" tf:"randomization_factor,omitempty"`
 }
 
@@ -376,19 +412,19 @@ type UpdateResourceRetryParameters struct {
 	// +kubebuilder:validation:Optional
 	ErrorMessageRegex []*string `json:"errorMessageRegex" tf:"error_message_regex,omitempty"`
 
-	// The base number of seconds to wait between retries. Default is `10`.
+	// The base number of seconds to wait between retries.
 	// +kubebuilder:validation:Optional
 	IntervalSeconds *float64 `json:"intervalSeconds,omitempty" tf:"interval_seconds,omitempty"`
 
-	// The maximum number of seconds to wait between retries. Default is `180`.
+	// The maximum number of seconds to wait between retries.
 	// +kubebuilder:validation:Optional
 	MaxIntervalSeconds *float64 `json:"maxIntervalSeconds,omitempty" tf:"max_interval_seconds,omitempty"`
 
-	// The multiplier to apply to the interval between retries. Default is `1.5`.
+	// The multiplier to apply to the interval between retries.
 	// +kubebuilder:validation:Optional
 	Multiplier *float64 `json:"multiplier,omitempty" tf:"multiplier,omitempty"`
 
-	// The randomization factor to apply to the interval between retries. The formula for the randomized interval is: `RetryInterval * (random value in range [1 - RandomizationFactor, 1 + RandomizationFactor])`. Therefore set to zero `0.0` for no randomization. Default is `0.5`.
+	// The randomization factor to apply to the interval between retries. The formula for the randomized interval is: `RetryInterval * (random value in range [1 - RandomizationFactor, 1 + RandomizationFactor])`. Therefore set to zero `0.0` for no randomization.
 	// +kubebuilder:validation:Optional
 	RandomizationFactor *float64 `json:"randomizationFactor,omitempty" tf:"randomization_factor,omitempty"`
 }
@@ -420,7 +456,7 @@ type UpdateResourceStatus struct {
 // +kubebuilder:subresource:status
 // +kubebuilder:storageversion
 
-// UpdateResource is the Schema for the UpdateResources API. This resource can manage a subset of any existing Azure resource manager resource's properties. -> Note This resource is used to add or modify properties on an existing resource. When azapi_update_resource is deleted, no operation will be performed, and these properties will stay unchanged. If you want to restore the modified properties to some values, you must apply the restored properties before deleting.
+// UpdateResource is the Schema for the UpdateResources API. This resource can manage a subset of any existing Azure resource manager resource's properties.
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"

@@ -136,6 +136,10 @@ type ResourceActionObservation struct {
 	// (Attributes) The retry object supports the following attributes: (see below for nested schema)
 	Retry *ResourceActionRetryObservation `json:"retry,omitempty" tf:"retry,omitempty"`
 
+	// A map where the key is the path to the property in `sensitive_body` and the value is the version of the property. The key is a string in the format of `path.to.property[index].subproperty`, where `index` is the index of the item in an array. When the version is changed, the property will be included in the request body, otherwise it will be omitted from the request body.
+	// +mapType=granular
+	SensitiveBodyVersion map[string]*string `json:"sensitiveBodyVersion,omitempty" tf:"sensitive_body_version,omitempty"`
+
 	// (Dynamic) The attribute can accept either a list or a map.
 	// The attribute can accept either a list or a map.
 	//

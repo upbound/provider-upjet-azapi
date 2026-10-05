@@ -21,7 +21,7 @@ func (mg *ResourceAction) GetTerraformResourceType() string {
 
 // GetConnectionDetailsMapping for this ResourceAction
 func (tr *ResourceAction) GetConnectionDetailsMapping() map[string]string {
-	return map[string]string{"sensitive_output": "status.atProvider.sensitiveOutput"}
+	return map[string]string{"sensitive_body": "status.atProvider.sensitiveBody", "sensitive_output": "status.atProvider.sensitiveOutput"}
 }
 
 // GetObservation of this ResourceAction
@@ -125,5 +125,5 @@ func (tr *ResourceAction) LateInitialize(attrs []byte) (bool, error) {
 
 // GetTerraformSchemaVersion returns the associated Terraform schema version
 func (tr *ResourceAction) GetTerraformSchemaVersion() int {
-	return 2
+	return 3
 }

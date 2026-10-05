@@ -182,6 +182,9 @@ type ResourceObservation struct {
 	// A identity block as defined below.
 	Identity []IdentityObservation `json:"identity,omitempty" tf:"identity,omitempty"`
 
+	// A list of paths in the resource body whose changes should be ignored.ignore_changes` when possible. Use this argument only when the paths must be derived from variables or other non-static values. Changes to this argument take effect only after an apply because its value is stored in provider-private state. Paths use dot notation, for example `properties.sku.name`. Individual list items cannot be targeted, ignore the entire list property instead. Configuration changes at an ignored path will not be sent to Azure until that path is removed from this list.11 or later.
+	IgnoreBodyChanges []*string `json:"ignoreBodyChanges,omitempty" tf:"ignore_body_changes,omitempty"`
+
 	// Whether ignore incorrect casing returned in body to suppress plan-diff. Defaults to false.
 	IgnoreCasing *bool `json:"ignoreCasing,omitempty" tf:"ignore_casing,omitempty"`
 

@@ -22,7 +22,7 @@ type ResourceActionInitParameters struct {
 	// A dynamic attribute that contains the request body.
 	Body *v1.JSON `json:"body,omitempty" tf:"body,omitempty"`
 
-	// A map of headers to include in the request
+	// A map of headers to include in the request.
 	// +mapType=granular
 	Headers map[string]*string `json:"headers,omitempty" tf:"headers,omitempty"`
 
@@ -32,10 +32,10 @@ type ResourceActionInitParameters struct {
 	// A list of ARM resource IDs which are used to avoid create/modify/delete azapi resources at the same time.
 	Locks []*string `json:"locks,omitempty" tf:"locks,omitempty"`
 
-	// Specifies the HTTP method of the azure resource action. Allowed values are `POST`, `PATCH`, `PUT` and `DELETE`. Defaults to `POST`.
+	// Specifies the HTTP method of the azure resource action.
 	Method *string `json:"method,omitempty" tf:"method,omitempty"`
 
-	// A map of query parameters to include in the request
+	// A map of query parameters to include in the request.
 	QueryParameters map[string][]*string `json:"queryParameters,omitempty" tf:"query_parameters,omitempty"`
 
 	// The ID of an existing Azure source.
@@ -104,7 +104,7 @@ type ResourceActionInitParameters struct {
 	// In a format like `<resource-type>@<api-version>`. `<resource-type>` is the Azure resource type, for example, `Microsoft.Storage/storageAccounts`. `<api-version>` is version of the API used to manage this azure resource.
 	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 
-	// When to perform the action, value must be one of: `apply`, `destroy`. Default is `apply`.
+	// When to perform the action.
 	When *string `json:"when,omitempty" tf:"when,omitempty"`
 }
 
@@ -119,7 +119,7 @@ type ResourceActionObservation struct {
 	// Indicates whether the resource action was successfully performed.
 	Exist *bool `json:"exist,omitempty" tf:"exist,omitempty"`
 
-	// A map of headers to include in the request
+	// A map of headers to include in the request.
 	// +mapType=granular
 	Headers map[string]*string `json:"headers,omitempty" tf:"headers,omitempty"`
 
@@ -131,7 +131,7 @@ type ResourceActionObservation struct {
 	// A list of ARM resource IDs which are used to avoid create/modify/delete azapi resources at the same time.
 	Locks []*string `json:"locks,omitempty" tf:"locks,omitempty"`
 
-	// Specifies the HTTP method of the azure resource action. Allowed values are `POST`, `PATCH`, `PUT` and `DELETE`. Defaults to `POST`.
+	// Specifies the HTTP method of the azure resource action.
 	Method *string `json:"method,omitempty" tf:"method,omitempty"`
 
 	// The output HCL object containing the properties specified in `response_export_values`. Here are some examples to use the values.azurecr.io"
@@ -146,7 +146,7 @@ type ResourceActionObservation struct {
 	// ```
 	Output *v1.JSON `json:"output,omitempty" tf:"output,omitempty"`
 
-	// A map of query parameters to include in the request
+	// A map of query parameters to include in the request.
 	QueryParameters map[string][]*string `json:"queryParameters,omitempty" tf:"query_parameters,omitempty"`
 
 	// The ID of an existing Azure source.
@@ -183,6 +183,10 @@ type ResourceActionObservation struct {
 
 	Retry *ResourceActionRetryObservation `json:"retry,omitempty" tf:"retry,omitempty"`
 
+	// A map where the key is the path to the property in `sensitive_body` and the value is the version of the property. The key is a string in the format of `path.to.property[index].subproperty`, where `index` is the index of the item in an array. When the version is changed, the property will be included in the request body, otherwise it will be omitted from the request body.
+	// +mapType=granular
+	SensitiveBodyVersion map[string]*string `json:"sensitiveBodyVersion,omitempty" tf:"sensitive_body_version,omitempty"`
+
 	// The attribute can accept either a list or a map.
 	//
 	// - **List**: A list of paths that need to be exported from the response body. Setting it to `["*"]` will export the full response body. Here's an example. If it sets to `["properties.loginServer", "properties.policies.quarantinePolicy.status"]`, it will set the following HCL object to the computed property output.
@@ -215,7 +219,7 @@ type ResourceActionObservation struct {
 	// In a format like `<resource-type>@<api-version>`. `<resource-type>` is the Azure resource type, for example, `Microsoft.Storage/storageAccounts`. `<api-version>` is version of the API used to manage this azure resource.
 	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 
-	// When to perform the action, value must be one of: `apply`, `destroy`. Default is `apply`.
+	// When to perform the action.
 	When *string `json:"when,omitempty" tf:"when,omitempty"`
 }
 
@@ -229,7 +233,7 @@ type ResourceActionParameters struct {
 	// +kubebuilder:validation:Optional
 	Body *v1.JSON `json:"body,omitempty" tf:"body,omitempty"`
 
-	// A map of headers to include in the request
+	// A map of headers to include in the request.
 	// +kubebuilder:validation:Optional
 	// +mapType=granular
 	Headers map[string]*string `json:"headers,omitempty" tf:"headers,omitempty"`
@@ -242,11 +246,11 @@ type ResourceActionParameters struct {
 	// +kubebuilder:validation:Optional
 	Locks []*string `json:"locks,omitempty" tf:"locks,omitempty"`
 
-	// Specifies the HTTP method of the azure resource action. Allowed values are `POST`, `PATCH`, `PUT` and `DELETE`. Defaults to `POST`.
+	// Specifies the HTTP method of the azure resource action.
 	// +kubebuilder:validation:Optional
 	Method *string `json:"method,omitempty" tf:"method,omitempty"`
 
-	// A map of query parameters to include in the request
+	// A map of query parameters to include in the request.
 	// +kubebuilder:validation:Optional
 	QueryParameters map[string][]*string `json:"queryParameters,omitempty" tf:"query_parameters,omitempty"`
 
@@ -321,7 +325,7 @@ type ResourceActionParameters struct {
 	// +kubebuilder:validation:Optional
 	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 
-	// When to perform the action, value must be one of: `apply`, `destroy`. Default is `apply`.
+	// When to perform the action.
 	// +kubebuilder:validation:Optional
 	When *string `json:"when,omitempty" tf:"when,omitempty"`
 }
@@ -331,16 +335,16 @@ type ResourceActionRetryInitParameters struct {
 	// A list of regular expressions to match against error messages. If any of the regular expressions match, the request will be retried.
 	ErrorMessageRegex []*string `json:"errorMessageRegex,omitempty" tf:"error_message_regex,omitempty"`
 
-	// The base number of seconds to wait between retries. Default is `10`.
+	// The base number of seconds to wait between retries.
 	IntervalSeconds *float64 `json:"intervalSeconds,omitempty" tf:"interval_seconds,omitempty"`
 
-	// The maximum number of seconds to wait between retries. Default is `180`.
+	// The maximum number of seconds to wait between retries.
 	MaxIntervalSeconds *float64 `json:"maxIntervalSeconds,omitempty" tf:"max_interval_seconds,omitempty"`
 
-	// The multiplier to apply to the interval between retries. Default is `1.5`.
+	// The multiplier to apply to the interval between retries.
 	Multiplier *float64 `json:"multiplier,omitempty" tf:"multiplier,omitempty"`
 
-	// The randomization factor to apply to the interval between retries. The formula for the randomized interval is: `RetryInterval * (random value in range [1 - RandomizationFactor, 1 + RandomizationFactor])`. Therefore set to zero `0.0` for no randomization. Default is `0.5`.
+	// The randomization factor to apply to the interval between retries. The formula for the randomized interval is: `RetryInterval * (random value in range [1 - RandomizationFactor, 1 + RandomizationFactor])`. Therefore set to zero `0.0` for no randomization.
 	RandomizationFactor *float64 `json:"randomizationFactor,omitempty" tf:"randomization_factor,omitempty"`
 }
 
@@ -349,16 +353,16 @@ type ResourceActionRetryObservation struct {
 	// A list of regular expressions to match against error messages. If any of the regular expressions match, the request will be retried.
 	ErrorMessageRegex []*string `json:"errorMessageRegex,omitempty" tf:"error_message_regex,omitempty"`
 
-	// The base number of seconds to wait between retries. Default is `10`.
+	// The base number of seconds to wait between retries.
 	IntervalSeconds *float64 `json:"intervalSeconds,omitempty" tf:"interval_seconds,omitempty"`
 
-	// The maximum number of seconds to wait between retries. Default is `180`.
+	// The maximum number of seconds to wait between retries.
 	MaxIntervalSeconds *float64 `json:"maxIntervalSeconds,omitempty" tf:"max_interval_seconds,omitempty"`
 
-	// The multiplier to apply to the interval between retries. Default is `1.5`.
+	// The multiplier to apply to the interval between retries.
 	Multiplier *float64 `json:"multiplier,omitempty" tf:"multiplier,omitempty"`
 
-	// The randomization factor to apply to the interval between retries. The formula for the randomized interval is: `RetryInterval * (random value in range [1 - RandomizationFactor, 1 + RandomizationFactor])`. Therefore set to zero `0.0` for no randomization. Default is `0.5`.
+	// The randomization factor to apply to the interval between retries. The formula for the randomized interval is: `RetryInterval * (random value in range [1 - RandomizationFactor, 1 + RandomizationFactor])`. Therefore set to zero `0.0` for no randomization.
 	RandomizationFactor *float64 `json:"randomizationFactor,omitempty" tf:"randomization_factor,omitempty"`
 }
 
@@ -368,19 +372,19 @@ type ResourceActionRetryParameters struct {
 	// +kubebuilder:validation:Optional
 	ErrorMessageRegex []*string `json:"errorMessageRegex" tf:"error_message_regex,omitempty"`
 
-	// The base number of seconds to wait between retries. Default is `10`.
+	// The base number of seconds to wait between retries.
 	// +kubebuilder:validation:Optional
 	IntervalSeconds *float64 `json:"intervalSeconds,omitempty" tf:"interval_seconds,omitempty"`
 
-	// The maximum number of seconds to wait between retries. Default is `180`.
+	// The maximum number of seconds to wait between retries.
 	// +kubebuilder:validation:Optional
 	MaxIntervalSeconds *float64 `json:"maxIntervalSeconds,omitempty" tf:"max_interval_seconds,omitempty"`
 
-	// The multiplier to apply to the interval between retries. Default is `1.5`.
+	// The multiplier to apply to the interval between retries.
 	// +kubebuilder:validation:Optional
 	Multiplier *float64 `json:"multiplier,omitempty" tf:"multiplier,omitempty"`
 
-	// The randomization factor to apply to the interval between retries. The formula for the randomized interval is: `RetryInterval * (random value in range [1 - RandomizationFactor, 1 + RandomizationFactor])`. Therefore set to zero `0.0` for no randomization. Default is `0.5`.
+	// The randomization factor to apply to the interval between retries. The formula for the randomized interval is: `RetryInterval * (random value in range [1 - RandomizationFactor, 1 + RandomizationFactor])`. Therefore set to zero `0.0` for no randomization.
 	// +kubebuilder:validation:Optional
 	RandomizationFactor *float64 `json:"randomizationFactor,omitempty" tf:"randomization_factor,omitempty"`
 }
@@ -412,7 +416,7 @@ type ResourceActionStatus struct {
 // +kubebuilder:subresource:status
 // +kubebuilder:storageversion
 
-// ResourceAction is the Schema for the ResourceActions API. This resource allows you to perform an action on an existing Azure resource.g., starting or stopping an Azure Virtual Machine.	Please note that when deleting this resource, no action will be performed on the Azure resource unless the when argument is set to destroy.
+// ResourceAction is the Schema for the ResourceActions API. This resource allows you to perform an action on an existing Azure resource.g., starting or stopping an Azure Virtual Machine. Please note that when deleting this resource, no action will be performed on the Azure resource unless the
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"

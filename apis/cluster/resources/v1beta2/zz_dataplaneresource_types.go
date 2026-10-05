@@ -36,7 +36,7 @@ type DataPlaneResourceInitParameters struct {
 	// A dynamic attribute that contains the request body.
 	IgnoreCasing *bool `json:"ignoreCasing,omitempty" tf:"ignore_casing,omitempty"`
 
-	// Whether ignore not returned properties like credentials in `body` to suppress plan-diff. Defaults to `true`. It's recommend to enable this option when some sensitive properties are not returned in response body, instead of setting them in `lifecycle.ignore_changes` because it will make the sensitive fields unable to update.
+	// Whether ignore not returned properties like credentials in `body` to suppress plan-diff. It's recommend to enable this option when some sensitive properties are not returned in response body, instead of setting them in `lifecycle.ignore_changes` because it will make the sensitive fields unable to update.
 	IgnoreMissingProperty *bool `json:"ignoreMissingProperty,omitempty" tf:"ignore_missing_property,omitempty"`
 
 	// A list of ARM resource IDs which are used to avoid create/modify/delete azapi resources at the same time.
@@ -86,14 +86,14 @@ type DataPlaneResourceInitParameters struct {
 
 	Retry *RetryInitParameters `json:"retry,omitempty" tf:"retry,omitempty"`
 
-	// A dynamic attribute that contains the write-only properties of the request body. This will be merge-patched to the body to construct the actual request body.
+	// A dynamic attribute that contains the write-only properties of the request body. This will be merge-patched to the body to construct the actual request body. If a property is defined in both `body` and `sensitive_body`, the `sensitive_body` value takes precedence.
 	SensitiveBody *v1.JSON `json:"sensitiveBody,omitempty" tf:"sensitive_body,omitempty"`
 
 	// A map where the key is the path to the property in `sensitive_body` and the value is the version of the property. The key is a string in the format of `path.to.property[index].subproperty`, where `index` is the index of the item in an array. When the version is changed, the property will be included in the request body, otherwise it will be omitted from the request body.
 	// +mapType=granular
 	SensitiveBodyVersion map[string]*string `json:"sensitiveBodyVersion,omitempty" tf:"sensitive_body_version,omitempty"`
 
-	// In a format like `<resource-type>@<api-version>`. `<resource-type>` is the Azure resource type, for example, `Microsoft.Storage/storageAccounts`. `<api-version>` is version of the API used to manage this azure resource.
+	// In a format like `<resource-type>@<api-version>`. `<resource-type>` is the Azure resource type, for example, `Microsoft.Storage/storageAccounts`. `<api-version>` is version of the API used to manage this azure resource. For a list of supported data plane resource types, see the [Available Resources](https://registry.io/providers/Azure/azapi/latest/docs/resources/data_plane_resource#available-resources) documentation.
 	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 
 	// A mapping of headers to be sent with the update request.
@@ -128,7 +128,7 @@ type DataPlaneResourceObservation struct {
 	// A dynamic attribute that contains the request body.
 	IgnoreCasing *bool `json:"ignoreCasing,omitempty" tf:"ignore_casing,omitempty"`
 
-	// Whether ignore not returned properties like credentials in `body` to suppress plan-diff. Defaults to `true`. It's recommend to enable this option when some sensitive properties are not returned in response body, instead of setting them in `lifecycle.ignore_changes` because it will make the sensitive fields unable to update.
+	// Whether ignore not returned properties like credentials in `body` to suppress plan-diff. It's recommend to enable this option when some sensitive properties are not returned in response body, instead of setting them in `lifecycle.ignore_changes` because it will make the sensitive fields unable to update.
 	IgnoreMissingProperty *bool `json:"ignoreMissingProperty,omitempty" tf:"ignore_missing_property,omitempty"`
 
 	// A list of ARM resource IDs which are used to avoid create/modify/delete azapi resources at the same time.
@@ -190,14 +190,14 @@ type DataPlaneResourceObservation struct {
 
 	Retry *RetryObservation `json:"retry,omitempty" tf:"retry,omitempty"`
 
-	// A dynamic attribute that contains the write-only properties of the request body. This will be merge-patched to the body to construct the actual request body.
+	// A dynamic attribute that contains the write-only properties of the request body. This will be merge-patched to the body to construct the actual request body. If a property is defined in both `body` and `sensitive_body`, the `sensitive_body` value takes precedence.
 	SensitiveBody *v1.JSON `json:"sensitiveBody,omitempty" tf:"sensitive_body,omitempty"`
 
 	// A map where the key is the path to the property in `sensitive_body` and the value is the version of the property. The key is a string in the format of `path.to.property[index].subproperty`, where `index` is the index of the item in an array. When the version is changed, the property will be included in the request body, otherwise it will be omitted from the request body.
 	// +mapType=granular
 	SensitiveBodyVersion map[string]*string `json:"sensitiveBodyVersion,omitempty" tf:"sensitive_body_version,omitempty"`
 
-	// In a format like `<resource-type>@<api-version>`. `<resource-type>` is the Azure resource type, for example, `Microsoft.Storage/storageAccounts`. `<api-version>` is version of the API used to manage this azure resource.
+	// In a format like `<resource-type>@<api-version>`. `<resource-type>` is the Azure resource type, for example, `Microsoft.Storage/storageAccounts`. `<api-version>` is version of the API used to manage this azure resource. For a list of supported data plane resource types, see the [Available Resources](https://registry.io/providers/Azure/azapi/latest/docs/resources/data_plane_resource#available-resources) documentation.
 	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 
 	// A mapping of headers to be sent with the update request.
@@ -236,7 +236,7 @@ type DataPlaneResourceParameters struct {
 	// +kubebuilder:validation:Optional
 	IgnoreCasing *bool `json:"ignoreCasing,omitempty" tf:"ignore_casing,omitempty"`
 
-	// Whether ignore not returned properties like credentials in `body` to suppress plan-diff. Defaults to `true`. It's recommend to enable this option when some sensitive properties are not returned in response body, instead of setting them in `lifecycle.ignore_changes` because it will make the sensitive fields unable to update.
+	// Whether ignore not returned properties like credentials in `body` to suppress plan-diff. It's recommend to enable this option when some sensitive properties are not returned in response body, instead of setting them in `lifecycle.ignore_changes` because it will make the sensitive fields unable to update.
 	// +kubebuilder:validation:Optional
 	IgnoreMissingProperty *bool `json:"ignoreMissingProperty,omitempty" tf:"ignore_missing_property,omitempty"`
 
@@ -294,7 +294,7 @@ type DataPlaneResourceParameters struct {
 	// +kubebuilder:validation:Optional
 	Retry *RetryParameters `json:"retry,omitempty" tf:"retry,omitempty"`
 
-	// A dynamic attribute that contains the write-only properties of the request body. This will be merge-patched to the body to construct the actual request body.
+	// A dynamic attribute that contains the write-only properties of the request body. This will be merge-patched to the body to construct the actual request body. If a property is defined in both `body` and `sensitive_body`, the `sensitive_body` value takes precedence.
 	// +kubebuilder:validation:Optional
 	SensitiveBody *v1.JSON `json:"sensitiveBody,omitempty" tf:"sensitive_body,omitempty"`
 
@@ -303,7 +303,7 @@ type DataPlaneResourceParameters struct {
 	// +mapType=granular
 	SensitiveBodyVersion map[string]*string `json:"sensitiveBodyVersion,omitempty" tf:"sensitive_body_version,omitempty"`
 
-	// In a format like `<resource-type>@<api-version>`. `<resource-type>` is the Azure resource type, for example, `Microsoft.Storage/storageAccounts`. `<api-version>` is version of the API used to manage this azure resource.
+	// In a format like `<resource-type>@<api-version>`. `<resource-type>` is the Azure resource type, for example, `Microsoft.Storage/storageAccounts`. `<api-version>` is version of the API used to manage this azure resource. For a list of supported data plane resource types, see the [Available Resources](https://registry.io/providers/Azure/azapi/latest/docs/resources/data_plane_resource#available-resources) documentation.
 	// +kubebuilder:validation:Optional
 	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 
@@ -322,16 +322,16 @@ type RetryInitParameters struct {
 	// A list of regular expressions to match against error messages. If any of the regular expressions match, the request will be retried.
 	ErrorMessageRegex []*string `json:"errorMessageRegex,omitempty" tf:"error_message_regex,omitempty"`
 
-	// The base number of seconds to wait between retries. Default is `10`.
+	// The base number of seconds to wait between retries.
 	IntervalSeconds *float64 `json:"intervalSeconds,omitempty" tf:"interval_seconds,omitempty"`
 
-	// The maximum number of seconds to wait between retries. Default is `180`.
+	// The maximum number of seconds to wait between retries.
 	MaxIntervalSeconds *float64 `json:"maxIntervalSeconds,omitempty" tf:"max_interval_seconds,omitempty"`
 
-	// The multiplier to apply to the interval between retries. Default is `1.5`.
+	// The multiplier to apply to the interval between retries.
 	Multiplier *float64 `json:"multiplier,omitempty" tf:"multiplier,omitempty"`
 
-	// The randomization factor to apply to the interval between retries. The formula for the randomized interval is: `RetryInterval * (random value in range [1 - RandomizationFactor, 1 + RandomizationFactor])`. Therefore set to zero `0.0` for no randomization. Default is `0.5`.
+	// The randomization factor to apply to the interval between retries. The formula for the randomized interval is: `RetryInterval * (random value in range [1 - RandomizationFactor, 1 + RandomizationFactor])`. Therefore set to zero `0.0` for no randomization.
 	RandomizationFactor *float64 `json:"randomizationFactor,omitempty" tf:"randomization_factor,omitempty"`
 }
 
@@ -340,16 +340,16 @@ type RetryObservation struct {
 	// A list of regular expressions to match against error messages. If any of the regular expressions match, the request will be retried.
 	ErrorMessageRegex []*string `json:"errorMessageRegex,omitempty" tf:"error_message_regex,omitempty"`
 
-	// The base number of seconds to wait between retries. Default is `10`.
+	// The base number of seconds to wait between retries.
 	IntervalSeconds *float64 `json:"intervalSeconds,omitempty" tf:"interval_seconds,omitempty"`
 
-	// The maximum number of seconds to wait between retries. Default is `180`.
+	// The maximum number of seconds to wait between retries.
 	MaxIntervalSeconds *float64 `json:"maxIntervalSeconds,omitempty" tf:"max_interval_seconds,omitempty"`
 
-	// The multiplier to apply to the interval between retries. Default is `1.5`.
+	// The multiplier to apply to the interval between retries.
 	Multiplier *float64 `json:"multiplier,omitempty" tf:"multiplier,omitempty"`
 
-	// The randomization factor to apply to the interval between retries. The formula for the randomized interval is: `RetryInterval * (random value in range [1 - RandomizationFactor, 1 + RandomizationFactor])`. Therefore set to zero `0.0` for no randomization. Default is `0.5`.
+	// The randomization factor to apply to the interval between retries. The formula for the randomized interval is: `RetryInterval * (random value in range [1 - RandomizationFactor, 1 + RandomizationFactor])`. Therefore set to zero `0.0` for no randomization.
 	RandomizationFactor *float64 `json:"randomizationFactor,omitempty" tf:"randomization_factor,omitempty"`
 }
 
@@ -359,19 +359,19 @@ type RetryParameters struct {
 	// +kubebuilder:validation:Optional
 	ErrorMessageRegex []*string `json:"errorMessageRegex" tf:"error_message_regex,omitempty"`
 
-	// The base number of seconds to wait between retries. Default is `10`.
+	// The base number of seconds to wait between retries.
 	// +kubebuilder:validation:Optional
 	IntervalSeconds *float64 `json:"intervalSeconds,omitempty" tf:"interval_seconds,omitempty"`
 
-	// The maximum number of seconds to wait between retries. Default is `180`.
+	// The maximum number of seconds to wait between retries.
 	// +kubebuilder:validation:Optional
 	MaxIntervalSeconds *float64 `json:"maxIntervalSeconds,omitempty" tf:"max_interval_seconds,omitempty"`
 
-	// The multiplier to apply to the interval between retries. Default is `1.5`.
+	// The multiplier to apply to the interval between retries.
 	// +kubebuilder:validation:Optional
 	Multiplier *float64 `json:"multiplier,omitempty" tf:"multiplier,omitempty"`
 
-	// The randomization factor to apply to the interval between retries. The formula for the randomized interval is: `RetryInterval * (random value in range [1 - RandomizationFactor, 1 + RandomizationFactor])`. Therefore set to zero `0.0` for no randomization. Default is `0.5`.
+	// The randomization factor to apply to the interval between retries. The formula for the randomized interval is: `RetryInterval * (random value in range [1 - RandomizationFactor, 1 + RandomizationFactor])`. Therefore set to zero `0.0` for no randomization.
 	// +kubebuilder:validation:Optional
 	RandomizationFactor *float64 `json:"randomizationFactor,omitempty" tf:"randomization_factor,omitempty"`
 }
