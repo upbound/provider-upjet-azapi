@@ -14,6 +14,35 @@ import (
 	apiextv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
 
+type ReadOverrideInitParameters struct {
+
+	// The name of the action appended to the resource ID, for example `list`.
+	Action *string `json:"action,omitempty" tf:"action,omitempty"`
+
+	// The HTTP method used to read the resource. The only supported value is `POST`.
+	Method *string `json:"method,omitempty" tf:"method,omitempty"`
+}
+
+type ReadOverrideObservation struct {
+
+	// The name of the action appended to the resource ID, for example `list`.
+	Action *string `json:"action,omitempty" tf:"action,omitempty"`
+
+	// The HTTP method used to read the resource. The only supported value is `POST`.
+	Method *string `json:"method,omitempty" tf:"method,omitempty"`
+}
+
+type ReadOverrideParameters struct {
+
+	// The name of the action appended to the resource ID, for example `list`.
+	// +kubebuilder:validation:Optional
+	Action *string `json:"action" tf:"action,omitempty"`
+
+	// The HTTP method used to read the resource. The only supported value is `POST`.
+	// +kubebuilder:validation:Optional
+	Method *string `json:"method" tf:"method,omitempty"`
+}
+
 type UpdateResourceInitParameters struct {
 
 	// A JSON object that contains the request body used to add on an existing azure resource.
@@ -45,6 +74,8 @@ type UpdateResourceInitParameters struct {
 	// A mapping of headers to be sent with the read request.
 	// +mapType=granular
 	ReadHeaders map[string]*string `json:"readHeaders,omitempty" tf:"read_headers,omitempty"`
+
+	ReadOverride *ReadOverrideInitParameters `json:"readOverride,omitempty" tf:"read_override,omitempty"`
 
 	// (Map of List of String) A mapping of query parameters to be sent with the read request.
 	// A mapping of query parameters to be sent with the read request.
@@ -121,6 +152,8 @@ type UpdateResourceObservation struct {
 	// A mapping of headers to be sent with the read request.
 	// +mapType=granular
 	ReadHeaders map[string]*string `json:"readHeaders,omitempty" tf:"read_headers,omitempty"`
+
+	ReadOverride *ReadOverrideObservation `json:"readOverride,omitempty" tf:"read_override,omitempty"`
 
 	// (Map of List of String) A mapping of query parameters to be sent with the read request.
 	// A mapping of query parameters to be sent with the read request.
@@ -200,6 +233,9 @@ type UpdateResourceParameters struct {
 	// +kubebuilder:validation:Optional
 	// +mapType=granular
 	ReadHeaders map[string]*string `json:"readHeaders,omitempty" tf:"read_headers,omitempty"`
+
+	// +kubebuilder:validation:Optional
+	ReadOverride *ReadOverrideParameters `json:"readOverride,omitempty" tf:"read_override,omitempty"`
 
 	// (Map of List of String) A mapping of query parameters to be sent with the read request.
 	// A mapping of query parameters to be sent with the read request.
