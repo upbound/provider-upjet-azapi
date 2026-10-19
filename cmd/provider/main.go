@@ -263,6 +263,16 @@ func main() {
 		oc.ChangeLogOptions = &clo
 		ons.ChangeLogOptions = &clo
 	}
+
+	// Webhooks are registered eagerly on all pods before mgr.Start() so that
+	// every replica (leader and followers alike) can serve conversion requests.
+	// Reconciler setup is deferred to the gate and only runs on the leader.
+	startWebhooks := *certsDir != ""
+	if startWebhooks {
+		kingpin.FatalIfError(controllercluster.SetupWebhookWithManager(mgr), "Cannot setup cluster-scoped webhooks")
+		kingpin.FatalIfError(controllernamespaced.SetupWebhookWithManager(mgr), "Cannot setup namespaced webhooks")
+	}
+
 	canSafeStart, err := canWatchCRD(ctx, mgr)
 	kingpin.FatalIfError(err, "SafeStart precheck failed")
 	if canSafeStart {
