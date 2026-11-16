@@ -6,12 +6,18 @@ package clients
 
 import (
 	"context"
+	"encoding/json"
 	"strings"
+	"sync"
 	"testing"
 
+	"github.com/Azure/terraform-provider-azapi/xpprovider"
 	xpv2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 	"github.com/crossplane/upjet/v2/pkg/terraform"
 	"github.com/google/go-cmp/cmp"
+	fwprovider "github.com/hashicorp/terraform-plugin-framework/provider"
+	"github.com/hashicorp/terraform-plugin-framework/tfsdk"
+	"github.com/hashicorp/terraform-plugin-go/tftypes"
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -357,4 +363,52 @@ func TestSpAuth(t *testing.T) {
 			}
 		})
 	}
+}
+
+// TestSerializedConfigureProvider calls Configure of the embedded provider
+// from parallel goroutines, as concurrent reconciles do through the upjet
+// framework connector. Run with -race: without the serialization the detector
+// reports the write to the shared cloud.AzurePublic.Services map.
+func TestSerializedConfigureProvider(t *testing.T) {
+	ctx := context.Background()
+	fp, err := xpprovider.FrameworkProvider(ctx)
+	if err != nil {
+		t.Fatalf("FrameworkProvider() error = %v", err)
+	}
+	p := serializedConfigureProvider{Provider: fp}
+
+	var schemaResp fwprovider.SchemaResponse
+	p.Schema(ctx, fwprovider.SchemaRequest{}, &schemaResp)
+	if schemaResp.Diagnostics.HasError() {
+		t.Fatalf("Schema() diagnostics = %v", schemaResp.Diagnostics)
+	}
+	cfg, err := json.Marshal(map[string]any{
+		keyEnvironment:             "public",
+		keyTerraformSubscriptionID: "sub-1",
+		keyTerraformClientID:       "client-1",
+		keyTerraformClientSecret:   "secret-1",
+		keyTerraformTenantID:       "tenant-1",
+	})
+	if err != nil {
+		t.Fatalf("json.Marshal() error = %v", err)
+	}
+	raw, err := tftypes.ValueFromJSONWithOpts(cfg, schemaResp.Schema.Type().TerraformType(ctx), tftypes.ValueFromJSONOpts{IgnoreUndefinedAttributes: true})
+	if err != nil {
+		t.Fatalf("tftypes.ValueFromJSONWithOpts() error = %v", err)
+	}
+	req := fwprovider.ConfigureRequest{Config: tfsdk.Config{Raw: raw, Schema: schemaResp.Schema}}
+
+	var wg sync.WaitGroup
+	for range 8 {
+		wg.Add(1)
+		go func() {
+			defer wg.Done()
+			var resp fwprovider.ConfigureResponse
+			p.Configure(ctx, req, &resp)
+			if resp.Diagnostics.HasError() {
+				t.Errorf("Configure() diagnostics = %v", resp.Diagnostics)
+			}
+		}()
+	}
+	wg.Wait()
 }
