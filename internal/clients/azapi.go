@@ -8,11 +8,13 @@ import (
 	"context"
 	"encoding/json"
 	"os"
+	"sync"
 
 	"github.com/Azure/terraform-provider-azapi/xpprovider"
 	"github.com/crossplane/crossplane-runtime/v2/pkg/resource"
 	xpv2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 	"github.com/crossplane/upjet/v2/pkg/terraform"
+	tfprovider "github.com/hashicorp/terraform-plugin-framework/provider"
 	"github.com/pkg/errors"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -59,6 +61,22 @@ const (
 	credentialsSourceOIDCTokenFile xpv2.CredentialsSource = "OIDCTokenFile"
 )
 
+// configureMu serializes Configure calls into the embedded provider. Configure
+// copies cloud.AzurePublic and then writes to its Services map, which the copy
+// shares with the package level value, so the concurrent calls made by
+// parallel reconciles crash the process with "concurrent map writes".
+var configureMu sync.Mutex
+
+type serializedConfigureProvider struct {
+	tfprovider.Provider
+}
+
+func (p serializedConfigureProvider) Configure(ctx context.Context, req tfprovider.ConfigureRequest, resp *tfprovider.ConfigureResponse) {
+	configureMu.Lock()
+	defer configureMu.Unlock()
+	p.Provider.Configure(ctx, req, resp)
+}
+
 // TerraformSetupBuilder builds Terraform a terraform.SetupFn function which
 // returns Terraform provider setup configuration
 func TerraformSetupBuilder() terraform.SetupFn {
@@ -82,10 +100,11 @@ func TerraformSetupBuilder() terraform.SetupFn {
 
 		applyCommonOverrides(pcSpec, &ps)
 
-		ps.FrameworkProvider, err = xpprovider.FrameworkProvider(ctx)
+		fp, err := xpprovider.FrameworkProvider(ctx)
 		if err != nil {
 			return terraform.Setup{}, errors.Wrap(err, "error initializing the framework provider")
 		}
+		ps.FrameworkProvider = serializedConfigureProvider{Provider: fp}
 		return ps, nil
 	}
 }
